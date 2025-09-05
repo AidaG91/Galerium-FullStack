@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>focuspoint</artifactId>
+	<artifactId>galerium</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>focuspoint</name>
+	<name>galerium</name>
 	<description>Photoshootings and clients management for photographers</description>
 	<url/>
 	<licenses>

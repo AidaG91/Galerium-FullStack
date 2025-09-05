@@ -1,4 +1,4 @@
-# FocusPoint 📸  
+# Galerium 📸  
 ![Java](https://img.shields.io/badge/Java-17-blue?logo=java)  
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.0-green?logo=spring)  
 ![MySQL](https://img.shields.io/badge/MySQL-Database-orange?logo=mysql)  
@@ -9,7 +9,8 @@
 ---
 
 ## 1. Project Description  
-FocusPoint is a backend application designed for professional photographers to manage their photoshoots, clients, and image galleries.  
+Galerium is a backend application designed for professional photographers to manage their photoshoots, clients, and 
+image galleries.  
 Clients can access their galleries, mark favorite photos, and—if granted permission—download or share images.
 
 
@@ -21,7 +22,7 @@ Clients can access their galleries, mark favorite photos, and—if granted permi
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/focuspoint.git
+git clone https://github.com/your-username/galerium.git
 
 # 2. Configure MySQL credentials
 # Edit src/main/resources/application.properties
