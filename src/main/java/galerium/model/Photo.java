@@ -44,7 +44,6 @@ public class Photo {
     @Column(columnDefinition = "TEXT", nullable = true)
     private String clientComment;
 
-
     @Schema(description = "Whether the client marked this photo as a favorite")
     @Column(nullable = false)
     private boolean favorite = false;
