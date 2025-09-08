@@ -17,11 +17,8 @@ import java.util.List;
 @Builder
 public class Photographer extends User {
 
-    @OneToMany(mappedBy = "photographer")
+    @OneToMany(mappedBy = "photographer", cascade = CascadeType.ALL)
     private List<Gallery> galleries;
-
-    @OneToMany(mappedBy = "photographer")
-    private List<Client> clients;
 }
 
 
