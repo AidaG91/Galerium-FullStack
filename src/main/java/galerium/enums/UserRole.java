@@ -1,6 +1,6 @@
 package galerium.enums;
 
-public enum Role {
+public enum UserRole {
     PHOTOGRAPHER,
     CLIENT
 }

@@ -1,6 +1,6 @@
 package galerium.model;
 
-import galerium.enums.Role;
+import galerium.enums.UserRole;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -46,7 +46,7 @@ public abstract class User {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private UserRole userRole;
 
     private boolean enabled = true;
 
