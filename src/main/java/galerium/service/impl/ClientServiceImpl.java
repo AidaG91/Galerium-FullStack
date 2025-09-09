@@ -8,8 +8,7 @@ import galerium.model.Client;
 import galerium.repository.ClientRepository;
 import galerium.service.interfaces.ClientService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +18,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
 
-    @Autowired
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
 
     @Override
     @Transactional
@@ -36,13 +33,13 @@ public class ClientServiceImpl implements ClientService {
         Client client = new Client();
         client.setFullName(clientRequest.getFullName());
         client.setEmail(clientRequest.getEmail());
-        client.setPassword(clientRequest.getPassword()); // // TODO: Encrypt password before saving (e.g., passwordEncoder.encode(...))
+        client.setPassword(clientRequest.getPassword()); // TODO: Encrypt password before saving (e.g., passwordEncoder.encode(...))
         client.setPhoneNumber(clientRequest.getPhoneNumber());
         client.setAddress(clientRequest.getAddress());
-       // New clients are enabled by default
         client.setUserRole(UserRole.CLIENT);
         client.setProfilePictureUrl(clientRequest.getProfilePictureUrl());
         client.setRegistrationDate(java.time.LocalDateTime.now());
+        // New clients are enabled by default
 
         Client savedClient = clientRepository.save(client);
 
@@ -76,6 +73,11 @@ public class ClientServiceImpl implements ClientService {
             client.setFullName(clientUpdate.getFullName());
         }
         if (clientUpdate.getEmail() != null) {
+            clientRepository.findByEmail(clientUpdate.getEmail()).ifPresent(existingClient -> {
+                if (!existingClient.getId().equals(id)) {
+                    throw new RuntimeException("Another client with this email already exists.");
+                }
+            });
             client.setEmail(clientUpdate.getEmail());
         }
         if (clientUpdate.getPhoneNumber() != null) {
@@ -155,6 +157,11 @@ public class ClientServiceImpl implements ClientService {
         dto.setUserRole(client.getUserRole());
         dto.setProfilePictureUrl(client.getProfilePictureUrl());
         dto.setRegistrationDate(client.getRegistrationDate());
+       /* TODO - Add internal notes field to ClientResponseDTO if needed
+           if (internalNotes && client.getInternalNotes() != null) {
+            dto.setInternalNotes(client.getInternalNotes());
+        }
+        */
         return dto;
     }
 }
