@@ -1,14 +1,12 @@
-package galerium.dto.client;
+package galerium.dto.photographer;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class ClientRequestDTO {
-
+public class PhotographerRequestDTO {
     @NotBlank(message = "Full name cannot be blank.")
     @Size(min = 3, max = 150, message = "Full name must be between 3 and 150 characters.")
     private String fullName;
@@ -23,10 +21,4 @@ public class ClientRequestDTO {
     private String password;
 
     private String profilePictureUrl;
-
-    @NotNull
-    private String phoneNumber;
-
-    @Size(max = 255, message = "Address cannot exceed 255 characters.")
-    private String address;
 }
