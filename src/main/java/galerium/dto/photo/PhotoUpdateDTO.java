@@ -21,4 +21,7 @@ public class PhotoUpdateDTO {
     private String clientComment;
 
     private Boolean favorite;
+
+    @NotNull(message = "Gallery ID is required")
+    private Long galleryId;
 }

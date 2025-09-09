@@ -23,4 +23,6 @@ public class PhotoRequestDTO {
     @Size(max = 300)
     private String clientComment;
 
+    private boolean favorite = false;
+
 }
