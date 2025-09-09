@@ -2,6 +2,7 @@ package galerium.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,6 +35,7 @@ public class Gallery {
     @OneToMany(mappedBy = "gallery", cascade = CascadeType.ALL)
     private List<Photo> photos;
 
+    @NotBlank
     @Schema(description = "Gallery title", example = "Vin & Elend's Wedding")
     @Column(nullable = false)
     @Size(max = 100, message = "The title cannot exceed 100 characters")
