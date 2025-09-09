@@ -54,7 +54,7 @@ git clone https://github.com/your-username/galerium.git
 | Photo        | DELETE | `/api/photos/{id}`             | Delete a photo                  |
 
 ## 6. Extra Links  
-- [Trello Board](URL)  
+- [Kanban with GitHub](https://github.com/users/AidaG91/projects/3/)  
 - [Presentation Slides](URL)  
 
 ## 7. Future Improvements  
