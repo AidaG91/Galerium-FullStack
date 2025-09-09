@@ -28,7 +28,7 @@ public abstract class User {
 
     @Schema(description = "User's email address", example = "user@example.com", maxLength = 150)
     @NotBlank(message = "Email cannot be blank.")
-    @Email(message = "Please add a valid email address.")
+    @Email(message = "Please provide a valid email address.")
     @Size(min = 5, max = 150, message = "Your email cannot exceed 150 characters." )
     @Column(nullable = false, unique = true)
     private String email;
@@ -40,6 +40,7 @@ public abstract class User {
     private String password;
 
     @Schema(description = "User's full name.", example = "John Wayne")
+    @NotBlank(message = "Full name cannot be blank.")
     @Column(nullable = false)
     @Size(min = 3, max = 150, message = "Your full name must have at least 3 characters." )
     private String fullName;
