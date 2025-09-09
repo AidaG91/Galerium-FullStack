@@ -2,6 +2,7 @@ package galerium.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,7 @@ public class Photo {
     private Gallery gallery;
 
     @URL
+    @NotNull
     @Schema(description = "URL of the photo.", example = "https://example.com/photos/123.jpg")
     @Column(nullable = false)
     private String url;
