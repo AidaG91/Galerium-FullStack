@@ -138,7 +138,7 @@ class ClientControllerTest {
     void updateClient_invalidEmail() throws Exception {
         var req = new ClientUpdateDTO();
         req.setFullName("Nombre válido");
-        req.setEmail("correoSinArroba"); // inválido
+        req.setEmail("correoSinArroba");
         req.setPhoneNumber("+34123456789");
         req.setAddress("Calle Falsa 123");
         req.setIsEnabled(true);
