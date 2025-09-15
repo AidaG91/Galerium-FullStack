@@ -76,7 +76,7 @@ cd galerium
 
 ## 6. Extra Links  
 - [Kanban with GitHub](https://github.com/users/AidaG91/projects/3/)  
-- [Presentation Slides](URL)  
+- [Presentation Slides](https://www.canva.com/design/DAGzCZWOk40/yHYaeIKBJNhqztTYHw08JQ/view?utm_content=DAGzCZWOk40&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h064741c1dd)  
 
 ## 7. Future Improvements  
 - Implement full authentication and role-based access using Spring Security
