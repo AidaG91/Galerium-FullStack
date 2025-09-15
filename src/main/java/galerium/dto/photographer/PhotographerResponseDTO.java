@@ -15,6 +15,6 @@ public class PhotographerResponseDTO {
     private String profilePictureUrl;
     private Boolean isEnabled;
     private UserRole userRole;
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime registrationDate;
 }

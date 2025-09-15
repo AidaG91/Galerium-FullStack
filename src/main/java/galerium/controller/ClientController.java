@@ -27,10 +27,17 @@ public class ClientController {
 
     @PostMapping
     @Operation(summary = "Create a new client", description = "Create a new client and return the created client with a Location header.")
-    public ResponseEntity<ClientResponseDTO> createClient(@Valid @RequestBody ClientRequestDTO body) {
-        ClientResponseDTO created = clientService.createClient(body);
-        URI location = URI.create("/api/clients/" + created.getId());
-        return ResponseEntity.created(location).body(created);
+    public ResponseEntity<?> createClient(@Valid @RequestBody ClientRequestDTO body) {
+        try {
+            ClientResponseDTO created = clientService.createClient(body);
+            URI location = URI.create("/api/clients/" + created.getId());
+            return ResponseEntity.created(location).body(created);
+        } catch (RuntimeException ex) {
+            if (ex.getMessage().contains("email")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("A client with this email already exists.");
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error");
+        }
     }
 
     @PutMapping("/{id}")
