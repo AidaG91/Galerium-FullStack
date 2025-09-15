@@ -9,9 +9,9 @@
 ---
 
 ## 1. Project Description  
-Galerium is a backend application designed for professional photographers to manage their photoshoots, clients, and 
-image galleries.  
-Clients can access their galleries, mark favorite photos, and—if granted permission—download or share images.
+Galerium is a backend photo gallery management system built with Java and Spring Boot. It allows clients to browse 
+galleries, photographers to manage their work and clients, and admins to oversee the platform. The app follows REST API 
+best practices and includes robust error handling, validation, and testing.
 
 
 ## 2. UML Class Diagram  
@@ -76,7 +76,7 @@ cd galerium
 
 ## 6. Extra Links  
 - [Kanban with GitHub](https://github.com/users/AidaG91/projects/3/)  
-- [Presentation Slides](URL)  
+- [Presentation Slides](https://www.canva.com/design/DAGzCZWOk40/yHYaeIKBJNhqztTYHw08JQ/view?utm_content=DAGzCZWOk40&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h064741c1dd)  
 
 ## 7. Future Improvements  
 - Implement full authentication and role-based access using Spring Security
