@@ -15,59 +15,84 @@ Clients can access their galleries, mark favorite photos, and—if granted permi
 
 
 ## 2. UML Class Diagram  
-*(Insert diagram here — image or textual description)*
+![Class Diagram](./assets/class_diagram_Galerium.png)
+
+> This diagram was generated using DBeaver's ER visualization tool and reflects the relationships between entities 
+> such as User, Photographer, Gallery, Photo, and Client.
 
 
 ## 3. Setup  
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/your-username/galerium.git
+# Clone the repository
+git clone https://github.com/AidaG91/Galerium.git
 
-# 2. Configure MySQL credentials
-# Edit src/main/resources/application.properties
+# Navigate into the project
+cd galerium
 
-# 3. Run the application
+# Create a MySQL database named 'galerium'
+
+# Update application.properties with your DB credentials
+
+# Run the app
 ./mvnw spring-boot:run
-
-# 4. Test endpoints using Postman
 ```
 ## 4. Technologies Used  
 - Java 17  
 - Spring Boot  
-- Spring Security + JWT  
-- MySQL  
-- JPA/Hibernate  
-- JUnit + Mockito  
-- Trello  
-- GitHub  
+- Spring Data JPA
+- MySQL
+- JUnit & Mockito
+- Git & GitHub
+- Postman
+- Swagger (OpenAPI)
+- Spring Security & JWT—To Be Implemented
 
 ## 5. Controller & Route Structure  
 
-| Resource     | Method | Route                          | Description                     |
-|--------------|--------|--------------------------------|---------------------------------|
-| Photographer | POST   | `/api/photographers`           | Create a photographer           |
-| Client       | POST   | `/api/clients`                 | Create a client                 |
-| Session      | POST   | `/api/sessions`                | Create a photoshoot session     |
-| Photo        | POST   | `/api/photos`                  | Upload a photo                  |
-| Photo        | PATCH  | `/api/photos/{id}/favorite`    | Mark photo as favorite          |
-| Photo        | DELETE | `/api/photos/{id}`             | Delete a photo                  |
+| Entity       | Method | Route                                 | Description                          |
+|--------------|--------|----------------------------------------|--------------------------------------|
+| Client       | GET    | `/api/clients`                         | Get all clients                      |
+| Client       | POST   | `/api/clients`                         | Create a new client                  |
+| Client       | PUT    | `/api/clients/{id}`                    | Update client info                   |
+| Client       | DELETE | `/api/clients/{id}`                    | Delete client                        |
+| Client       | GET    | `/api/clients/{id}`                    | Get client by ID                     |
+| Client       | GET    | `/api/clients/email/{email}`          | Get client by email                  |
+| Client       | GET    | `/api/clients/name/{name}`            | Get clients by name                  |
+| Client       | GET    | `/api/clients/phone/{phoneNumber}`    | Get clients by phone number          |
+| Client       | GET    | `/api/clients/gallery/{title}`        | Get clients by gallery title         |
+| Photographer | GET    | `/api/photographers`                  | Get all photographers                |
+| Photographer | POST   | `/api/photographers`                  | Create a new photographer            |
+| Photographer | PUT    | `/api/photographers/{id}`             | Update photographer info             |
+| Photographer | DELETE | `/api/photographers/{id}`             | Delete photographer                  |
+| Gallery      | GET    | `/api/galleries`                      | List all galleries                   |
+| Gallery      | POST   | `/api/galleries`                      | Create a new gallery                 |
+| Gallery      | PUT    | `/api/galleries/{id}`                 | Update gallery info                  |
+| Gallery      | DELETE | `/api/galleries/{id}`                 | Delete gallery                       |
+| Photo        | GET    | `/api/photos`                         | List all photos                      |
+| Photo        | POST   | `/api/photos`                         | Upload a photo                       |
+| Photo        | PUT    | `/api/photos/{id}`                    | Update photo info                    |
+| Photo        | DELETE | `/api/photos/{id}`                    | Delete photo                         |
 
 ## 6. Extra Links  
 - [Kanban with GitHub](https://github.com/users/AidaG91/projects/3/)  
 - [Presentation Slides](URL)  
 
 ## 7. Future Improvements  
-- Real image upload (Cloudinary, S3…)  
-- Share via link  
-- Permission-based downloads  
-- Photographer notifications  
+- Implement full authentication and role-based access using Spring Security
+- Integrate image upload with cloud storage (e.g. Cloudinary)
+- Enable gallery sharing via public link
+- Add permission-based photo downloads
+- Notify photographers when galleries are viewed or updated
+- Add pagination and filtering to gallery and photo endpoints
+- Build a frontend to consume the API 
 
-## 8. Resources  
-- Official Spring Boot documentation  
-- JWT guide with Spring Security  
-- UML Class Diagram Generator  
-
-## 9. About the author
+## 8. About the author
 - Aïda (Backend Developer & Project Owner)
+
+## 9. License
+
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).  
+You are free to use, modify, and distribute this code with proper attribution.
+
 
