@@ -15,7 +15,7 @@ public class GalleryRequestDTO {
     @Size(max = 100, message = "The title cannot exceed 100 characters")
     private String title;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
     private String description;
