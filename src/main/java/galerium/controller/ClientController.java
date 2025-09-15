@@ -5,9 +5,11 @@ import galerium.dto.client.ClientResponseDTO;
 import galerium.dto.client.ClientUpdateDTO;
 import galerium.service.interfaces.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -83,6 +85,11 @@ public class ClientController {
             description = "Retrieve a list of clients filtered by their name.")
     public ResponseEntity<List<ClientResponseDTO>> getClientsByName(@PathVariable String name) {
         return ResponseEntity.ok(clientService.getClientsByName(name));
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<String> handleEntityNotFound(EntityNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
 }

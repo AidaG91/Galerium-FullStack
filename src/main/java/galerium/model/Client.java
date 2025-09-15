@@ -2,10 +2,9 @@ package galerium.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -21,7 +20,7 @@ import java.util.List;
 @SuperBuilder
 public class Client extends User{
 
-    @NotNull
+    @NotBlank
     @Schema(description = "Client's phone number.", example = "+34 600 000 000")
     private String phoneNumber;
 
