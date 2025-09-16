@@ -132,7 +132,6 @@ class ClientControllerTest {
     @DisplayName("PUT /api/clients/{id} -> 400 BAD REQUEST (missing required fields)")
     void updateClient_missingFields() throws Exception {
         var req = new ClientUpdateDTO();
-        // No se setea ningún campo
 
         mvc.perform(put(ID, 1)
                         .contentType(MediaType.APPLICATION_JSON)

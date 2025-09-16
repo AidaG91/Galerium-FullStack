@@ -86,9 +86,9 @@ public class DataLoader implements CommandLineRunner {
         // 3) Galleries:
         // ---------------------------------------
         Gallery gallery1 = Gallery.builder()
-                .title("Boda de Carlos y Aïda")
+                .title("Boda de Anakin y Padmé")
                 .date(LocalDate.of(2025, 9, 1))
-                .description("Una boda mágica en la costa catalana")
+                .description("Una boda mágica")
                 .photographer(photographer1)
                 .client(client1)
                 .build();
