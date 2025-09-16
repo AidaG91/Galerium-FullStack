@@ -34,6 +34,10 @@ class GalleryControllerTest {
 
     private static final String BASE = "/api/galleries";
     private static final String ID = BASE + "/{id}";
+    private static final String PHOTOGRAPHER_ID = BASE + "/by-photographer/{photographerId}";
+    private static final String CLIENT_ID = BASE + "/by-client/{clientId}";
+    private static final String TITLE = BASE + "/by-title/{title}";
+    private static final String DATE_RANGE = BASE + "/by-date-range";
 
     @Autowired
     MockMvc mvc;
@@ -205,7 +209,7 @@ class GalleryControllerTest {
 
         when(galleryService.getGalleriesByPhotographerId(1L)).thenReturn(List.of(g1));
 
-        mvc.perform(get(BASE + "/by-photographer/{photographerId}", 1)
+        mvc.perform(get(PHOTOGRAPHER_ID, 1)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
@@ -222,7 +226,7 @@ class GalleryControllerTest {
         when(galleryService.getGalleriesByPhotographerId(999L))
                 .thenThrow(new EntityNotFoundException("No galleries found for photographer"));
 
-        mvc.perform(get(BASE + "/by-photographer/{photographerId}", 999))
+        mvc.perform(get(PHOTOGRAPHER_ID, 999))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("No galleries found for photographer"));
 
@@ -237,7 +241,7 @@ class GalleryControllerTest {
 
         when(galleryService.getGalleriesByClientId(2L)).thenReturn(List.of(g1));
 
-        mvc.perform(get(BASE + "/by-client/{clientId}", 2)
+        mvc.perform(get(CLIENT_ID, 2)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
@@ -254,7 +258,7 @@ class GalleryControllerTest {
         when(galleryService.getGalleriesByClientId(999L))
                 .thenThrow(new EntityNotFoundException("No galleries found for this client"));
 
-        mvc.perform(get(BASE + "/by-client/{clientId}", 999))
+        mvc.perform(get(CLIENT_ID, 999))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("No galleries found for this client"));
 
@@ -269,7 +273,7 @@ class GalleryControllerTest {
 
         when(galleryService.getGalleriesByTitle("Gallery 1")).thenReturn(List.of(g1));
 
-        mvc.perform(get(BASE + "/by-title/{title}", "Gallery 1")
+        mvc.perform(get(TITLE, "Gallery 1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
@@ -285,7 +289,7 @@ class GalleryControllerTest {
         when(galleryService.getGalleriesByTitle("NoSuchTitle"))
                 .thenThrow(new EntityNotFoundException("No galleries found with this title"));
 
-        mvc.perform(get(BASE + "/by-title/{title}", "NoSuchTitle"))
+        mvc.perform(get(TITLE, "NoSuchTitle"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("No galleries found with this title"));
 
@@ -301,7 +305,7 @@ class GalleryControllerTest {
         when(galleryService.getGalleriesByDateRange(LocalDate.of(2024, 6, 1), LocalDate.of(2024, 6, 30)))
                 .thenReturn(List.of(g1));
 
-        mvc.perform(get(BASE + "/by-date-range")
+        mvc.perform(get(DATE_RANGE)
                         .param("startDate", "2024-06-01")
                         .param("endDate", "2024-06-30")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -319,7 +323,7 @@ class GalleryControllerTest {
         when(galleryService.getGalleriesByDateRange(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 31)))
                 .thenThrow(new EntityNotFoundException("No galleries found in this date range"));
 
-        mvc.perform(get(BASE + "/by-date-range")
+        mvc.perform(get(DATE_RANGE)
                         .param("startDate", "2024-01-01")
                         .param("endDate", "2024-01-31"))
                 .andExpect(status().isNotFound())
