@@ -1,8 +1,5 @@
 # Galerium 📸  
-![Java](https://img.shields.io/badge/Java-17-blue?logo=java)  
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.0-green?logo=spring)  
-![MySQL](https://img.shields.io/badge/MySQL-Database-orange?logo=mysql)  
-![License](https://img.shields.io/badge/License-MIT-lightgrey)
+![Java](https://img.shields.io/badge/Java-17-blue?logo=java) ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.0-green?logo=spring) ![MySQL](https://img.shields.io/badge/MySQL-Database-orange?logo=mysql) ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
 > **Streamlining the creative workflow for photographers, one gallery at a time.**
 
