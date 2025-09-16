@@ -27,17 +27,10 @@ public class ClientController {
 
     @PostMapping
     @Operation(summary = "Create a new client", description = "Create a new client and return the created client with a Location header.")
-    public ResponseEntity<?> createClient(@Valid @RequestBody ClientRequestDTO body) {
-        try {
-            ClientResponseDTO created = clientService.createClient(body);
-            URI location = URI.create("/api/clients/" + created.getId());
-            return ResponseEntity.created(location).body(created);
-        } catch (RuntimeException ex) {
-            if (ex.getMessage().contains("email")) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("A client with this email already exists.");
-            }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error");
-        }
+    public ResponseEntity<ClientResponseDTO> createClient(@Valid @RequestBody ClientRequestDTO body) {
+        ClientResponseDTO created = clientService.createClient(body);
+        URI location = URI.create("/api/clients/" + created.getId());
+        return ResponseEntity.created(location).body(created);
     }
 
     @PutMapping("/{id}")
@@ -92,11 +85,6 @@ public class ClientController {
             description = "Retrieve a list of clients filtered by their name.")
     public ResponseEntity<List<ClientResponseDTO>> getClientsByName(@PathVariable String name) {
         return ResponseEntity.ok(clientService.getClientsByName(name));
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleEntityNotFound(EntityNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
 }

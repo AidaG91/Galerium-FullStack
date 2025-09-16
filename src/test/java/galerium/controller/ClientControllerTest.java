@@ -1,6 +1,7 @@
 package galerium.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import galerium.config.GlobalExceptionHandler;
 import galerium.config.TestSecurityConfig;
 import galerium.dto.client.ClientRequestDTO;
 import galerium.dto.client.ClientResponseDTO;
@@ -26,7 +27,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Import(TestSecurityConfig.class)
+@Import({TestSecurityConfig.class, GlobalExceptionHandler.class})
 @WebMvcTest(controllers = ClientController.class)
 class ClientControllerTest {
 
@@ -173,9 +174,8 @@ class ClientControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(req)))
                 .andExpect(status().isConflict())
-                .andExpect(content().string("A client with this email already exists."));
+                .andExpect(jsonPath("$.message").value("A client with this email already exists."));
     }
-
 
     // ------- TESTING GET /api/clients -------
     @Test
@@ -236,7 +236,8 @@ class ClientControllerTest {
         when(clientService.getClientById(999L)).thenThrow(new EntityNotFoundException("Client not found"));
 
         mvc.perform(get(ID, 999))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Client not found"));
 
         verify(clientService).getClientById(999L);
     }
@@ -273,11 +274,10 @@ class ClientControllerTest {
 
         mvc.perform(get(PHONE + "/{phoneNumber}", "+34000000000"))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("No clients found with phone number"));
+                .andExpect(jsonPath("$.message").value("No clients found with phone number"));
 
         verify(clientService).getClientsByPhoneNumber("+34000000000");
     }
-
 
     // ------- TESTING GET /api/clients/gallery/{title} -------
     @Test
@@ -286,6 +286,7 @@ class ClientControllerTest {
         var c1 = resp(1L, "Lola Flores", "lolaflores@email.com", null, "+34123456789", "Calle Falsa 123, Madrid, España", true, UserRole.CLIENT, LocalDateTime.now());
 
         when(clientService.getClientsByGalleryTitle("Modern Art")).thenReturn(java.util.List.of(c1));
+
         mvc.perform(get(GALLERY + "/{title}", "Modern Art")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -309,7 +310,7 @@ class ClientControllerTest {
 
         mvc.perform(get(GALLERY + "/{title}", "Galería Fantasma"))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("No clients found for gallery"));
+                .andExpect(jsonPath("$.message").value("No clients found for gallery"));
 
         verify(clientService).getClientsByGalleryTitle("Galería Fantasma");
     }
@@ -344,7 +345,7 @@ class ClientControllerTest {
 
         mvc.perform(get(EMAIL + "/{email}", "noexiste@email.com"))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("Client not found"));
+                .andExpect(jsonPath("$.message").value("Client not found"));;
 
         verify(clientService).getClientByEmail("noexiste@email.com");
     }
@@ -380,7 +381,7 @@ class ClientControllerTest {
 
         mvc.perform(get(NAME + "/{name}", "NombreFantasma"))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("No clients found with name"));
+                .andExpect(jsonPath("$.message").value("No clients found with name"));
 
         verify(clientService).getClientsByName("NombreFantasma");
     }
@@ -403,7 +404,8 @@ class ClientControllerTest {
         doThrow(new EntityNotFoundException("Client not found")).when(clientService).deleteClient(999L);
 
         mvc.perform(delete(ID, 999))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Client not found"));
 
         verify(clientService).deleteClient(999L);
     }
