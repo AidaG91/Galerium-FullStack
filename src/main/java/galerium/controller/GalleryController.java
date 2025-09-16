@@ -59,13 +59,13 @@ public class GalleryController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/by-photographer/{id}")
+    @GetMapping("/by-photographer/{photographerId}")
     @Operation(summary = "Get galleries by photographer ID", description = "Retrieve a list of galleries associated with a specific photographer ID.")
     public ResponseEntity<List<GalleryResponseDTO>> getGalleriesByPhotographerId(@PathVariable @Positive Long photographerId) {
         return ResponseEntity.ok(galleryService.getGalleriesByPhotographerId(photographerId));
     }
 
-    @GetMapping("/by-client/{id}")
+    @GetMapping("/by-client/{clientId}")
     @Operation(summary = "Get galleries by client ID", description = "Retrieve a list of galleries associated with a specific client ID.")
     public ResponseEntity<List<GalleryResponseDTO>> getGalleriesByClientId(@PathVariable @Positive Long clientId) {
         return ResponseEntity.ok(galleryService.getGalleriesByClientId(clientId));
