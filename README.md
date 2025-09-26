@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Galerium 📸  
 ![Java](https://img.shields.io/badge/Java-17-blue?logo=java) ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.0-green?logo=spring) ![MySQL](https://img.shields.io/badge/MySQL-Database-orange?logo=mysql) ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
@@ -93,3 +94,7 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 You are free to use, modify, and distribute this code with proper attribution.
 
 
+=======
+# Galerium-FullStack
+IronHack's Module 3 Final Project - FullStack for my own app: Photoshoots and client management for photographers
+>>>>>>> 5c1c132d76594ffdd608bd4e5265dfabd7809fdb
