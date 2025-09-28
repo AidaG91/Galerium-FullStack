@@ -5,14 +5,14 @@ export default function Dashboard() {
       const text = await res.text();
       alert(text);
     } catch (err) {
-      alert('Error de conexión con el backend');
+      alert('Connection error with the backend');
     }
   };
 
   return (
     <div style={{ padding: '2rem' }}>
-      <h1>Dashboard del Fotógrafo</h1>
-      <button onClick={probarConexion}>Probar conexión</button>
+      <h1>Dashboard</h1>
+      <button onClick={probarConexion}>Try connection</button>
     </div>
   );
 }
