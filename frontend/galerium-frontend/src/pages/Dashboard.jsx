@@ -15,4 +15,18 @@ export default function Dashboard() {
       <button onClick={probarConexion}>Try connection</button>
     </div>
   );
+
+  // Stats para el codigo
+    const stats = useMemo(() => {
+    if (!clients.length) return { count: 0, latest: null };
+
+    const sortedByDate = [...clients].sort(
+      (a, b) => new Date(b.registrationDate) - new Date(a.registrationDate)
+    );
+
+    return {
+      count: clients.length,
+      latest: sortedByDate[0],
+    };
+  }, [clients]);
 }

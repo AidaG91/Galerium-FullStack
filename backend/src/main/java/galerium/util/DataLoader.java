@@ -59,7 +59,37 @@ public class DataLoader implements CommandLineRunner {
                 .address("Plaza Mayor 789, Valencia")
                 .build();
 
-        clientRepository.saveAll(List.of(client1, client2, client3));
+        Client client4 = Client.builder()
+                .email("cliente4@example.com")
+                .password("clientpass202")
+                .fullName("Marta Sánchez")
+                .userRole(UserRole.CLIENT)
+                .phoneNumber("+34 611 234 567")
+                .address("Calle Luna 45, Sevilla")
+                .profilePictureUrl("https://i.pravatar.cc/150?img=15")
+                .build();
+
+        Client client5 = Client.builder()
+                .email("cliente5@example.com")
+                .password("clientpass303")
+                .fullName("Carlos Ruiz")
+                .userRole(UserRole.CLIENT)
+                .phoneNumber("+34 622 345 678")
+                .address("Avenida del Mar 22, Málaga")
+                .profilePictureUrl("https://i.pravatar.cc/150?img=18")
+                .build();
+
+        Client client6 = Client.builder()
+                .email("cliente6@example.com")
+                .password("clientpass404")
+                .fullName("Elena Navarro")
+                .userRole(UserRole.CLIENT)
+                .phoneNumber("+34 633 456 789")
+                .address("Paseo de Gracia 10, Barcelona")
+                .profilePictureUrl("https://i.pravatar.cc/150?img=21")
+                .build();
+
+        clientRepository.saveAll(List.of(client1, client2, client3, client4, client5, client6));
 
         // ---------------------------------------
         // 2) Photographers:

@@ -1,21 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import ClientCRUD from "../components/ClientCRUD";
 
 export default function Clients() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [clients, setClients] = useState([]);
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       if (query.trim().length > 0) {
         fetch(`http://localhost:8080/api/clients/name/${query}`)
-          .then(res => res.json())
-          .then(data => setClients(data))
-          .catch(err => {
-            console.error('Error when searching for clients', err);
-            setClients([]); 
+          .then((res) => res.json())
+          .then((data) => setClients(data))
+          .catch((err) => {
+            console.error("Error when searching for clients", err);
+            setClients([]);
           });
       } else {
-        setClients([]);
+        fetch("http://localhost:8080/api/clients")
+          .then((res) => res.json())
+          .then((data) => setClients(data))
+          .catch((err) => {
+            console.error("Error loading clients", err);
+            setClients([]);
+          });
       }
     }, 500);
 
@@ -23,21 +30,11 @@ export default function Clients() {
   }, [query]);
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Clients</h1>
-      <input
-        type="text"
-        placeholder="Search by name..."
-        value={query}
-        onChange={e => setQuery(e.target.value)}
-      />
-      <ul>
-        {Array.isArray(clients) && clients.map(client => (
-          <li key={client.id}>
-            {client.fullName} – {client.email}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ClientCRUD
+      clients={clients}
+      query={query}
+      setQuery={setQuery}
+      setClients={setClients}
+    />
   );
 }

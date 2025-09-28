@@ -1,0 +1,21 @@
+.container {
+  width: 220px;
+  height: 100vh;
+  background-color: var(--Secondary);
+  padding: 1.5rem;
+  border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.link {
+  text-decoration: none;
+  color: var(--Dark);
+  font-weight: normal;
+}
+
+.active {
+  color: var(--Accent);
+  font-weight: bold;
+}
