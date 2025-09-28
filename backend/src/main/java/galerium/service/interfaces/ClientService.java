@@ -3,6 +3,8 @@ package galerium.service.interfaces;
 import galerium.dto.client.ClientRequestDTO;
 import galerium.dto.client.ClientResponseDTO;
 import galerium.dto.client.ClientUpdateDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -25,5 +27,7 @@ public interface ClientService {
     ClientResponseDTO getClientByEmail(String email);
 
     List<ClientResponseDTO> getClientsByName(String name);
+
+    Page<ClientResponseDTO> getClientsPaged(Pageable pageable);
 
 }

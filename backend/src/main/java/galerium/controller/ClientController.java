@@ -9,6 +9,10 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -86,5 +90,19 @@ public class ClientController {
     public ResponseEntity<List<ClientResponseDTO>> getClientsByName(@PathVariable String name) {
         return ResponseEntity.ok(clientService.getClientsByName(name));
     }
+
+    @GetMapping("/paged")
+    @Operation(summary = "Get paged clients", description = "Retrieve clients with pagination and optional sorting.")
+    public ResponseEntity<Page<ClientResponseDTO>> getClientsPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id,asc") String[] sort) {
+
+        Sort sortOrder = Sort.by(Sort.Direction.fromString(sort[1]), sort[0]);
+        Pageable pageable = PageRequest.of(page, size, sortOrder);
+
+        return ResponseEntity.ok(clientService.getClientsPaged(pageable));
+    }
+
 
 }

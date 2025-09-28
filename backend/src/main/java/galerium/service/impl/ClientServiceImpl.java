@@ -10,6 +10,8 @@ import galerium.service.interfaces.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,11 @@ import java.util.stream.Collectors;
 public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
+
+    public Page<ClientResponseDTO> getClientsPaged(Pageable pageable) {
+        return clientRepository.findAll(pageable)
+                .map(this::toResponseDTO);
+    }
 
     @Override
     @Transactional
