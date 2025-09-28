@@ -59,7 +59,7 @@ public class DataLoader implements CommandLineRunner {
                 .address("Plaza Mayor 789, Valencia")
                 .build();
 
-        clientRepository.saveAll(List.of(client1, client2));
+        clientRepository.saveAll(List.of(client1, client2, client3));
 
         // ---------------------------------------
         // 2) Photographers:
