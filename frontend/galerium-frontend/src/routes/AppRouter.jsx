@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "../pages/Dashboard";
 import LandingPage from "../pages/LandingPage";
-import Clients from "../pages/Clients";
+import Clients from "../pages/ClientsPage";
 import SidebarLayout from "../layouts/SidebarLayout";
 
 export default function AppRouter() {

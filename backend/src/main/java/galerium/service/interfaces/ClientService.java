@@ -30,4 +30,8 @@ public interface ClientService {
 
     Page<ClientResponseDTO> getClientsPaged(Pageable pageable);
 
+    List<ClientResponseDTO> searchClients(String query);
+
+    Page<ClientResponseDTO> searchClientsPaged(String query, Pageable pageable);
+
 }

@@ -152,6 +152,24 @@ public class ClientServiceImpl implements ClientService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ClientResponseDTO> searchClientsPaged(String query, Pageable pageable) {
+        return clientRepository.searchClientsPaged(query, pageable)
+                .map(this::toResponseDTO);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ClientResponseDTO> searchClients(String query) {
+        List<Client> results = clientRepository.searchClients(query);
+        return results.stream()
+                .map(this::toResponseDTO)
+                .toList();
+    }
+
+
+
     // Helper method to map Client entity to ClientResponseDTO
     private ClientResponseDTO toResponseDTO(Client client) {
         ClientResponseDTO dto = new ClientResponseDTO();

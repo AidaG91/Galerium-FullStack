@@ -5,7 +5,6 @@ import galerium.dto.client.ClientResponseDTO;
 import galerium.dto.client.ClientUpdateDTO;
 import galerium.service.interfaces.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -102,6 +100,23 @@ public class ClientController {
         Pageable pageable = PageRequest.of(page, size, sortOrder);
 
         return ResponseEntity.ok(clientService.getClientsPaged(pageable));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ClientResponseDTO>> searchClients(@RequestParam String q) {
+        return ResponseEntity.ok(clientService.searchClients(q));
+    }
+
+    @GetMapping("/search/paged")
+    public ResponseEntity<Page<ClientResponseDTO>> searchClientsPaged(
+            @RequestParam String q,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id,asc") String[] sort) {
+
+        Sort sortOrder = Sort.by(Sort.Direction.fromString(sort[1]), sort[0]);
+        Pageable pageable = PageRequest.of(page, size, sortOrder);
+        return ResponseEntity.ok(clientService.searchClientsPaged(q, pageable));
     }
 
 

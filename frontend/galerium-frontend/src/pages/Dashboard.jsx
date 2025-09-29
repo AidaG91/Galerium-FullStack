@@ -5,7 +5,7 @@ export default function Dashboard() {
       const text = await res.text();
       alert(text);
     } catch (err) {
-      alert('Connection error with the backend');
+      alert('The connection to the backend failed.');
     }
   };
 
