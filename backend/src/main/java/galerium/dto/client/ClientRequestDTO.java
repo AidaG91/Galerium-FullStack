@@ -24,7 +24,7 @@ public class ClientRequestDTO {
 
     private String profilePictureUrl;
 
-    @NotNull
+    @NotBlank(message = "Phone number cannot be blank.")
     private String phoneNumber;
 
     @Size(max = 255, message = "Address cannot exceed 255 characters.")

@@ -8,6 +8,7 @@ export default function ClientForm({ initialData, onSave, onClose }) {
   const [form, setForm] = useState({
     fullName: initialData?.fullName ?? "",
     email: initialData?.email ?? "",
+    password: "",
     phoneNumber: initialData?.phoneNumber ?? "",
     address: initialData?.address ?? "",
     profilePictureUrl: initialData?.profilePictureUrl ?? "",
@@ -35,25 +36,30 @@ export default function ClientForm({ initialData, onSave, onClose }) {
       phoneNumber: form.phoneNumber.trim(),
       address: form.address.trim(),
       profilePictureUrl: form.profilePictureUrl.trim(),
+      userRole: "CLIENT",
+      ...(form.password &&
+        form.password.trim().length >= 8 && { password: form.password.trim() }),
     };
 
     try {
       const res = await fetch(
         isEdit
           ? `http://localhost:8080/api/clients/${initialData.id}` // PUT
-          : "http://localhost:8080/api/clients",                 // POST
+          : "http://localhost:8080/api/clients", // POST
         {
           method: isEdit ? "PUT" : "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         }
       );
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`HTTP ${res.status}: ${errorText}`);
+      }
       const data = await res.json();
-
       onSave({ ...payload, id: data.id ?? initialData?.id });
     } catch (err) {
-      console.error("Error al guardar", err);
+      console.error("Error al guardar:", err.message);
     }
   };
 
@@ -80,12 +86,25 @@ export default function ClientForm({ initialData, onSave, onClose }) {
             required
           />
 
+          {/* Password */}
+          {!isEdit && (
+            <input
+              name="password"
+              type="password"
+              value={form.password}
+              onChange={handleChange}
+              placeholder="Password"
+              required
+            />
+          )}
+
           {/* Phone */}
           <input
             name="phoneNumber"
             value={form.phoneNumber}
             onChange={handleChange}
             placeholder="Phone Number"
+            required
           />
 
           {/* Address */}
@@ -96,7 +115,7 @@ export default function ClientForm({ initialData, onSave, onClose }) {
             placeholder="Address"
           />
 
-          {/* Foto (URL) */}
+          {/* Photo (URL) */}
           <input
             name="profilePictureUrl"
             value={form.profilePictureUrl}
@@ -104,7 +123,7 @@ export default function ClientForm({ initialData, onSave, onClose }) {
             placeholder="Photo (URL)"
           />
 
-          {/* Botones Crear/Guardar y Cancelar */}
+          {/* Create/Save and Cancel buttons */}
           <div className={styles.modalActions}>
             <button type="submit">{isEdit ? "Save" : "Create"}</button>
             <button type="button" onClick={onClose}>

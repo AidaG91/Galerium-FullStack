@@ -96,10 +96,10 @@ public class ClientServiceImpl implements ClientService {
         if (clientUpdate.getProfilePictureUrl() != null) {
             client.setProfilePictureUrl(clientUpdate.getProfilePictureUrl());
         }
-        if (clientUpdate.getPassword() != null) {
-            // TODO - Here you would hash the password before setting it
+        if (clientUpdate.getPassword() != null && clientUpdate.getPassword().length() >= 8) {
             client.setPassword(clientUpdate.getPassword());
         }
+
 
         Client updatedClient = clientRepository.save(client);
 

@@ -17,7 +17,6 @@ public class ClientUpdateDTO {
     @Size(min = 5, max = 150, message = "Email must be between 5 and 150 characters.")
     private String email;
 
-    @NotBlank(message = "Password is required.")
     @Size(min = 8, max = 255, message = "Password must be between 8 and 255 characters.")
     private String password;
 
