@@ -1,0 +1,95 @@
+.page {
+  display: flex;
+  height: 100vh;
+}
+
+.menu {
+  width: 80px;
+  background-color: #f0f0f0;
+  writing-mode: vertical-rl;
+  text-align: center;
+  font-weight: bold;
+  padding: 1rem;
+  border-right: 1px solid #ccc;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.backBtn {
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.topSection {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.photo {
+  position: relative;
+  width: 150px;
+}
+
+.photo img {
+  width: 100%;
+  border-radius: 50%;
+}
+
+.placeholder {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  margin-left: 0.5rem;
+  color: #444;
+}
+
+.actions button:hover {
+  color: #f1a619;
+}
+
+.details {
+  flex-grow: 1;
+}
+
+.bottomSection {
+  display: flex;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.calendar, .galleries {
+  flex: 1;
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border: 1px solid #ccc;
+}
+

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import styles from "../styles/Clients.module.css";
 import ClientForm from "./ClientForm";
+import { useNavigate } from "react-router-dom";
 
 export default function ClientCRUD({
   clients,
@@ -32,6 +33,9 @@ export default function ClientCRUD({
     window.scrollTo({ top: 0, behavior: "smooth" });
     setShowModal(true);
   };
+
+  // Routes
+  const navigate = useNavigate();
 
   // --- DELETE ---
   const handleDelete = async (id) => {
@@ -78,15 +82,15 @@ export default function ClientCRUD({
             </div>
             <div className={styles.actions}>
               <button
-                title="Ver ficha"
-                onClick={() => console.log("Ver", c.id)}
+                title="See client"
+                onClick={() => navigate(`/clients/${c.id}`)}
               >
                 <FaEye />
               </button>
-              <button title="Editar" onClick={() => startEdit(c)}>
+              <button title="Edit" onClick={() => startEdit(c)}>
                 <FaEdit />
               </button>
-              <button title="Eliminar" onClick={() => handleDelete(c.id)}>
+              <button title="Delete" onClick={() => handleDelete(c.id)}>
                 <FaTrash />
               </button>
             </div>
@@ -101,12 +105,10 @@ export default function ClientCRUD({
           onClose={() => setShowModal(false)}
           onSave={(client) => {
             if (editingId) {
-              // UPDATE local
               setClients((prev) =>
                 prev.map((c) => (c.id === editingId ? client : c))
               );
             } else {
-              // CREATE local
               setClients((prev) => [client, ...prev]);
             }
             setShowModal(false);

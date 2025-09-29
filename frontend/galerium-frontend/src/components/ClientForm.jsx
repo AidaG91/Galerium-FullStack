@@ -59,7 +59,7 @@ export default function ClientForm({ initialData, onSave, onClose }) {
       const data = await res.json();
       onSave({ ...payload, id: data.id ?? initialData?.id });
     } catch (err) {
-      console.error("Error al guardar:", err.message);
+      console.error("Failed to save:", err.message);
     }
   };
 
