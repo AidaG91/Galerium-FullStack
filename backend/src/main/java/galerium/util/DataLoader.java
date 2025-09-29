@@ -33,63 +33,126 @@ public class DataLoader implements CommandLineRunner {
         // 1) Clients:
         // ---------------------------------------
         Client client1 = Client.builder()
-                .email("cliente1@example.com")
-                .password("clientpass456")
+                .email("marcos.lozano@rebelmail.com")
+                .password("lightsaber456")
                 .fullName("Marcos Lozano")
                 .userRole(UserRole.CLIENT)
                 .phoneNumber("+34 600 123 456")
-                .address("Calle Falsa 123, Madrid")
+                .address("Sector 7G, Tatooine Outpost")
+                .internalNotes("Prefers encrypted messages via holocom.")
                 .build();
 
         Client client2 = Client.builder()
-                .email("cliente2@example.com")
-                .password("clientpass789")
+                .email("chen.gomez@magicguild.org")
+                .password("arcane789")
                 .fullName("Chen Gómez")
                 .userRole(UserRole.CLIENT)
                 .phoneNumber("+34 600 654 321")
-                .address("Avenida Siempre Viva 456, Barcelona")
+                .address("Crystal Tower, Elven District")
+                .profilePictureUrl("https://i.pravatar.cc/150?img=12")
                 .build();
 
         Client client3 = Client.builder()
-                .email("cliente3@example.com")
-                .password("clientpass101")
+                .email("luis.fernandez@dragonmail.com")
+                .password("firebreath101")
                 .fullName("Luis Fernández")
                 .userRole(UserRole.CLIENT)
                 .phoneNumber("+34 600 987 654")
-                .address("Plaza Mayor 789, Valencia")
+                .address("Calle del Dragón 789, Ciudadela de Fuego")
+                .internalNotes("Requested a magical portrait with animated flames.")
                 .build();
 
         Client client4 = Client.builder()
-                .email("cliente4@example.com")
-                .password("clientpass202")
+                .email("marta.sanchez@rebelion.org")
+                .password("hope2021")
                 .fullName("Marta Sánchez")
                 .userRole(UserRole.CLIENT)
                 .phoneNumber("+34 611 234 567")
-                .address("Calle Luna 45, Sevilla")
-                .profilePictureUrl("https://i.pravatar.cc/150?img=15")
+                .address("Base Echo, Hoth System")
+                .profilePictureUrl("https://i.pravatar.cc/150?img=14")
                 .build();
 
         Client client5 = Client.builder()
-                .email("cliente5@example.com")
-                .password("clientpass303")
+                .email("carlos.ruiz@wandersguild.com")
+                .password("seastone303")
                 .fullName("Carlos Ruiz")
                 .userRole(UserRole.CLIENT)
                 .phoneNumber("+34 622 345 678")
-                .address("Avenida del Mar 22, Málaga")
-                .profilePictureUrl("https://i.pravatar.cc/150?img=18")
+                .address("Avenida del Mar 22, Puerto de los Susurros")
+                .profilePictureUrl("https://i.pravatar.cc/150?img=16")
+                .internalNotes("Prefers watercolor style and sea-themed compositions.")
                 .build();
 
         Client client6 = Client.builder()
-                .email("cliente6@example.com")
-                .password("clientpass404")
+                .email("elena.navarro@jediacademy.net")
+                .password("forceflow404")
                 .fullName("Elena Navarro")
                 .userRole(UserRole.CLIENT)
                 .phoneNumber("+34 633 456 789")
-                .address("Paseo de Gracia 10, Barcelona")
-                .profilePictureUrl("https://i.pravatar.cc/150?img=21")
+                .address("Paseo de Gracia 10, Coruscant Central")
                 .build();
 
-        clientRepository.saveAll(List.of(client1, client2, client3, client4, client5, client6));
+        Client client7 = Client.builder()
+                .email("yoda@jediorder.com")
+                .password("forceMaster123")
+                .fullName("Master Yoda")
+                .userRole(UserRole.CLIENT)
+                .phoneNumber("+34 600 111 111")
+                .address("Dagobah Swamp, Outer Rim")
+                .internalNotes("Speaks in reverse syntax. Prefers green tones.")
+                .build();
+
+        Client client8 = Client.builder()
+                .email("aragorn@gondor.gov")
+                .password("striderKing456")
+                .fullName("Aragorn son of Arathorn")
+                .userRole(UserRole.CLIENT)
+                .phoneNumber("+34 600 222 222")
+                .address("Throne Room, Minas Tirith")
+                .profilePictureUrl("https://i.pravatar.cc/150?img=31")
+                .build();
+
+        Client client9 = Client.builder()
+                .email("leia@rebellion.org")
+                .password("princessHope789")
+                .fullName("Leia Organa")
+                .userRole(UserRole.CLIENT)
+                .phoneNumber("+34 600 333 333")
+                .address("Alderaan Embassy, Coruscant")
+                .internalNotes("Requested a minimalist portrait with rebellion insignia.")
+                .build();
+
+        Client client10 = Client.builder()
+                .email("gandalf@middleearth.net")
+                .password("youShallNotPass101")
+                .fullName("Gandalf the Grey")
+                .userRole(UserRole.CLIENT)
+                .phoneNumber("+34 600 444 444")
+                .address("Tower of Orthanc, Isengard")
+                .profilePictureUrl("https://i.pravatar.cc/150?img=33")
+                .build();
+
+        Client client11 = Client.builder()
+                .email("luke@skywalkeracademy.com")
+                .password("lightsaber202")
+                .fullName("Luke Skywalker")
+                .userRole(UserRole.CLIENT)
+                .phoneNumber("+34 600 555 555")
+                .address("Jedi Temple, Ahch-To")
+                .build();
+
+        Client client12 = Client.builder()
+                .email("daenerys@dragonmail.com")
+                .password("motherOfDragons303")
+                .fullName("Daenerys Targaryen")
+                .userRole(UserRole.CLIENT)
+                .phoneNumber("+34 600 666 666")
+                .address("Dragonstone Castle, Westeros")
+                .profilePictureUrl("https://i.pravatar.cc/150?img=35")
+                .internalNotes("Requested a dramatic portrait with dragons in the background.")
+                .build();
+
+        clientRepository.saveAll(List.of(client1, client2, client3, client4, client5, client6, client7, client8, client9, client10, client11, client12));
 
         // ---------------------------------------
         // 2) Photographers:

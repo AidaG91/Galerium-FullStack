@@ -3,20 +3,29 @@ import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import styles from "../styles/Clients.module.css";
 import ClientForm from "./ClientForm";
 
-export default function ClientCRUD({ clients, setClients, query, setQuery }) {
+export default function ClientCRUD({
+  clients,
+  setClients,
+  query,
+  setQuery,
+  page,
+  setPage,
+  totalPages,
+  totalElements,
+}) {
   // --- Modal & Form (Create/Update) ---
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  // Abrir modal para crear
+  // Open modal to create
   const openCreateModal = () => {
     setEditingId(null);
     setFormData(null);
     setShowModal(true);
   };
 
-  // Abrir modal para editar
+  // Open modal to editar
   const startEdit = (c) => {
     setEditingId(c.id);
     setFormData(c);
@@ -26,29 +35,29 @@ export default function ClientCRUD({ clients, setClients, query, setQuery }) {
 
   // --- DELETE ---
   const handleDelete = async (id) => {
-    if (!confirm("¿Eliminar cliente?")) return;
+    if (!confirm("Delete client?")) return;
     try {
       const res = await fetch(`http://localhost:8080/api/clients/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      // Actualizar estado local tras borrado
+
       setClients((prev) => prev.filter((c) => c.id !== id));
     } catch (err) {
-      console.error("Error al eliminar", err);
+      console.error("Failed to delete client", err);
     }
   };
 
   // --- JSX Structure ---
   return (
     <section className={styles.wrapper}>
-      {/* ---- Header: buscador + botón ADD ---- */}
+      {/* ---- Header: search + ADD button ---- */}
       <header className={styles.header}>
-        <h2>Clientes</h2>
+        <h2>Clients</h2>
         <div className={styles.actions}>
           <input
             className={styles.input}
-            placeholder="Buscar cliente…"
+            placeholder="Search client…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -58,7 +67,7 @@ export default function ClientCRUD({ clients, setClients, query, setQuery }) {
         </div>
       </header>
 
-      {/* ---- Client list: tarjetas de cliente ---- */}
+      {/* ---- Client list ---- */}
       <ul className={styles.list}>
         {clients.map((c) => (
           <li key={c.id} className={styles.card}>
@@ -68,7 +77,10 @@ export default function ClientCRUD({ clients, setClients, query, setQuery }) {
               <p>{c.phoneNumber}</p>
             </div>
             <div className={styles.actions}>
-              <button title="Ver ficha" onClick={() => console.log("Ver", c.id)}>
+              <button
+                title="Ver ficha"
+                onClick={() => console.log("Ver", c.id)}
+              >
                 <FaEye />
               </button>
               <button title="Editar" onClick={() => startEdit(c)}>
@@ -82,7 +94,7 @@ export default function ClientCRUD({ clients, setClients, query, setQuery }) {
         ))}
       </ul>
 
-      {/* ---- Modal: formulario de creación/edición ---- */}
+      {/* ---- Modal: create / update ---- */}
       {showModal && (
         <ClientForm
           initialData={formData}
@@ -101,6 +113,26 @@ export default function ClientCRUD({ clients, setClients, query, setQuery }) {
           }}
         />
       )}
+
+      {/* Next / Previous Page buttons */}
+      <div className={styles.pagination}>
+        <p>
+          Showing page <strong>{page + 1}</strong> of{" "}
+          <strong>{totalPages}</strong> (<strong>{totalElements}</strong>{" "}
+          clients)
+        </p>
+        <div className={styles.pageButtons}>
+          <button disabled={page === 0} onClick={() => setPage((p) => p - 1)}>
+            ← Previous
+          </button>
+          <button
+            disabled={page >= totalPages - 1}
+            onClick={() => setPage((p) => p + 1)}
+          >
+            Next →
+          </button>
+        </div>
+      </div>
     </section>
   );
 }

@@ -22,7 +22,7 @@ export default function ClientForm({ initialData, onSave, onClose }) {
   // --- CREATE / UPDATE ---
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Validar formulario nativo
+
     const formEl = e.currentTarget;
     if (!formEl.checkValidity()) {
       formEl.reportValidity();
@@ -50,7 +50,7 @@ export default function ClientForm({ initialData, onSave, onClose }) {
       );
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      // Devolver al padre el cliente nuevo o actualizado
+
       onSave({ ...payload, id: data.id ?? initialData?.id });
     } catch (err) {
       console.error("Error al guardar", err);
@@ -62,12 +62,12 @@ export default function ClientForm({ initialData, onSave, onClose }) {
       <div className={styles.modal}>
         <h3>{isEdit ? "Editar cliente" : "Crear cliente"}</h3>
         <form onSubmit={handleSubmit}>
-          {/* Nombre completo */}
+          {/* Full nam */}
           <input
             name="fullName"
             value={form.fullName}
             onChange={handleChange}
-            placeholder="Nombre completo"
+            placeholder="Full Name"
             required
           />
 
@@ -80,20 +80,20 @@ export default function ClientForm({ initialData, onSave, onClose }) {
             required
           />
 
-          {/* Teléfono */}
+          {/* Phone */}
           <input
             name="phoneNumber"
             value={form.phoneNumber}
             onChange={handleChange}
-            placeholder="Teléfono"
+            placeholder="Phone Number"
           />
 
-          {/* Dirección */}
+          {/* Address */}
           <input
             name="address"
             value={form.address}
             onChange={handleChange}
-            placeholder="Dirección"
+            placeholder="Address"
           />
 
           {/* Foto (URL) */}
@@ -101,14 +101,14 @@ export default function ClientForm({ initialData, onSave, onClose }) {
             name="profilePictureUrl"
             value={form.profilePictureUrl}
             onChange={handleChange}
-            placeholder="Foto (URL)"
+            placeholder="Photo (URL)"
           />
 
           {/* Botones Crear/Guardar y Cancelar */}
           <div className={styles.modalActions}>
-            <button type="submit">{isEdit ? "Guardar" : "Crear"}</button>
+            <button type="submit">{isEdit ? "Save" : "Create"}</button>
             <button type="button" onClick={onClose}>
-              Cancelar
+              Cancel
             </button>
           </div>
         </form>

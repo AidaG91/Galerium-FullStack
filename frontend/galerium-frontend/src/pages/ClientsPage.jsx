@@ -6,8 +6,10 @@ export default function ClientsPage() {
   const [query, setQuery] = useState("");
   const [clients, setClients] = useState([]);
   const [debouncedQuery] = useDebounce(query, 500);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
 
-  // --- Paginación y orden ---
+  // --- Pagination and sorting ---
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
   const [sortBy, setSortBy] = useState("fullName");
@@ -29,6 +31,8 @@ export default function ClientsPage() {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         setClients(data.content ?? []);
+        setTotalPages(data.totalPages ?? 0);
+        setTotalElements(data.totalElements ?? 0);
       } catch (err) {
         if (err.name !== "AbortError") {
           console.error("Error fetching clients", err);
@@ -46,6 +50,10 @@ export default function ClientsPage() {
       setClients={setClients}
       query={query}
       setQuery={setQuery}
+      page={page}
+      setPage={setPage}
+      totalPages={totalPages}
+      totalElements={totalElements}
     />
   );
 }
