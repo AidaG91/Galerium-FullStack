@@ -14,26 +14,6 @@ export default function ClientCRUD({
   totalPages,
   totalElements,
 }) {
-  // --- Modal & Form (Create/Update) ---
-  const [editingId, setEditingId] = useState(null);
-  const [formData, setFormData] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-
-  // Open modal to create
-  const openCreateModal = () => {
-    setEditingId(null);
-    setFormData(null);
-    setShowModal(true);
-  };
-
-  // Open modal to editar
-  const startEdit = (c) => {
-    setEditingId(c.id);
-    setFormData(c);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    setShowModal(true);
-  };
-
   // Routes
   const navigate = useNavigate();
 
@@ -65,7 +45,7 @@ export default function ClientCRUD({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <button className={styles.addBtn} onClick={openCreateModal}>
+          <button className={styles.addBtn} onClick={() => navigate("/clients/new")}>
             Add Client
           </button>
         </div>
@@ -95,7 +75,7 @@ export default function ClientCRUD({
                   >
                     <FaEye />
                   </button>
-                  <button className={styles.iconButton}  title="Edit client" onClick={() => startEdit(c)}>
+                  <button className={styles.iconButton}  title="Edit client" onClick={() => navigate(`/clients/${c.id}/edit`)}>
                     <FaEdit />
                   </button>
                   <button className={styles.iconButton} 
@@ -110,24 +90,6 @@ export default function ClientCRUD({
           ))}
         </tbody>
       </table>
-
-      {/* ---- Modal: create / update ---- */}
-      {showModal && (
-        <ClientForm
-          initialData={formData}
-          onClose={() => setShowModal(false)}
-          onSave={(client) => {
-            if (editingId) {
-              setClients((prev) =>
-                prev.map((c) => (c.id === editingId ? client : c))
-              );
-            } else {
-              setClients((prev) => [client, ...prev]);
-            }
-            setShowModal(false);
-          }}
-        />
-      )}
 
       {/* Next / Previous Page buttons */}
       <div className={styles.pagination}>

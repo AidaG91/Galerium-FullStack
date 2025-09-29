@@ -2,20 +2,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import styles from "../styles/ClientDetail.module.css";
-import ClientForm from "./ClientForm";
 
 export default function ClientDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [client, setClient] = useState(null);
-
-  const [showForm, setShowForm] = useState(false);
-  const [editData, setEditData] = useState(null);
-
-  const startEdit = (client) => {
-    setEditData(client);
-    setShowForm(true);
-  };
+  
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this client?")) return;
@@ -66,7 +58,10 @@ export default function ClientDetail() {
               <div className={styles.placeholder}>Photo</div>
             )}
             <div className={styles.actions}>
-              <button title="Edit" onClick={() => startEdit(client)}>
+              <button
+                title="Edit"
+                onClick={() => navigate(`/clients/${client.id}/edit`)}
+              >
                 <FaEdit />
               </button>
               <button title="Delete" onClick={() => handleDelete(client.id)}>
@@ -96,17 +91,6 @@ export default function ClientDetail() {
           <div className={styles.calendar}>CALENDAR (coming soon)</div>
           <div className={styles.galleries}>GALERIAS (coming soon)</div>
         </section>
-
-        {showForm && (
-          <ClientForm
-            initialData={editData}
-            onSave={(updated) => {
-              setClient(updated);
-              setShowForm(false);
-            }}
-            onClose={() => setShowForm(false)}
-          />
-        )}
       </main>
     </div>
   );
