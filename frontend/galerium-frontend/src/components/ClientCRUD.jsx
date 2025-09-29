@@ -66,37 +66,50 @@ export default function ClientCRUD({
             onChange={(e) => setQuery(e.target.value)}
           />
           <button className={styles.addBtn} onClick={openCreateModal}>
-            + ADD
+            Add Client
           </button>
         </div>
       </header>
 
       {/* ---- Client list ---- */}
-      <ul className={styles.list}>
-        {clients.map((c) => (
-          <li key={c.id} className={styles.card}>
-            <div className={styles.info}>
-              <strong>{c.fullName}</strong>
-              <p>{c.email}</p>
-              <p>{c.phoneNumber}</p>
-            </div>
-            <div className={styles.actions}>
-              <button
-                title="See client"
-                onClick={() => navigate(`/clients/${c.id}`)}
-              >
-                <FaEye />
-              </button>
-              <button title="Edit" onClick={() => startEdit(c)}>
-                <FaEdit />
-              </button>
-              <button title="Delete" onClick={() => handleDelete(c.id)}>
-                <FaTrash />
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {clients.map((c) => (
+            <tr key={c.id}>
+              <td>{c.fullName}</td>
+              <td className={styles.phone}>{c.phoneNumber}</td>
+              <td>{c.email}</td>
+              <td className={styles.actionsCell}>
+                <div className={styles.actions}>
+                  <button className={styles.iconButton} 
+                    title="View client"
+                    onClick={() => navigate(`/clients/${c.id}`)}
+                  >
+                    <FaEye />
+                  </button>
+                  <button className={styles.iconButton}  title="Edit client" onClick={() => startEdit(c)}>
+                    <FaEdit />
+                  </button>
+                  <button className={styles.iconButton} 
+                    title="Delete client"
+                    onClick={() => handleDelete(c.id)}
+                  >
+                    <FaTrash />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       {/* ---- Modal: create / update ---- */}
       {showModal && (

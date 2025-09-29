@@ -1,75 +1,101 @@
-.wrapper {
+/* --- Layout general --- */
+.page {
   padding: 2rem;
+  background-color: var(--color-bg);
+  font-family: 'Montserrat', sans-serif;
+  color: var(--color-text);
 }
 
 .header {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+/* --- Buscador --- */
+.searchInput,
+.input {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-accent);
+  border-radius: 6px;
+  background-color: #fff;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  flex: 1;
+}
+
+
+/* --- Tabla --- */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 3px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 2rem;
+}
+
+.table th,
+.table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+
+.table th {
+  background-color: var(--color-bg);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.table thead {
+  border-bottom: 2px solid var(--color-border);
+}
+
+.phone {
+  white-space: nowrap;
+}
+
+/* --- Acciones en tabla --- */
+.actionsCell {
+  padding: 1rem;
+  vertical-align: middle;
 }
 
 .actions {
   display: flex;
-  gap: 1rem;
+  justify-content: flex-end;
   align-items: center;
+  gap: 0.75rem;
 }
 
-.input {
-  flex: 1;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-.addBtn {
-  padding: 0.5rem 1rem;
-  background-color: #f1a619;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.list {
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  background-color: #fff;
-}
-
-.info p {
-  margin: 0.25rem 0;
-  color: #555;
-}
-
-.actions button {
-  background: none;
-  border: none;
-  cursor: pointer;
+.iconButton {
+  all: unset;
+  color: var(--color-accent);
   font-size: 1.1rem;
-  margin-left: 0.5rem;
-  color: #444;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  transition: color var(--transition-normal);
 }
 
-.actions button:hover {
-  color: #f1a619;
+.iconButton:hover {
+  color: var(--color-accent-hover);
 }
 
 
+.actions button.delete {
+  color: var(--color-danger);
+}
 
-/* --- MODAL --- */
+.actions button.delete:hover {
+  color: var(--color-danger-hover);
+}
 
+/* --- Modal --- */
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -98,7 +124,7 @@
   margin-top: 1rem;
 }
 
-/* --- NEXT / PREVIOUS PAGE BUTTONS */
+/* --- Paginación --- */
 .pagination {
   margin-top: 2rem;
   text-align: center;
@@ -116,6 +142,18 @@
   padding: 0.4rem 1rem;
   font-size: 0.9rem;
   cursor: pointer;
+  background-color: var(--color-muted);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
 }
 
+.pageButtons button:hover {
+  background-color: var(--color-text);
+}
 
+.pageButtons button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

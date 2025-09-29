@@ -3,14 +3,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root {
-  --Accent: #ef8a17;
-  --Secondary: #9b9f93;
-  --Primary: #3f4739;
-  --Dark: #181411;
-  --NeutralLight: #eeebe7;
-
-  color: var(--Dark);
-  background-color: var(--NeutralLight);
+  --color-bg: #f9f7f4;
+  --color-surface: #ffffff;
+  --color-border: #dcd7d0;
+  --color-text: #3f4739;
+  --color-muted: #7c7f77;
+  --color-accent: #e67e22;
+  --color-accent-hover: #cf711f;
+  --color-danger: #d9534f;
+  --color-danger-hover: #c9302c;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -26,7 +27,9 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Montserrat", sans-serif;
+   font-family: 'Montserrat', sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
   line-height: 1.5;
   font-weight: 400;
   font-size: 16px;
@@ -65,21 +68,26 @@ h2 {
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: var(--Primary);
-  color: var(--NeutralLight);
+  background-color: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color var(--transition-normal), transform 0.2s ease;
 }
+
 button:hover {
-  border-color: var(--Accent);
+  background-color: var(--color-accent-hover);
+  transform: translateY(-1px);
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  color: #666;
 }
+
