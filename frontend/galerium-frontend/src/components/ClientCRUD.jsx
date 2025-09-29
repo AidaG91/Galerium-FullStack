@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import styles from "../styles/Clients.module.css";
-import ClientForm from "./ClientForm";
 import { useNavigate } from "react-router-dom";
+import DeleteModal from "./DeleteModal";
 
 export default function ClientCRUD({
   clients,
@@ -18,17 +18,19 @@ export default function ClientCRUD({
   const navigate = useNavigate();
 
   // --- DELETE ---
+  const [confirmId, setConfirmId] = useState(null);
+
   const handleDelete = async (id) => {
-    if (!confirm("Delete client?")) return;
     try {
       const res = await fetch(`http://localhost:8080/api/clients/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
       setClients((prev) => prev.filter((c) => c.id !== id));
     } catch (err) {
       console.error("Failed to delete client", err);
+    } finally {
+      setConfirmId(null);
     }
   };
 
@@ -45,7 +47,10 @@ export default function ClientCRUD({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <button className={styles.addBtn} onClick={() => navigate("/clients/new")}>
+          <button
+            className={styles.addBtn}
+            onClick={() => navigate("/clients/new")}
+          >
             Add Client
           </button>
         </div>
@@ -69,18 +74,24 @@ export default function ClientCRUD({
               <td>{c.email}</td>
               <td className={styles.actionsCell}>
                 <div className={styles.actions}>
-                  <button className={styles.iconButton} 
+                  <button
+                    className={styles.iconButton}
                     title="View client"
                     onClick={() => navigate(`/clients/${c.id}`)}
                   >
                     <FaEye />
                   </button>
-                  <button className={styles.iconButton}  title="Edit client" onClick={() => navigate(`/clients/${c.id}/edit`)}>
+                  <button
+                    className={styles.iconButton}
+                    title="Edit client"
+                    onClick={() => navigate(`/clients/${c.id}/edit`)}
+                  >
                     <FaEdit />
                   </button>
-                  <button className={styles.iconButton} 
+                  <button
+                    className={styles.iconButton}
                     title="Delete client"
-                    onClick={() => handleDelete(c.id)}
+                    onClick={() => setConfirmId(c.id)}
                   >
                     <FaTrash />
                   </button>
@@ -110,6 +121,14 @@ export default function ClientCRUD({
           </button>
         </div>
       </div>
+
+      {confirmId && (
+        <DeleteModal
+          message="Are you sure you want to delete this client?"
+          onConfirm={() => handleDelete(confirmId)}
+          onCancel={() => setConfirmId(null)}
+        />
+      )}
     </section>
   );
 }

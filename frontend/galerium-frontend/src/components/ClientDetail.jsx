@@ -2,15 +2,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import styles from "../styles/ClientDetail.module.css";
+import DeleteModal from "./DeleteModal";
 
 export default function ClientDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [client, setClient] = useState(null);
-  
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this client?")) return;
     try {
       await fetch(`http://localhost:8080/api/clients/${id}`, {
         method: "DELETE",
@@ -18,6 +18,8 @@ export default function ClientDetail() {
       navigate("/clients");
     } catch (err) {
       console.error("Error deleting client", err);
+    } finally {
+      setShowConfirm(false);
     }
   };
 
@@ -64,7 +66,7 @@ export default function ClientDetail() {
               >
                 <FaEdit />
               </button>
-              <button title="Delete" onClick={() => handleDelete(client.id)}>
+              <button title="Delete" onClick={() => setShowConfirm(true)}>
                 <FaTrash />
               </button>
             </div>
@@ -91,6 +93,14 @@ export default function ClientDetail() {
           <div className={styles.calendar}>CALENDAR (coming soon)</div>
           <div className={styles.galleries}>GALERIAS (coming soon)</div>
         </section>
+
+        {showConfirm && (
+          <DeleteModal
+            message="Are you sure you want to delete this client?"
+            onConfirm={() => handleDelete(client.id)}
+            onCancel={() => setShowConfirm(false)}
+          />
+        )}
       </main>
     </div>
   );
