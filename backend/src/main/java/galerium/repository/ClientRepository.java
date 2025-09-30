@@ -33,4 +33,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
                  OR LOWER(c.address) LIKE LOWER(CONCAT('%', :query, '%'))
             """)
     Page<Client> searchClientsPaged(@Param("query") String query, Pageable pageable);
+
+    Page<Client> findByTags_NameIgnoreCase(String tagName, Pageable pageable);
+
 }

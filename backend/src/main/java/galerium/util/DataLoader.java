@@ -5,16 +5,19 @@ import galerium.model.Client;
 import galerium.model.Gallery;
 import galerium.model.Photo;
 import galerium.model.Photographer;
+import galerium.model.Tag;
 import galerium.repository.ClientRepository;
 import galerium.repository.GalleryRepository;
 import galerium.repository.PhotoRepository;
 import galerium.repository.PhotographerRepository;
+import galerium.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -25,6 +28,7 @@ public class DataLoader implements CommandLineRunner {
     private final PhotographerRepository photographerRepository;
     private final GalleryRepository galleryRepository;
     private final PhotoRepository photoRepository;
+    private final TagRepository tagRepository;
 
     @Override
     public void run(String... args) {
@@ -32,127 +36,154 @@ public class DataLoader implements CommandLineRunner {
         // ---------------------------------------
         // 1) Clients:
         // ---------------------------------------
+
+        Tag tagPendientePago = new Tag("Pendiente de pago");
+        Tag tagGaleriaEnviada = new Tag("Galería enviada");
+        Tag tagPresupuestoEnviado = new Tag("Presupuesto enviado");
+        Tag tagContratoFirmado = new Tag("Contrato firmado");
+        Tag tagNuevoCliente = new Tag("Nuevo cliente");
+        Tag tagClienteHabitual = new Tag("Cliente habitual");
+        Tag tagVIP = new Tag("VIP");
+        Tag tagBodas = new Tag("Bodas");
+        Tag tagCorporativo = new Tag("Corporativo");
+
+   
         Client client1 = Client.builder()
-                .email("marcos.lozano@rebelmail.com")
-                .password("lightsaber456")
+                .email("marcos.lozano@example.com")
+                .password("password123")
                 .fullName("Marcos Lozano")
                 .userRole(UserRole.CLIENT)
                 .phoneNumber("+34 600 123 456")
-                .address("Sector 7G, Tatooine Outpost")
-                .internalNotes("Prefers encrypted messages via holocom.")
+                .address("Calle Ficticia 123, Madrid")
+                .internalNotes("Primer contacto. Interesado en pack de bodas premium.")
+                .tags(Set.of(tagNuevoCliente, tagPresupuestoEnviado, tagBodas))
                 .build();
 
         Client client2 = Client.builder()
-                .email("chen.gomez@magicguild.org")
-                .password("arcane789")
+                .email("chen.gomez@example.com")
+                .password("password123")
                 .fullName("Chen Gómez")
                 .userRole(UserRole.CLIENT)
                 .phoneNumber("+34 600 654 321")
-                .address("Crystal Tower, Elven District")
-                .profilePictureUrl("https://i.pravatar.cc/150?img=12")
+                .address("Avenida de Prueba 45, Barcelona")
+                .profilePictureUrl("https://api.dicebear.com/9.x/notionists/svg?seed=ChenGomez")
+                .internalNotes("Cliente recurrente para eventos corporativos. Paga siempre a tiempo.")
+                .tags(Set.of(tagClienteHabitual, tagGaleriaEnviada, tagCorporativo, tagVIP))
                 .build();
 
         Client client3 = Client.builder()
-                .email("luis.fernandez@dragonmail.com")
-                .password("firebreath101")
+                .email("luis.fernandez@example.com")
+                .password("password123")
                 .fullName("Luis Fernández")
                 .userRole(UserRole.CLIENT)
                 .phoneNumber("+34 600 987 654")
-                .address("Calle del Dragón 789, Ciudadela de Fuego")
-                .internalNotes("Requested a magical portrait with animated flames.")
+                .address("Plaza Mayor 1, Sevilla")
+                .internalNotes("Retraso en el último pago. Hacer seguimiento.")
+                .tags(Set.of(tagContratoFirmado, tagPendientePago, tagBodas))
                 .build();
 
         Client client4 = Client.builder()
-                .email("marta.sanchez@rebelion.org")
-                .password("hope2021")
+                .email("marta.sanchez@example.com")
+                .password("password123")
                 .fullName("Marta Sánchez")
                 .userRole(UserRole.CLIENT)
                 .phoneNumber("+34 611 234 567")
-                .address("Base Echo, Hoth System")
-                .profilePictureUrl("https://i.pravatar.cc/150?img=14")
+                .address("Camino de Ronda 78, Granada")
+                .profilePictureUrl("https://api.dicebear.com/9.x/notionists/svg?seed=MartaSanchez")
+                .internalNotes("Ha referido a dos nuevos clientes. Cliente VIP.")
+                .tags(Set.of(tagVIP, tagClienteHabitual, tagGaleriaEnviada))
                 .build();
 
         Client client5 = Client.builder()
-                .email("carlos.ruiz@wandersguild.com")
-                .password("seastone303")
+                .email("carlos.ruiz@example.com")
+                .password("password123")
                 .fullName("Carlos Ruiz")
                 .userRole(UserRole.CLIENT)
                 .phoneNumber("+34 622 345 678")
-                .address("Avenida del Mar 22, Puerto de los Susurros")
-                .profilePictureUrl("https://i.pravatar.cc/150?img=16")
-                .internalNotes("Prefers watercolor style and sea-themed compositions.")
+                .address("Paseo del Prado 10, Madrid")
+                .profilePictureUrl("https://api.dicebear.com/9.x/notionists/svg?seed=CarlosRuiz")
+                .internalNotes("Sesión de fotos de producto para su e-commerce.")
+                .tags(Set.of(tagNuevoCliente, tagContratoFirmado, tagCorporativo))
                 .build();
 
         Client client6 = Client.builder()
-                .email("elena.navarro@jediacademy.net")
-                .password("forceflow404")
+                .email("elena.navarro@example.com")
+                .password("password123")
                 .fullName("Elena Navarro")
                 .userRole(UserRole.CLIENT)
                 .phoneNumber("+34 633 456 789")
-                .address("Paseo de Gracia 10, Coruscant Central")
+                .address("Calle Larios 5, Málaga")
+                .tags(Set.of(tagPresupuestoEnviado))
                 .build();
 
         Client client7 = Client.builder()
-                .email("yoda@jediorder.com")
-                .password("forceMaster123")
-                .fullName("Master Yoda")
+                .email("javier.gomez@example.com")
+                .password("password123")
+                .fullName("Javier Gómez")
                 .userRole(UserRole.CLIENT)
-                .phoneNumber("+34 600 111 111")
-                .address("Dagobah Swamp, Outer Rim")
-                .internalNotes("Speaks in reverse syntax. Prefers green tones.")
+                .phoneNumber("+34 644 111 222")
+                .address("Gran Vía 22, Bilbao")
+                .internalNotes("Solicitó presupuesto para fotografía de eventos.")
+                .tags(Set.of(tagNuevoCliente, tagPresupuestoEnviado, tagCorporativo))
                 .build();
 
         Client client8 = Client.builder()
-                .email("aragorn@gondor.gov")
-                .password("striderKing456")
-                .fullName("Aragorn son of Arathorn")
+                .email("laura.jimenez@example.com")
+                .password("password123")
+                .fullName("Laura Jiménez")
                 .userRole(UserRole.CLIENT)
-                .phoneNumber("+34 600 222 222")
-                .address("Throne Room, Minas Tirith")
-                .profilePictureUrl("https://i.pravatar.cc/150?img=31")
+                .phoneNumber("+34 655 333 444")
+                .address("Calle Colón 30, Valencia")
+                .profilePictureUrl("https://api.dicebear.com/9.x/notionists/svg?seed=LauraJimenez")
+                .internalNotes("Boda en 2025. Contrato firmado.")
+                .tags(Set.of(tagContratoFirmado, tagBodas))
                 .build();
 
         Client client9 = Client.builder()
-                .email("leia@rebellion.org")
-                .password("princessHope789")
-                .fullName("Leia Organa")
+                .email("david.moreno@example.com")
+                .password("password123")
+                .fullName("David Moreno")
                 .userRole(UserRole.CLIENT)
-                .phoneNumber("+34 600 333 333")
-                .address("Alderaan Embassy, Coruscant")
-                .internalNotes("Requested a minimalist portrait with rebellion insignia.")
+                .phoneNumber("+34 666 555 666")
+                .address("Paseo de la Independencia 15, Zaragoza")
+                .tags(Set.of(tagClienteHabitual, tagGaleriaEnviada))
                 .build();
 
         Client client10 = Client.builder()
-                .email("gandalf@middleearth.net")
-                .password("youShallNotPass101")
-                .fullName("Gandalf the Grey")
+                .email("sara.alonso@example.com")
+                .password("password123")
+                .fullName("Sara Alonso")
                 .userRole(UserRole.CLIENT)
-                .phoneNumber("+34 600 444 444")
-                .address("Tower of Orthanc, Isengard")
-                .profilePictureUrl("https://i.pravatar.cc/150?img=33")
+                .phoneNumber("+34 677 777 888")
+                .address("Calle Santiago 1, Valladolid")
+                .profilePictureUrl("https://api.dicebear.com/9.x/notionists/svg?seed=SaraAlonso")
+                .internalNotes("Pendiente de pago de la última sesión familiar.")
+                .tags(Set.of(tagPendientePago, tagClienteHabitual))
                 .build();
 
         Client client11 = Client.builder()
-                .email("luke@skywalkeracademy.com")
-                .password("lightsaber202")
-                .fullName("Luke Skywalker")
+                .email("pablo.iglesias@example.com")
+                .password("password123")
+                .fullName("Pablo Iglesias")
                 .userRole(UserRole.CLIENT)
-                .phoneNumber("+34 600 555 555")
-                .address("Jedi Temple, Ahch-To")
+                .phoneNumber("+34 688 999 000")
+                .address("Rúa do Vilar 5, Santiago de Compostela")
+                .tags(Set.of(tagNuevoCliente, tagPresupuestoEnviado))
                 .build();
 
         Client client12 = Client.builder()
-                .email("daenerys@dragonmail.com")
-                .password("motherOfDragons303")
-                .fullName("Daenerys Targaryen")
+                .email("ana.ferrer@example.com")
+                .password("password123")
+                .fullName("Ana Ferrer")
                 .userRole(UserRole.CLIENT)
-                .phoneNumber("+34 600 666 666")
-                .address("Dragonstone Castle, Westeros")
-                .profilePictureUrl("https://i.pravatar.cc/150?img=35")
-                .internalNotes("Requested a dramatic portrait with dragons in the background.")
+                .phoneNumber("+34 699 123 123")
+                .address("Plaza del Castillo 1, Pamplona")
+                .internalNotes("Cliente importante, director de una gran empresa.")
+                .tags(Set.of(tagVIP, tagCorporativo, tagContratoFirmado))
                 .build();
 
         clientRepository.saveAll(List.of(client1, client2, client3, client4, client5, client6, client7, client8, client9, client10, client11, client12));
+
 
         // ---------------------------------------
         // 2) Photographers:

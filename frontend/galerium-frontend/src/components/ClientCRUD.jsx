@@ -7,6 +7,10 @@ import DeleteModal from "./DeleteModal";
 export default function ClientCRUD({
   isLoading,
   clients,
+  allTags,
+  selectedTag,
+  onSelectTag,
+  onClearTagFilter,
   setClients,
   query,
   setQuery,
@@ -52,6 +56,31 @@ export default function ClientCRUD({
         </div>
       </header>
 
+      {allTags && allTags.length > 0 && (
+        <div className={styles.tagFilters}>
+          <span>Filter by tag:</span>
+          {allTags.map((tag) => (
+            <button
+              key={tag}
+              className={`${styles.tagFilterButton} ${
+                selectedTag === tag ? styles.active : ""
+              }`}
+              onClick={() => onSelectTag(tag)}
+            >
+              {tag}
+            </button>
+          ))}
+          {selectedTag && (
+            <button
+              className={styles.clearFilterButton}
+              onClick={onClearTagFilter}
+            >
+              &times; Clear filter
+            </button>
+          )}
+        </div>
+      )}
+
       <div className={styles.tableWrapper}>
         {isLoading && (
           <div className={styles.loadingOverlay}>
@@ -59,52 +88,52 @@ export default function ClientCRUD({
           </div>
         )}
 
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {clients.map((c) => (
-            <tr key={c.id}>
-              <td>{c.fullName}</td>
-              <td className={styles.phone}>{c.phoneNumber}</td>
-              <td>{c.email}</td>
-              <td className={styles.actionsCell}>
-                <div className={styles.actions}>
-                  <button
-                    className={styles.iconButton}
-                    title="View client"
-                    onClick={() => navigate(`/clients/${c.id}`)}
-                  >
-                    <FaEye />
-                  </button>
-                  <button
-                    className={styles.iconButton}
-                    title="Edit client"
-                    onClick={() => navigate(`/clients/${c.id}/edit`)}
-                  >
-                    <FaEdit />
-                  </button>
-                  
-                  <button
-                    className={`${styles.iconButton} ${styles.delete}`}
-                    title="Delete client"
-                    onClick={() => setConfirmId(c.id)}
-                  >
-                    <FaTrash />
-                  </button>
-                </div>
-              </td>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-</div>
+          </thead>
+          <tbody>
+            {clients.map((c) => (
+              <tr key={c.id}>
+                <td>{c.fullName}</td>
+                <td className={styles.phone}>{c.phoneNumber}</td>
+                <td>{c.email}</td>
+                <td className={styles.actionsCell}>
+                  <div className={styles.actions}>
+                    <button
+                      className={styles.iconButton}
+                      title="View client"
+                      onClick={() => navigate(`/clients/${c.id}`)}
+                    >
+                      <FaEye />
+                    </button>
+                    <button
+                      className={styles.iconButton}
+                      title="Edit client"
+                      onClick={() => navigate(`/clients/${c.id}/edit`)}
+                    >
+                      <FaEdit />
+                    </button>
+
+                    <button
+                      className={`${styles.iconButton} ${styles.delete}`}
+                      title="Delete client"
+                      onClick={() => setConfirmId(c.id)}
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {!isLoading && clients.length === 0 && (
         <p className={styles.noResults}>

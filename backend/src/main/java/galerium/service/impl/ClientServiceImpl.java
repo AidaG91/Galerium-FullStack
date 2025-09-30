@@ -177,7 +177,12 @@ public class ClientServiceImpl implements ClientService {
                 .toList();
     }
 
-
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ClientResponseDTO> getClientsByTag(String tag, Pageable pageable) {
+        return clientRepository.findByTags_NameIgnoreCase(tag, pageable)
+                .map(this::toResponseDTO);
+    }
 
     private Set<Tag> manageTags(List<String> tagNames) {
         if (tagNames == null || tagNames.isEmpty()) {

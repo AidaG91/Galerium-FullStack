@@ -119,5 +119,19 @@ public class ClientController {
         return ResponseEntity.ok(clientService.searchClientsPaged(q, pageable));
     }
 
+    @GetMapping("/by-tag")
+    @Operation(summary = "Get paged clients by tag", description = "Retrieve clients filtered by a specific tag, with pagination.")
+    public ResponseEntity<Page<ClientResponseDTO>> getClientsByTag(
+            @RequestParam String tag,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id,asc") String[] sort) {
+
+        Sort sortOrder = Sort.by(Sort.Direction.fromString(sort[1]), sort[0]);
+        Pageable pageable = PageRequest.of(page, size, sortOrder);
+
+        return ResponseEntity.ok(clientService.getClientsByTag(tag, pageable));
+    }
+
 
 }
