@@ -21,4 +21,6 @@ public class ClientResponseDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime registrationDate;
     private List<String> tags;
+    private String internalNotes;
+
 }

@@ -47,7 +47,7 @@ public class DataLoader implements CommandLineRunner {
         Tag tagBodas = new Tag("Bodas");
         Tag tagCorporativo = new Tag("Corporativo");
 
-   
+
         Client client1 = Client.builder()
                 .email("marcos.lozano@example.com")
                 .password("password123")
