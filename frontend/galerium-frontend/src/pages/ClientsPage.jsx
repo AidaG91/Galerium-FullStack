@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDebounce } from "use-debounce";
 import ClientCRUD from "../components/ClientCRUD";
+import styles from "../styles/ClientCRUD.module.css";
 
 export default function ClientsPage() {
   const [query, setQuery] = useState("");
@@ -9,17 +10,19 @@ export default function ClientsPage() {
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
 
-  // --- Pagination and sorting ---
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
   const [sortBy, setSortBy] = useState("fullName");
   const [sortDir, setSortDir] = useState("asc");
+
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
 
     (async () => {
+      setIsLoading(true);
       try {
         const url =
           debouncedQuery.trim().length > 0
@@ -38,11 +41,43 @@ export default function ClientsPage() {
           console.error("Error fetching clients", err);
           setClients([]);
         }
+      } finally {
+        if (signal.aborted === false) {
+          setIsLoading(false);
+        }
       }
     })();
 
     return () => controller.abort();
   }, [debouncedQuery, page, size, sortBy, sortDir]);
+
+  if (isLoading) {
+    return (
+      <div className={styles.wrapper}>
+        <p>Loading clients...</p>
+      </div>
+    );
+  }
+
+  if (!isLoading && clients.length === 0) {
+    return (
+      <div className={styles.wrapper}>
+        <ClientCRUD
+          clients={[]}
+          setClients={setClients}
+          query={query}
+          setQuery={setQuery}
+          page={page}
+          setPage={setPage}
+          totalPages={totalPages}
+          totalElements={totalElements}
+        />
+        <p style={{ textAlign: "center", marginTop: "2rem" }}>
+          No clients found. Try a different search or add a new one.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <ClientCRUD

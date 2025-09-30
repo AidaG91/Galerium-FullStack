@@ -4,12 +4,14 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6); /* Un poco más oscuro para más contraste */
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  backdrop-filter: blur(5px); /* Efecto "cristal esmerilado" muy moderno */
+  backdrop-filter: blur(5px);
+  /* --> Añadimos la animación también al fondo */
+  animation: overlayFadeIn 0.3s ease-out;
 }
 
 .modal {
@@ -19,8 +21,15 @@
   max-width: 400px;
   text-align: center;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  /* Animación para que aparezca suavemente */
-  animation: fadeIn 0.3s ease-out;
+  /* Renombramos la animación para que sea más clara (opcional) */
+  animation: modalPopIn 0.3s ease-out;
+}
+
+.iconWrapper {
+  margin: 0 auto 1.5rem auto; 
+  color: var(--color-danger);
+  font-size: 3rem; 
+  line-height: 1; 
 }
 
 .modal p {
@@ -37,7 +46,12 @@
 }
 
 /* Animación de entrada */
-@keyframes fadeIn {
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalPopIn {
   from {
     opacity: 0;
     transform: scale(0.95);
@@ -47,5 +61,3 @@
     transform: scale(1);
   }
 }
-
-/* La clase .dangerBtn se ha eliminado porque ahora es global */

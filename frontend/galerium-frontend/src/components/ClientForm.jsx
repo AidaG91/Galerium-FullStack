@@ -30,6 +30,7 @@ export default function ClientForm({ initialData, onSave, onClose }) {
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
   // --- Handlers Form ---
   const handleChange = (e) => {
@@ -71,8 +72,8 @@ export default function ClientForm({ initialData, onSave, onClose }) {
     }
 
     setErrors({});
-
     setIsSubmitting(true);
+    setSubmitError(null);
 
     try {
       const res = await fetch(
@@ -98,6 +99,7 @@ export default function ClientForm({ initialData, onSave, onClose }) {
       }, 1000);
     } catch (err) {
       console.error("Failed to save:", err.message);
+      setSubmitError("Failed to save client. Please try again later.");
     } finally {
       if (!success) {
         setIsSubmitting(false);
@@ -178,6 +180,9 @@ export default function ClientForm({ initialData, onSave, onClose }) {
           onChange={handleChange}
           placeholder="Photo (URL)"
         />
+
+        {/* Muestra el error de envío si existe */}
+        {submitError && <p className={styles.submitErrorText}>{submitError}</p>}
 
         {/* Create/Save and Cancel buttons */}
         <div className={styles.formActions}>
