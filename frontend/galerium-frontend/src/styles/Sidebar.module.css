@@ -1,9 +1,10 @@
 .container {
   width: 220px;
+  flex-shrink: 0;
   height: 100vh;
-  background-color: var(--Secondary);
+  background-color: var(--color-surface); 
   padding: 1.5rem;
-  border-right: 1px solid #ddd;
+  border-right: 1px solid var(--color-border); 
   display: flex;
   flex-direction: column;
   gap: 1rem;

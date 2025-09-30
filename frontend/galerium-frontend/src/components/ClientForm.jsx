@@ -31,6 +31,7 @@ export default function ClientForm({ initialData, onSave, onClose }) {
   const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [imageError, setImageError] = useState(false);
 
   // --- Handlers Form ---
   const handleChange = (e) => {
@@ -179,8 +180,27 @@ export default function ClientForm({ initialData, onSave, onClose }) {
           value={form.profilePictureUrl}
           onChange={handleChange}
           placeholder="Photo (URL)"
+          disabled={isSubmitting}
         />
 
+        {form.profilePictureUrl && (
+          <div className={styles.imagePreviewWrapper}>
+            {imageError ? (
+              <div className={styles.imageErrorPlaceholder}>
+                <span>Image not available</span>
+              </div>
+            ) : (
+              <img
+                src={form.profilePictureUrl}
+                alt="Client Preview"
+                className={styles.previewImage}
+                onError={() => setImageError(true)}
+                onLoad={() => setImageError(false)}
+              />
+            )}
+          </div>
+        )}
+        
         {/* Muestra el error de envío si existe */}
         {submitError && <p className={styles.submitErrorText}>{submitError}</p>}
 

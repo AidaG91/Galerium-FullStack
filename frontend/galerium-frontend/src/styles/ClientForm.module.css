@@ -31,7 +31,7 @@
   justify-content: flex-end;
   gap: 1rem;
   margin-top: 1rem;
-  padding-top: 1.5rem; /* Línea de separación visual */
+  padding-top: 1.5rem; 
   border-top: 1px solid var(--color-border);
 }
 
@@ -43,10 +43,9 @@
 .errorText {
   color: var(--color-danger);
   font-size: 0.85rem;
-  margin-top: -1rem; /* Acercamos el mensaje al input */
+  margin-top: -1rem; 
 }
 
-/* Usamos variables para los colores para que sea consistente con el tema */
 .successText {
   background-color: color-mix(in srgb, var(--color-accent) 15%, transparent);
   color: var(--color-accent-hover);
@@ -77,4 +76,37 @@
   border-radius: 6px;
   text-align: center;
   margin-top: 1rem;
+}
+
+/* --- Estilos para la Vista Previa de Imagen --- */
+
+.imagePreviewWrapper {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.previewImage {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%; 
+  object-fit: cover;
+  border: 3px solid var(--color-border);
+  background-color: var(--color-bg);
+}
+
+.imageErrorPlaceholder {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: var(--color-bg);
+  border: 2px dashed var(--color-danger);
+  color: var(--color-danger);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.5rem;
 }

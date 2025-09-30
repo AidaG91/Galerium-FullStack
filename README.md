@@ -154,6 +154,8 @@ Sistema de Diseño Coherente: Se ha implementado una guía de estilos unificada 
 
 Modales Interactivos: Los modales de confirmación (ej. para eliminar un cliente) incluyen mejoras de usabilidad como cierre al hacer clic fuera y animaciones suaves para una experiencia más fluida.
 
+Previsualización de Imágenes en Formularios: Para mejorar la usabilidad, el formulario de cliente incluye una vista previa instantánea de la imagen al introducir una URL. El sistema es robusto, mostrando un aviso en caso de que el enlace esté roto o la imagen no esté disponible, evitando así iconos de imagen rota y mejorando la experiencia.
+
 Frontend Architecture (Arquitectura Frontend)
 Aquí puedes describir las decisiones técnicas que hemos tomado. Esto demuestra que piensas en la escalabilidad y el mantenimiento del código.
 
