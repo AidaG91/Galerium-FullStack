@@ -51,36 +51,9 @@ export default function ClientsPage() {
     return () => controller.abort();
   }, [debouncedQuery, page, size, sortBy, sortDir]);
 
-  if (isLoading) {
-    return (
-      <div className={styles.wrapper}>
-        <p>Loading clients...</p>
-      </div>
-    );
-  }
-
-  if (!isLoading && clients.length === 0) {
-    return (
-      <div className={styles.wrapper}>
-        <ClientCRUD
-          clients={[]}
-          setClients={setClients}
-          query={query}
-          setQuery={setQuery}
-          page={page}
-          setPage={setPage}
-          totalPages={totalPages}
-          totalElements={totalElements}
-        />
-        <p style={{ textAlign: "center", marginTop: "2rem" }}>
-          No clients found. Try a different search or add a new one.
-        </p>
-      </div>
-    );
-  }
-
   return (
     <ClientCRUD
+      isLoading={isLoading}
       clients={clients}
       setClients={setClients}
       query={query}

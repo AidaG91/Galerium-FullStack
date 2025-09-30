@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import DeleteModal from "./DeleteModal";
 
 export default function ClientCRUD({
+  isLoading,
   clients,
   setClients,
   query,
@@ -51,6 +52,14 @@ export default function ClientCRUD({
         </div>
       </header>
 
+      <div className={styles.tableWrapper}>
+        {/* --> 3. Muestra el overlay si isLoading es true */}
+        {isLoading && (
+          <div className={styles.loadingOverlay}>
+            <div className={styles.spinner}></div>
+          </div>
+        )}
+
       <table className={styles.table}>
         <thead>
           <tr>
@@ -96,7 +105,15 @@ export default function ClientCRUD({
           ))}
         </tbody>
       </table>
+</div>
 
+ {/* Mostramos el mensaje de "no encontrados" aquí abajo, fuera del wrapper de la tabla */}
+      {!isLoading && clients.length === 0 && (
+        <p className={styles.noResults}>
+          No clients found. Try a different search or add a new one.
+        </p>
+      )}
+      
       <div className={styles.pagination}>
         <p>
           Showing page <strong>{page + 1}</strong> of{" "}
