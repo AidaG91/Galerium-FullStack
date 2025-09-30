@@ -11,11 +11,17 @@
 
 .header {
   display: flex;
+  flex-direction: column; /* Apila los elementos verticalmente */
+  align-items: stretch; /* Estira los hijos para que ocupen todo el ancho */
+  gap: 1.5rem; /* Espacio entre la fila superior y la barra de búsqueda */
+  margin-bottom: 1.5rem;
+}
+
+/* Creamos el estilo para la nueva fila superior */
+.headerTop {
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap; 
-  gap: 1rem;
 }
 
 .header h2 {
@@ -23,21 +29,45 @@
 }
 
 /* --- Acciones (Buscador y botón) --- */
-.actions {
+.searchInputWrapper {
+  position: relative; /* <-- ESTA ES LA LÍNEA CLAVE QUE FALTABA */
   display: flex;
   align-items: center;
-  gap: 1rem;
+  width: 100%;
 }
 
 .searchInput {
-  padding: 0.6rem 1rem;
+  width: 100%;
+  padding: 0.6rem 2.5rem; /* Espacio para los iconos a izq y dcha */
   border: 1px solid var(--color-border);
   border-radius: 6px;
   background-color: var(--color-bg);
   font-size: 0.95rem;
   color: var(--color-text);
-  min-width: 250px;
   transition: all 0.2s ease;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  color: var(--color-muted);
+  pointer-events: none; /* Evita que el icono bloquee el clic en el input */
+}
+
+.clearSearchBtn {
+  position: absolute;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-muted);
+  padding: 0;
+  display: flex;
+  font-size: 1rem;
+}
+
+.clearSearchBtn:hover {
+  color: var(--color-text);
 }
 
 .searchInput:focus {
@@ -45,6 +75,7 @@
   border-color: var(--color-accent);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent);
 }
+
 
 /* --- Tabla --- */
 .table {

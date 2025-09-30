@@ -168,3 +168,25 @@ Estilos Globales Reutilizables: Se ha establecido un sistema de diseño base en 
 Una paleta de colores centralizada mediante variables CSS (:root).
 
 Clases de utilidad globales para elementos comunes como botones (.btn, .btn--primary, .btn--danger), promoviendo la reutilización de código (principio DRY).
+
+🚀 Arquitectura Avanzada del Backend
+En esta sección puedes destacar que no te quedaste con la solución simple, sino que pensaste en la escalabilidad.
+
+Ejemplo:
+
+Gestión de Entidades Relacionadas (@ManyToMany): Para la funcionalidad de tags, se ha implementado un modelo de datos robusto utilizando una relación @ManyToMany entre las entidades Client y Tag. Esta arquitectura, superior a soluciones más simples, asegura la integridad de los datos, evita la duplicidad de etiquetas y establece una base escalable para futuras funcionalidades como filtros avanzados o una gestión centralizada de tags.
+
+Capa de Servicio Inteligente: La lógica para la gestión de tags se ha centralizado en la capa de servicio (ClientService). Al crear o actualizar un cliente, el servicio se encarga de buscar los tags existentes o persistir los nuevos de forma transparente, asegurando la consistencia de los datos sin sobrecargar el controlador.
+
+API Eficiente para Sugerencias: Se ha creado un endpoint específico (GET /api/tags) que expone todas las etiquetas únicas y ordenadas, permitiendo que el frontend implemente una funcionalidad de autocompletado de alto rendimiento.
+
+✨ Mejoras en la Experiencia de Usuario (UX)
+Aquí puedes describir cómo la funcionalidad de tags mejora la interacción del usuario con la aplicación.
+
+Ejemplo:
+
+Sistema de Tags con Autocompletado: El formulario de creación/edición de clientes incluye un sistema de tags avanzado. Permite la creación de nuevas etiquetas sobre la marcha (pulsando Enter), pero también sugiere etiquetas existentes a medida que el usuario escribe. Esto fomenta la consistencia y facilita la categorización.
+
+Feedback Visual en Sugerencias: Para mejorar la claridad, la lista de sugerencias resalta en negrita la parte del texto que coincide con la búsqueda del usuario, proporcionando un feedback visual inmediato.
+
+Filtrado por Tags Intuitivo: La página de listado de clientes muestra todas las etiquetas disponibles como filtros clicables. Al seleccionar un tag, la lista se actualiza al instante para mostrar solo los clientes relevantes, permitiendo una segmentación y búsqueda de datos potente y visual.

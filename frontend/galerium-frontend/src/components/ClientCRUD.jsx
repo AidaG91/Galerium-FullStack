@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
+import { FaEye, FaEdit, FaTrash, FaSearch, FaTimesCircle } from "react-icons/fa";
 import styles from "../styles/ClientCRUD.module.css";
 import { useNavigate } from "react-router-dom";
 import DeleteModal from "./DeleteModal";
@@ -38,23 +38,34 @@ export default function ClientCRUD({
 
   return (
     <section className={styles.wrapper}>
-      <header className={styles.header}>
-        <h2>Clients</h2>
-        <div className={styles.actions}>
-          <input
-            className={styles.searchInput}
-            placeholder="Search client…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <button
-            className="btn btn--primary"
-            onClick={() => navigate("/clients/new")}
-          >
-            Add Client
-          </button>
-        </div>
-      </header>
+       <header className={styles.header}>
+    {/* Nuevo contenedor para la fila superior */}
+    <div className={styles.headerTop}>
+      <h2>Clients</h2>
+      <button
+        className="btn btn--primary"
+        onClick={() => navigate("/clients/new")}
+      >
+        Add Client
+      </button>
+    </div>
+
+    {/* La barra de búsqueda ahora es un hijo directo de la cabecera */}
+    <div className={styles.searchInputWrapper}>
+      <FaSearch className={styles.searchIcon} />
+      <input
+        className={styles.searchInput}
+        placeholder="Search client…"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
+      {query && (
+        <button className={styles.clearSearchBtn} onClick={() => setQuery('')}>
+          <FaTimesCircle />
+        </button>
+      )}
+    </div>
+  </header>
 
       {allTags && allTags.length > 0 && (
         <div className={styles.tagFilters}>
@@ -137,7 +148,7 @@ export default function ClientCRUD({
 
       {!isLoading && clients.length === 0 && (
         <p className={styles.noResults}>
-          No clients found. Try a different search or add a new one.
+          No clients found. Try a different search or add a new client.
         </p>
       )}
 
