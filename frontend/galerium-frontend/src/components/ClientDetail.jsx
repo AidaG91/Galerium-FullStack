@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { FaUserCircle } from "react-icons/fa";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import styles from "../styles/ClientDetail.module.css";
 import DeleteModal from "./DeleteModal";
@@ -39,69 +40,86 @@ export default function ClientDetail() {
   if (!client) return <p>Loading client...</p>;
 
   return (
-    <div className={styles.page}>
-      {/* Contenido principal */}
-      <main className={styles.content}>
-        <header className={styles.header}>
-          <h2>Clients</h2>
+    <div className={styles.wrapper}>
+      {/* ---- Cabecera con título y acciones principales ---- */}
+      <header className={styles.header}>
+        <div className={styles.headerTitle}>
           <button
+            className="btn btn--secondary"
             onClick={() => navigate("/clients")}
-            className={styles.backBtn}
           >
-            ← Back
+            ← Back to Clients
           </button>
-        </header>
+          <h1>Client Details</h1>
+        </div>
+        <div className={styles.headerActions}>
+          <button
+            className="btn btn--secondary"
+            onClick={() => navigate(`/clients/${client.id}/edit`)}
+          >
+            <FaEdit /> Edit
+          </button>
+          <button
+            className="btn btn--danger"
+            onClick={() => setShowConfirm(true)}
+          >
+            <FaTrash /> Delete
+          </button>
+        </div>
+      </header>
 
-        <section className={styles.topSection}>
-          <div className={styles.photo}>
+      <main>
+        {/* ---- Sección del Perfil (Foto y Nombre) ---- */}
+        <section className={styles.profileHeader}>
+          <div className={styles.profilePicture}>
             {client.profilePictureUrl ? (
               <img src={client.profilePictureUrl} alt={client.fullName} />
             ) : (
-              <div className={styles.placeholder}>Photo</div>
+              <FaUserCircle className={styles.placeholderIcon} />
             )}
-            <div className={styles.actions}>
-              <button
-                title="Edit"
-                onClick={() => navigate(`/clients/${client.id}/edit`)}
-              >
-                <FaEdit />
-              </button>
-              <button title="Delete" onClick={() => setShowConfirm(true)}>
-                <FaTrash />
-              </button>
-            </div>
           </div>
-
-          <div className={styles.details}>
-            <h3>{client.fullName}</h3>
-            <p>
-              <strong>Email:</strong> {client.email}
-            </p>
-            <p>
-              <strong>Phone:</strong> {client.phoneNumber}
-            </p>
-            <p>
-              <strong>Address:</strong> {client.address}
-            </p>
-            <p>
-              <strong>Notes:</strong> {client.internalNotes ?? "—"}
-            </p>
+          <div className={styles.profileInfo}>
+            <h2>{client.fullName}</h2>
+            <p>{client.email}</p>
           </div>
         </section>
 
-        <section className={styles.bottomSection}>
-          <div className={styles.calendar}>CALENDAR (coming soon)</div>
-          <div className={styles.galleries}>GALERIAS (coming soon)</div>
+        {/* ---- Grid con los detalles del cliente ---- */}
+        <section className={styles.detailsGrid}>
+          <div className={styles.detailItem}>
+            <span className={styles.label}>Phone</span>
+            <span className={styles.value}>{client.phoneNumber || "—"}</span>
+          </div>
+          <div className={styles.detailItem}>
+            <span className={styles.label}>Address</span>
+            <span className={styles.value}>{client.address || "—"}</span>
+          </div>
+          <div className={`${styles.detailItem} ${styles.fullWidth}`}>
+            <span className={styles.label}>Notes</span>
+            <span className={styles.value}>{client.internalNotes || "—"}</span>
+          </div>
         </section>
 
-        {showConfirm && (
-          <DeleteModal
-            message="Are you sure you want to delete this client?"
-            onConfirm={() => handleDelete(client.id)}
-            onCancel={() => setShowConfirm(false)}
-          />
-        )}
+        {/* ---- Secciones Futuras ---- */}
+        <section className={styles.futureSections}>
+          <div className={styles.futureCard}>
+            <h3>Galleries</h3>
+            <p>(Coming Soon)</p>
+          </div>
+          <div className={styles.futureCard}>
+            <h3>Appointments</h3>
+            <p>(Coming Soon)</p>
+          </div>
+        </section>
       </main>
+
+      {showConfirm && (
+        <DeleteModal
+          message="Are you sure you want to delete this client?"
+          onConfirm={() => handleDelete(client.id)}
+          onCancel={() => setShowConfirm(false)}
+        />
+      )}
     </div>
   );
 }
