@@ -14,7 +14,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
-  flex-wrap: wrap; /* Para que se vea bien en pantallas pequeñas */
+  flex-wrap: wrap; 
   gap: 1rem;
 }
 
@@ -52,7 +52,7 @@
   border-collapse: collapse;
   margin-top: 2rem;
   border: 1px solid var(--color-border);
-  border-radius: 8px; /* Funciona mejor con border-collapse: separate, pero así está bien */
+  border-radius: 8px; 
   overflow: hidden;
 }
 
@@ -85,7 +85,7 @@
 
 /* --- Acciones en la tabla (iconos) --- */
 .actionsCell {
-  width: 1%; /* Evita que la celda ocupe más espacio del necesario */
+  width: 1%; 
   white-space: nowrap;
 }
 
@@ -96,7 +96,7 @@
   font-size: 1.1rem;
   cursor: pointer;
   padding: 0.5rem;
-  border-radius: 50%; /* Círculo perfecto */
+  border-radius: 50%; 
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -132,7 +132,7 @@
 
 /* --- Estilos para la Carga Suave --- */
 .tableWrapper {
-  position: relative; /* Clave para que el overlay se posicione correctamente */
+  position: relative; 
 }
 
 .loadingOverlay {
@@ -141,13 +141,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(255, 255, 255, 0.7); /* Fondo blanco semitransparente */
-  backdrop-filter: blur(2px); /* Efecto desenfoque para un look más moderno */
+  background-color: rgba(255, 255, 255, 0.7); 
+  backdrop-filter: blur(2px); 
   z-index: 10;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 8px; /* Para que coincida con el borde de la tabla */
+  border-radius: 8px; 
   transition: opacity 0.3s ease;
 }
 

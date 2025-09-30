@@ -53,7 +53,6 @@ export default function ClientCRUD({
       </header>
 
       <div className={styles.tableWrapper}>
-        {/* --> 3. Muestra el overlay si isLoading es true */}
         {isLoading && (
           <div className={styles.loadingOverlay}>
             <div className={styles.spinner}></div>
@@ -107,13 +106,12 @@ export default function ClientCRUD({
       </table>
 </div>
 
- {/* Mostramos el mensaje de "no encontrados" aquí abajo, fuera del wrapper de la tabla */}
       {!isLoading && clients.length === 0 && (
         <p className={styles.noResults}>
           No clients found. Try a different search or add a new one.
         </p>
       )}
-      
+
       <div className={styles.pagination}>
         <p>
           Showing page <strong>{page + 1}</strong> of{" "}

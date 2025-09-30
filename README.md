@@ -141,3 +141,28 @@ npm run test
 - `POST /api/clients` → creación
 - `PUT /api/clients/:id` → edición
 - `DELETE /api/clients/:id` → eliminación
+
+
+✨ Key Features (Características Principales)
+En esta sección, puedes destacar las mejoras de la experiencia de usuario. Esto le dice a quien lo lee que no solo te preocupas de que funcione, sino de que funcione bien.
+
+Ejemplo:
+
+Interfaz Reactiva y Centrada en el Usuario: La aplicación proporciona feedback constante al usuario, mostrando estados de carga para evitar saltos visuales (flicker-free), mensajes de error claros cuando falla la comunicación con el servidor y notificaciones cuando no se encuentran resultados.
+
+Sistema de Diseño Coherente: Se ha implementado una guía de estilos unificada con variables CSS, asegurando consistencia visual en todos los componentes (botones, modales, formularios, etc.).
+
+Modales Interactivos: Los modales de confirmación (ej. para eliminar un cliente) incluyen mejoras de usabilidad como cierre al hacer clic fuera y animaciones suaves para una experiencia más fluida.
+
+Frontend Architecture (Arquitectura Frontend)
+Aquí puedes describir las decisiones técnicas que hemos tomado. Esto demuestra que piensas en la escalabilidad y el mantenimiento del código.
+
+Ejemplo:
+
+CSS Escalable con CSS Modules: Para evitar conflictos de estilos y asegurar que los componentes sean autocontenidos, el proyecto utiliza CSS Modules. Cada componente importa sus propios estilos, garantizando un encapsulamiento real.
+
+Estilos Globales Reutilizables: Se ha establecido un sistema de diseño base en index.css que incluye:
+
+Una paleta de colores centralizada mediante variables CSS (:root).
+
+Clases de utilidad globales para elementos comunes como botones (.btn, .btn--primary, .btn--danger), promoviendo la reutilización de código (principio DRY).
