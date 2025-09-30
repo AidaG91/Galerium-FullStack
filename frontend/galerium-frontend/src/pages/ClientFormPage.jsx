@@ -7,6 +7,20 @@ export default function ClientFormPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [initialData, setInitialData] = useState(null);
+  const [allTags, setAllTags] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch(`http://localhost:8080/api/tags`);
+        if (!res.ok) throw new Error("Could not fetch tags");
+        const data = await res.json();
+        setAllTags(data);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -36,6 +50,7 @@ export default function ClientFormPage() {
 
       <ClientForm
         initialData={initialData}
+        allTags={allTags} 
         onClose={() => navigate(id ? `/clients/${id}` : "/clients")}
         onSave={(client) => {
           const target = client?.id ? `/clients/${client.id}` : "/clients";

@@ -157,3 +157,37 @@
 .tag button:hover {
   opacity: 1;
 }
+
+/* --- Estilos para el Autocompletado de Tags --- */
+
+.autocompleteWrapper {
+  position: relative; /* Clave para posicionar la lista de sugerencias */
+}
+
+.suggestionsList {
+  position: absolute;
+  top: 100%; /* Justo debajo del input */
+  left: 0;
+  right: 0;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  z-index: 10;
+  max-height: 150px;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.suggestionsList li {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.suggestionsList li:hover {
+  background-color: var(--color-bg);
+}

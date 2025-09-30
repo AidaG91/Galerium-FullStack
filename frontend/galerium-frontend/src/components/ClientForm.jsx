@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 import styles from "../styles/ClientForm.module.css";
 
-export default function ClientForm({ initialData, onSave, onClose }) {
+export default function ClientForm({
+  initialData,
+  onSave,
+  onClose,
+  allTags = [],
+}) {
   const isEdit = Boolean(initialData?.id);
 
   // --- Form state ---
@@ -16,6 +21,14 @@ export default function ClientForm({ initialData, onSave, onClose }) {
     tags: [],
   });
 
+  const [errors, setErrors] = useState({});
+  const [success, setSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+  const [imageError, setImageError] = useState(false);
+  const [currentTag, setCurrentTag] = useState("");
+  const [tagSuggestions, setTagSuggestions] = useState([]);
+
   useEffect(() => {
     if (initialData) {
       setForm({
@@ -25,17 +38,10 @@ export default function ClientForm({ initialData, onSave, onClose }) {
         phoneNumber: initialData.phoneNumber ?? "",
         address: initialData.address ?? "",
         profilePictureUrl: initialData.profilePictureUrl ?? "",
-        tags: initialData.tags ?? [], 
+        tags: initialData.tags ?? [],
       });
     }
   }, [initialData]);
-
-  const [errors, setErrors] = useState({});
-  const [success, setSuccess] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState(null);
-  const [imageError, setImageError] = useState(false);
-  const [currentTag, setCurrentTag] = useState("");
 
   // --- Handlers Form ---
   const handleChange = (e) => {
@@ -44,6 +50,32 @@ export default function ClientForm({ initialData, onSave, onClose }) {
   };
 
   // --- Tag Handling Logic ---
+  const handleTagInputChange = (e) => {
+    const value = e.target.value;
+    setCurrentTag(value);
+
+    if (value.trim() === "") {
+      setTagSuggestions([]);
+      return;
+    }
+
+    // Filtra las sugerencias
+    const suggestions = allTags
+      .filter((tag) => tag.toLowerCase().includes(value.toLowerCase()))
+      .filter((tag) => !form.tags.includes(tag));
+
+    setTagSuggestions(suggestions);
+  };
+
+  // Función para cuando se selecciona una sugerencia
+  const handleSelectTag = (tag) => {
+    if (!form.tags.includes(tag)) {
+      setForm((f) => ({ ...f, tags: [...f.tags, tag] }));
+    }
+    setCurrentTag("");
+    setTagSuggestions([]);
+  };
+
   const handleAddTag = (e) => {
     if (e.key === "Enter" && currentTag.trim() !== "") {
       e.preventDefault();
@@ -52,6 +84,7 @@ export default function ClientForm({ initialData, onSave, onClose }) {
         setForm((f) => ({ ...f, tags: [...f.tags, newTag] }));
       }
       setCurrentTag("");
+      setTagSuggestions([]);
     }
   };
 
@@ -237,15 +270,44 @@ export default function ClientForm({ initialData, onSave, onClose }) {
               </div>
             ))}
           </div>
-          <input
-            id="tags"
-            type="text"
-            value={currentTag}
-            onChange={(e) => setCurrentTag(e.target.value)}
-            onKeyDown={handleAddTag}
-            placeholder="Add a tag and press Enter"
-            disabled={isSubmitting}
-          />
+
+          <div className={styles.autocompleteWrapper}>
+            <input
+              id="tags"
+              type="text"
+              value={currentTag}
+              onChange={handleTagInputChange}
+              onKeyDown={handleAddTag}
+              placeholder="Type to add or search tags..."
+              autoComplete="off"
+              disabled={isSubmitting}
+            />
+
+            {tagSuggestions.length > 0 && (
+              <ul className={styles.suggestionsList}>
+                {tagSuggestions.map((suggestion) => {
+                  const matchStart = suggestion
+                    .toLowerCase()
+                    .indexOf(currentTag.toLowerCase());
+                  const matchEnd = matchStart + currentTag.length;
+                  const beforeMatch = suggestion.slice(0, matchStart);
+                  const matchText = suggestion.slice(matchStart, matchEnd);
+                  const afterMatch = suggestion.slice(matchEnd);
+
+                  return (
+                    <li
+                      key={suggestion}
+                      onClick={() => handleSelectTag(suggestion)}
+                    >
+                      {beforeMatch}
+                      <strong>{matchText}</strong>
+                      {afterMatch}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
         </div>
 
         {/* Muestra el error de envío si existe */}
