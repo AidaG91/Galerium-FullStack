@@ -26,7 +26,10 @@ export default function ClientFormPage() {
     <section className={styles.wrapper}>
       <header className={styles.header}>
         <h2>{id ? "Edit Client" : "Create Client"}</h2>
-        <button className={styles.backBtn} onClick={() => navigate("/clients")}>
+        <button
+          className="btn btn--secondary"
+          onClick={() => navigate("/clients")}
+        >
           ← Back to list
         </button>
       </header>

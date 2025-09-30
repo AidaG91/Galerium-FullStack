@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
-import styles from "../styles/Clients.module.css";
+import styles from "../styles/ClientCRUD.module.css";
 import { useNavigate } from "react-router-dom";
 import DeleteModal from "./DeleteModal";
 
@@ -14,10 +14,7 @@ export default function ClientCRUD({
   totalPages,
   totalElements,
 }) {
-  // Routes
   const navigate = useNavigate();
-
-  // --- DELETE ---
   const [confirmId, setConfirmId] = useState(null);
 
   const handleDelete = async (id) => {
@@ -34,21 +31,19 @@ export default function ClientCRUD({
     }
   };
 
-  // --- JSX Structure ---
   return (
     <section className={styles.wrapper}>
-      {/* ---- Header: search + ADD button ---- */}
       <header className={styles.header}>
         <h2>Clients</h2>
         <div className={styles.actions}>
           <input
-            className={styles.input}
+            className={styles.searchInput}
             placeholder="Search client…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
           <button
-            className={styles.addBtn}
+            className="btn btn--primary"
             onClick={() => navigate("/clients/new")}
           >
             Add Client
@@ -56,7 +51,6 @@ export default function ClientCRUD({
         </div>
       </header>
 
-      {/* ---- Client list ---- */}
       <table className={styles.table}>
         <thead>
           <tr>
@@ -88,8 +82,9 @@ export default function ClientCRUD({
                   >
                     <FaEdit />
                   </button>
+                  
                   <button
-                    className={styles.iconButton}
+                    className={`${styles.iconButton} ${styles.delete}`}
                     title="Delete client"
                     onClick={() => setConfirmId(c.id)}
                   >
@@ -102,18 +97,21 @@ export default function ClientCRUD({
         </tbody>
       </table>
 
-      {/* Next / Previous Page buttons */}
       <div className={styles.pagination}>
         <p>
           Showing page <strong>{page + 1}</strong> of{" "}
-          <strong>{totalPages}</strong> (<strong>{totalElements}</strong>{" "}
-          clients)
+          <strong>{totalPages}</strong> ({totalElements} clients)
         </p>
         <div className={styles.pageButtons}>
-          <button disabled={page === 0} onClick={() => setPage((p) => p - 1)}>
+          <button
+            className="btn btn--secondary"
+            disabled={page === 0}
+            onClick={() => setPage((p) => p - 1)}
+          >
             ← Previous
           </button>
           <button
+            className="btn btn--secondary"
             disabled={page >= totalPages - 1}
             onClick={() => setPage((p) => p + 1)}
           >

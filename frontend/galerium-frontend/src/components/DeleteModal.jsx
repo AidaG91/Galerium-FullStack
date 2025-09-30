@@ -1,15 +1,19 @@
-import styles from "../styles/ConfirmModal.module.css";
+import styles from "../styles/DeleteModal.module.css";
 
-export default function ConfirmModal({ message, onConfirm, onCancel }) {
-  return (
+export default function DeleteModal({ message, onConfirm, onCancel }) {
+return (
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
         <p>{message}</p>
         <div className={styles.modalActions}>
-          <button onClick={onConfirm} className={styles.dangerBtn}>
+          {/* BOTÓN DE CONFIRMAR ACTUALIZADO */}
+          <button onClick={onConfirm} className="btn btn--danger">
             Yes, delete
           </button>
-          <button onClick={onCancel}>Cancel</button>
+          {/* BOTÓN DE CANCELAR ACTUALIZADO */}
+          <button onClick={onCancel} className="btn btn--secondary">
+            Cancel
+          </button>
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ Aplicación CRUD para fotógrafos, desarrollada como proyecto final del Módulo 
 ## 🧪 Stack tecnológico
 
 - **Frontend**: React + Vite + React Router
-- **Backend**: Java Spring Boot + JPA + H2 (dev) / PostgreSQL (prod)
+- **Backend**: Java Spring Boot + JPA  / MySQL (prod)
 - **Base de datos**: H2 local (desarrollo), PostgreSQL (producción)
 - **Gestión de tareas**: Jira + Confluence
 - **Control de versiones**: Git + GitHub
@@ -111,10 +111,33 @@ npm run test
 ```
 
 ---
+### Funcionalidades del módulo Client
 
-## 📌 Estado del proyecto
+- CRUD completo: creación, edición, visualización y eliminación de clientes
+- Formulario con validación visual y feedback de éxito
+- Paginación dinámica con `GET /clients?page=&size=`
+- Búsqueda con debounce por nombre, email y teléfono
+- Listado real consumiendo API REST
+- Vista de detalle con imagen, datos y acciones
+- Eliminación con confirmación visual (modal personalizado)
 
-- ✅ CRUD funcional
-- ✅ Conexión front–back
-- ✅ README con instrucciones
-- 🔜 Estilos responsive y despliegue
+### Experiencia de usuario
+
+- Mensajes de error personalizados en formularios
+- Mensaje de éxito tras guardar cliente
+- Modal de confirmación reutilizable para eliminar
+- Placeholder visual si el cliente no tiene imagen
+- Navegación fluida entre listado, detalle y edición
+
+### Componentes reutilizables
+
+- `ClientForm`: formulario adaptable para creación y edición
+- `DeleteModal`: modal de confirmación visual para acciones destructivas
+
+### Endpoints utilizados
+
+- `GET /api/clients?page=&size=&query=` → listado paginado y filtrado
+- `GET /api/clients/:id` → detalle de cliente
+- `POST /api/clients` → creación
+- `PUT /api/clients/:id` → edición
+- `DELETE /api/clients/:id` → eliminación

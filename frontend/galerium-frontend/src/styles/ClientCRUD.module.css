@@ -1,0 +1,131 @@
+/* --- Contenedor de la página de la lista --- */
+.wrapper {
+  padding: 2.5rem;
+  max-width: 1000px;
+  margin: 2rem auto;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap; /* Para que se vea bien en pantallas pequeñas */
+  gap: 1rem;
+}
+
+.header h2 {
+  margin: 0;
+}
+
+/* --- Acciones (Buscador y botón) --- */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.searchInput {
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background-color: var(--color-bg);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  min-width: 250px;
+  transition: all 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+
+/* --- Tabla --- */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px; /* Funciona mejor con border-collapse: separate, pero así está bien */
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+
+.table th {
+  background-color: var(--color-bg);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.table tbody tr:hover {
+  background-color: color-mix(in srgb, var(--color-accent) 5%, transparent);
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.phone {
+  white-space: nowrap;
+}
+
+/* --- Acciones en la tabla (iconos) --- */
+.actionsCell {
+  width: 1%; /* Evita que la celda ocupe más espacio del necesario */
+  white-space: nowrap;
+}
+
+.iconButton {
+  background: none;
+  border: none;
+  color: var(--color-muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%; /* Círculo perfecto */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.iconButton:hover {
+  color: var(--color-accent-hover);
+  background-color: color-mix(in srgb, var(--color-accent) 15%, transparent);
+}
+
+.iconButton.delete:hover {
+  color: var(--color-danger-hover);
+  background-color: color-mix(in srgb, var(--color-danger) 15%, transparent);
+}
+
+/* --- Paginación --- */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.pageButtons {
+  display: flex;
+  gap: 0.5rem;
+}

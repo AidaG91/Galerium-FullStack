@@ -1,10 +1,12 @@
+
 .wrapper {
-  padding: 2rem;
+  padding: 2.5rem;
   max-width: 700px;
-  margin: 0 auto;
+  margin: 2rem auto; /* Añadido margen superior para que no se pegue al borde */
   background-color: var(--color-surface);
+  border: 1px solid var(--color-border); /* Borde sutil para definir el contenedor */
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .header {
@@ -12,19 +14,10 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  padding-bottom: 1rem; /* Añadido para separar visualmente el título */
+  border-bottom: 1px solid var(--color-border);
 }
 
-.backBtn {
-  background-color: var(--color-accent);
-  color: white;
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.backBtn:hover {
-  background-color: var(--color-accent-hover);
+.header h2 {
+  margin: 0;
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styles from "../styles/Clients.module.css";
+import styles from "../styles/ClientForm.module.css";
 
 export default function ClientForm({ initialData, onSave, onClose }) {
   const isEdit = Boolean(initialData?.id);
@@ -29,6 +29,7 @@ export default function ClientForm({ initialData, onSave, onClose }) {
 
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // --- Handlers Form ---
   const handleChange = (e) => {
@@ -71,6 +72,8 @@ export default function ClientForm({ initialData, onSave, onClose }) {
 
     setErrors({});
 
+    setIsSubmitting(true);
+
     try {
       const res = await fetch(
         isEdit
@@ -95,6 +98,10 @@ export default function ClientForm({ initialData, onSave, onClose }) {
       }, 1000);
     } catch (err) {
       console.error("Failed to save:", err.message);
+    } finally {
+      if (!success) {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -173,9 +180,20 @@ export default function ClientForm({ initialData, onSave, onClose }) {
         />
 
         {/* Create/Save and Cancel buttons */}
-        <div className={styles.modalActions}>
-          <button type="submit">{isEdit ? "Save" : "Create"}</button>
-          <button type="button" onClick={onClose}>
+        <div className={styles.formActions}>
+          <button
+            type="submit"
+            className="btn btn--primary" // <-- Clase global
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Saving..." : isEdit ? "Save" : "Create"}
+          </button>
+          <button
+            type="button"
+            className="btn btn--secondary" // <-- Clase global
+            onClick={onClose}
+            disabled={isSubmitting}
+          >
             Cancel
           </button>
         </div>

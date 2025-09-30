@@ -3,16 +3,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root {
-  --color-bg: #f9f7f4;
+  /* Paleta de colores definida */
+  --color-bg: #f8f9fa;
   --color-surface: #ffffff;
-  --color-border: #dcd7d0;
-  --color-text: #3f4739;
-  --color-muted: #7c7f77;
-  --color-accent: #e67e22;
-  --color-accent-hover: #cf711f;
+  --color-border: #e9ecef;
+  --color-text: #212529;
+  --color-muted: #6c757d;
+  --color-accent: #6b705c;
+  --color-accent-hover: #585c4c;
   --color-danger: #d9534f;
   --color-danger-hover: #c9302c;
 
+  /* Propiedades de fuente globales */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -27,67 +29,94 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-   font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
   background-color: var(--color-bg);
   color: var(--color-text);
   line-height: 1.5;
   font-weight: 400;
   font-size: 16px;
-  scroll-behavior: smooth;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: var(--Accent);
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  font-weight: bold;
-  color: var(--Dark);
-  line-height: 1.1;
-}
-
-h2 {
-  font-size: 2.8em;
+h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
-  color: var(--Dark);
-  line-height: 1.1;
+  line-height: 1.2;
+  color: var(--color-text); /* CORREGIDO: Usando tu variable de texto */
 }
 
-button {
-  background-color: var(--color-accent);
-  color: #fff;
+h1 { font-size: 2.5em; }
+h2 { font-size: 2em; }
+
+a {
+  font-weight: 500;
+  color: var(--color-accent); /* CORREGIDO: Usando tu color de acento */
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+a:hover {
+  color: var(--color-accent-hover); /* CORREGIDO: Usando tu color de acento */
+}
+
+
+/* =============================================== */
+/* --- BOTONES GLOBALES --- */
+/* =============================================== */
+
+/* Clase base para todos los botones de la aplicación */
+.btn {
   border: none;
+  padding: 0.6rem 1.2rem;
   border-radius: 6px;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
   font-weight: 600;
-  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: background-color var(--transition-normal), transform 0.2s ease;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
 }
 
-button:hover {
+/* Modificador para el botón principal (con color de acento) */
+.btn--primary {
+  background-color: var(--color-accent);
+  color: white;
+}
+
+.btn--primary:hover {
   background-color: var(--color-accent-hover);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
-button:disabled {
-  background-color: #ccc;
+/* Modificador para un botón secundario (ej. Cancelar) */
+.btn--secondary {
+  background-color: transparent;
+  color: var(--color-text);
+  box-shadow: inset 0 0 0 1px var(--color-border);
+}
+
+.btn--secondary:hover {
+  background-color: var(--color-bg);
+  border-color: var(--color-muted);
+}
+
+/* Estilo para cuando los botones están desactivados */
+.btn:disabled {
+  background-color: var(--color-border);
+  color: var(--color-muted);
   cursor: not-allowed;
-  color: #666;
+  transform: none;
 }
 
+/* Modificador para botones de peligro (ej. Borrar) */
+.btn--danger {
+  background-color: var(--color-danger);
+  color: white;
+}
+
+.btn--danger:hover {
+  background-color: var(--color-danger-hover);
+  transform: translateY(-2px);
+}

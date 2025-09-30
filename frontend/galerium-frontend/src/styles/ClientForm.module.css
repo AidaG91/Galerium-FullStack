@@ -1,0 +1,62 @@
+/* En ClientForm.module.css (el antiguo Clients.module.css) */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Aumentamos un poco el espacio */
+}
+
+.form input {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  background-color: var(--color-bg); /* Un fondo ligeramente distinto al de la página */
+  color: var(--color-text);
+  transition: all 0.2s ease;
+}
+
+/* 🔥 Efecto de foco para mejor UX */
+.form input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1.5rem; /* Línea de separación visual */
+  border-top: 1px solid var(--color-border);
+}
+
+.inputError {
+  border-color: var(--color-danger) !important; 
+  background-color: color-mix(in srgb, var(--color-danger) 10%, transparent);
+}
+
+.errorText {
+  color: var(--color-danger);
+  font-size: 0.85rem;
+  margin-top: -1rem; /* Acercamos el mensaje al input */
+}
+
+/* Usamos variables para los colores para que sea consistente con el tema */
+.successText {
+  background-color: color-mix(in srgb, var(--color-accent) 15%, transparent);
+  color: var(--color-accent-hover);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 40%, transparent);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
