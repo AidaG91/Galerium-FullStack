@@ -61,5 +61,4 @@ public abstract class User {
     @Schema(description = "URL of the user's profile picture", example = "https://example.com/images/user123.jpg")
     @Column(nullable = true)
     private String profilePictureUrl;
-
 }

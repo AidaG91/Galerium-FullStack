@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ClientRequestDTO {
 
@@ -29,4 +31,6 @@ public class ClientRequestDTO {
 
     @Size(max = 255, message = "Address cannot exceed 255 characters.")
     private String address;
+
+    private List<String> tags;
 }

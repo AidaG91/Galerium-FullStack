@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ClientUpdateDTO {
 
@@ -29,4 +31,6 @@ public class ClientUpdateDTO {
     private String address;
 
     private Boolean isEnabled;
+
+    private List<String> tags;
 }

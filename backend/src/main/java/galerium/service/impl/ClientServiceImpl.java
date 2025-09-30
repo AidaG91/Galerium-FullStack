@@ -5,7 +5,9 @@ import galerium.dto.client.ClientResponseDTO;
 import galerium.dto.client.ClientUpdateDTO;
 import galerium.enums.UserRole;
 import galerium.model.Client;
+import galerium.model.Tag;
 import galerium.repository.ClientRepository;
+import galerium.repository.TagRepository;
 import galerium.service.interfaces.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +27,7 @@ import java.util.stream.Collectors;
 public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
+    private final TagRepository tagRepository;
 
     public Page<ClientResponseDTO> getClientsPaged(Pageable pageable) {
         return clientRepository.findAll(pageable)
@@ -40,13 +44,16 @@ public class ClientServiceImpl implements ClientService {
         Client client = new Client();
         client.setFullName(clientRequest.getFullName());
         client.setEmail(clientRequest.getEmail());
-        client.setPassword(clientRequest.getPassword()); // TODO: Encrypt password before saving (e.g., passwordEncoder.encode(...))
+        client.setPassword(clientRequest.getPassword());
         client.setPhoneNumber(clientRequest.getPhoneNumber());
         client.setAddress(clientRequest.getAddress());
         client.setUserRole(UserRole.CLIENT);
         client.setProfilePictureUrl(clientRequest.getProfilePictureUrl());
-        client.setRegistrationDate(java.time.LocalDateTime.now());
-        // New clients are enabled by default
+
+        // --> 3. Llama al nuevo método para gestionar los tags
+        if (clientRequest.getTags() != null) {
+            client.setTags(manageTags(clientRequest.getTags()));
+        }
 
         Client savedClient = clientRepository.save(client);
 
@@ -99,7 +106,9 @@ public class ClientServiceImpl implements ClientService {
         if (clientUpdate.getPassword() != null && clientUpdate.getPassword().length() >= 8) {
             client.setPassword(clientUpdate.getPassword());
         }
-
+        if (clientUpdate.getTags() != null) {
+            client.setTags(manageTags(clientUpdate.getTags()));
+        }
 
         Client updatedClient = clientRepository.save(client);
 
@@ -170,6 +179,18 @@ public class ClientServiceImpl implements ClientService {
 
 
 
+    private Set<Tag> manageTags(List<String> tagNames) {
+        if (tagNames == null || tagNames.isEmpty()) {
+            return null; // O un Set vacío, dependiendo de tu lógica de negocio
+        }
+        return tagNames.stream()
+                .map(String::trim) // Limpia espacios en blanco
+                .map(tagName -> tagRepository.findByName(tagName)
+                        // Si el tag existe, lo devuelve. Si no, crea uno nuevo y lo guarda.
+                        .orElseGet(() -> tagRepository.save(new Tag(tagName))))
+                .collect(Collectors.toSet());
+    }
+
     // Helper method to map Client entity to ClientResponseDTO
     private ClientResponseDTO toResponseDTO(Client client) {
         ClientResponseDTO dto = new ClientResponseDTO();
@@ -187,6 +208,13 @@ public class ClientServiceImpl implements ClientService {
             dto.setInternalNotes(client.getInternalNotes());
         }
         */
+
+        if (client.getTags() != null) {
+            dto.setTags(client.getTags().stream()
+                    .map(Tag::getName)
+                    .collect(Collectors.toList()));
+        }
+
         return dto;
     }
 }

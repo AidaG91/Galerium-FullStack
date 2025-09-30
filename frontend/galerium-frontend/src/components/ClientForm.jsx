@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { FaTimes } from "react-icons/fa";
 import styles from "../styles/ClientForm.module.css";
 
 export default function ClientForm({ initialData, onSave, onClose }) {
@@ -12,6 +13,7 @@ export default function ClientForm({ initialData, onSave, onClose }) {
     phoneNumber: "",
     address: "",
     profilePictureUrl: "",
+    tags: [],
   });
 
   useEffect(() => {
@@ -23,6 +25,7 @@ export default function ClientForm({ initialData, onSave, onClose }) {
         phoneNumber: initialData.phoneNumber ?? "",
         address: initialData.address ?? "",
         profilePictureUrl: initialData.profilePictureUrl ?? "",
+        tags: initialData.tags ?? [], 
       });
     }
   }, [initialData]);
@@ -32,11 +35,31 @@ export default function ClientForm({ initialData, onSave, onClose }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [imageError, setImageError] = useState(false);
+  const [currentTag, setCurrentTag] = useState("");
 
   // --- Handlers Form ---
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
+  };
+
+  // --- Tag Handling Logic ---
+  const handleAddTag = (e) => {
+    if (e.key === "Enter" && currentTag.trim() !== "") {
+      e.preventDefault();
+      const newTag = currentTag.trim();
+      if (!form.tags.includes(newTag)) {
+        setForm((f) => ({ ...f, tags: [...f.tags, newTag] }));
+      }
+      setCurrentTag("");
+    }
+  };
+
+  const handleRemoveTag = (tagToRemove) => {
+    setForm((f) => ({
+      ...f,
+      tags: f.tags.filter((tag) => tag !== tagToRemove),
+    }));
   };
 
   // --- CREATE / UPDATE ---
@@ -56,6 +79,7 @@ export default function ClientForm({ initialData, onSave, onClose }) {
       address: form.address.trim(),
       profilePictureUrl: form.profilePictureUrl.trim(),
       userRole: "CLIENT",
+      tags: form.tags,
       ...(form.password &&
         form.password.trim().length >= 8 && { password: form.password.trim() }),
     };
@@ -112,7 +136,7 @@ export default function ClientForm({ initialData, onSave, onClose }) {
     <div className={styles.formWrapper}>
       <h3>{isEdit ? "Edit client" : "Create client"}</h3>
 
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form onSubmit={handleSubmit} className={styles.form} noValidate>
         {success && (
           <p className={styles.successText}>✅ Client saved successfully!</p>
         )}
@@ -200,7 +224,30 @@ export default function ClientForm({ initialData, onSave, onClose }) {
             )}
           </div>
         )}
-        
+
+        <div className={styles.tagInputWrapper}>
+          <label htmlFor="tags">Tags</label>
+          <div className={styles.tagsContainer}>
+            {form.tags.map((tag) => (
+              <div key={tag} className={styles.tag}>
+                {tag}
+                <button type="button" onClick={() => handleRemoveTag(tag)}>
+                  <FaTimes />
+                </button>
+              </div>
+            ))}
+          </div>
+          <input
+            id="tags"
+            type="text"
+            value={currentTag}
+            onChange={(e) => setCurrentTag(e.target.value)}
+            onKeyDown={handleAddTag}
+            placeholder="Add a tag and press Enter"
+            disabled={isSubmitting}
+          />
+        </div>
+
         {/* Muestra el error de envío si existe */}
         {submitError && <p className={styles.submitErrorText}>{submitError}</p>}
 

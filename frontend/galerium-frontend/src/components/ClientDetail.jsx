@@ -81,6 +81,15 @@ export default function ClientDetail() {
           <div className={styles.profileInfo}>
             <h2>{client.fullName}</h2>
             <p>{client.email}</p>
+             {client.tags && client.tags.length > 0 && (
+              <div className={styles.tagsContainer}>
+                {client.tags.map(tag => (
+                  <span key={tag} className={styles.tag}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 

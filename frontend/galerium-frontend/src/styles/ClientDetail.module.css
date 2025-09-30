@@ -136,3 +136,21 @@
   margin: 0 0 0.5rem 0;
   color: var(--color-text);
 }
+
+
+/* ---- Estilos para los Tags ---- */
+.tagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem; /* Espacio sobre las etiquetas */
+}
+
+.tag {
+  background-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
+  color: var(--color-accent-hover);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px; /* Para que sea una píldora */
+  font-size: 0.8rem;
+  font-weight: 600;
+}
