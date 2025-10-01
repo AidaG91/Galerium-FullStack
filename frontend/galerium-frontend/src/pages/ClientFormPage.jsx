@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ClientForm from '../components/ClientForm';
 import styles from '../styles/ClientFormPage.module.css';
+import { getClientById, getAllTags } from '../api/clientService'; 
 
 export default function ClientFormPage() {
   const { id } = useParams();
@@ -10,30 +11,12 @@ export default function ClientFormPage() {
   const [allTags, setAllTags] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch(`http://localhost:8080/api/tags`);
-        if (!res.ok) throw new Error('Could not fetch tags');
-        const data = await res.json();
-        setAllTags(data);
-      } catch (err) {
-        console.error(err);
-      }
-    })();
+    getAllTags().then(setAllTags).catch(console.error);
   }, []);
 
   useEffect(() => {
     if (!id) return;
-    (async () => {
-      try {
-        const res = await fetch(`http://localhost:8080/api/clients/${id}`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        setInitialData(data);
-      } catch (err) {
-        console.error('Error loading client', err);
-      }
-    })();
+    getClientById(id).then(setInitialData).catch(console.error);
   }, [id]);
 
   return (

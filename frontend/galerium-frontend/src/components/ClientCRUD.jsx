@@ -9,6 +9,8 @@ import {
 import styles from '../styles/ClientCRUD.module.css';
 import { useNavigate } from 'react-router-dom';
 import DeleteModal from './DeleteModal';
+import { deleteClient } from '../api/clientService';
+
 
 export default function ClientCRUD({
   isLoading,
@@ -30,11 +32,8 @@ export default function ClientCRUD({
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:8080/api/clients/${id}`, {
-        method: 'DELETE',
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      setClients((prev) => prev.filter((c) => c.id !== id));
+      await deleteClient(id);
+      setClients(prev => prev.filter(c => c.id !== id));
     } catch (err) {
       console.error('Failed to delete client', err);
     } finally {

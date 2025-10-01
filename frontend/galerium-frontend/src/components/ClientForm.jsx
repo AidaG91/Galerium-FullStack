@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import styles from '../styles/ClientForm.module.css';
+import { createClient, updateClient } from '../api/clientService';
+
 
 export default function ClientForm({
   initialData,
@@ -137,30 +139,20 @@ export default function ClientForm({
     setSubmitError(null);
 
     try {
-      const res = await fetch(
-        isEdit
-          ? `http://localhost:8080/api/clients/${initialData.id}` // PUT
-          : 'http://localhost:8080/api/clients', // POST
-        {
-          method: isEdit ? 'PUT' : 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        }
-      );
-      if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(`HTTP ${res.status}: ${errorText}`);
-      }
-      const data = await res.json();
+      const saveAction = isEdit 
+        ? updateClient(initialData.id, payload) 
+        : createClient(payload);
+        
+      const savedClient = await saveAction;
 
-      const newId = data.id ?? initialData?.id;
       setSuccess(true);
       setTimeout(() => {
-        onSave({ ...payload, id: newId });
+        onSave(savedClient);
       }, 1000);
+
     } catch (err) {
-      console.error('Failed to save:', err.message);
-      setSubmitError('Failed to save client. Please try again later.');
+      console.error("Failed to save:", err.message);
+      setSubmitError("Failed to save client. Please try again later.");
     } finally {
       if (!success) {
         setIsSubmitting(false);
@@ -273,16 +265,16 @@ export default function ClientForm({
 
         <div className={styles.tagInputWrapper}>
           <label htmlFor="tags">Tags</label>
-          <div className={styles.tagsContainer}>
-            {form.tags.map((tag) => (
-              <div key={tag} className={styles.tag}>
-                {tag}
-                <button type="button" onClick={() => handleRemoveTag(tag)}>
-                  <FaTimes />
-                </button>
-              </div>
-            ))}
-          </div>
+         <div className={styles.tagsContainer}>
+          {form.tags.map((tag) => (
+            <div key={tag} className={styles.tag}>
+              {tag}
+              <button type="button" onClick={() => handleRemoveTag(tag)}>
+                <FaTimes />
+              </button>
+            </div>
+          ))}
+        </div>
 
           <div className={styles.autocompleteWrapper}>
             <input

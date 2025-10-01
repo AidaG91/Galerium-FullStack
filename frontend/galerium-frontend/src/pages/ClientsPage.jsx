@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
 import ClientCRUD from '../components/ClientCRUD';
+import { getClients, getAllTags } from '../api/clientService';
 
 export default function ClientsPage() {
   const [clients, setClients] = useState([]);
@@ -23,53 +24,41 @@ export default function ClientsPage() {
   const [sortDir, _setSortDir] = useState('asc');
 
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch(`http://localhost:8080/api/tags`);
-        const data = await res.json();
-        setAllTags(data);
-      } catch (err) {
-        console.error('Failed to fetch tags', err);
-      }
-    })();
+    getAllTags()
+      .then(setAllTags)
+      .catch((err) => console.error('Failed to fetch tags', err));
   }, []);
 
   useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
+    setIsLoading(true);
 
-    (async () => {
-      setIsLoading(true);
-      try {
-        let url;
-        const params = `page=${page}&size=${size}&sort=${sortBy},${sortDir}`;
+    // --> 2. Prepara los parámetros para la API
+    const params = {
+      page,
+      size,
+      sort: `${sortBy},${sortDir}`,
+    };
 
-        if (selectedTag) {
-          // Si hay un tag seleccionado, filtramos por tag
-          url = `http://localhost:8080/api/clients/by-tag?tag=${selectedTag}&${params}`;
-        } else if (debouncedQuery.trim().length > 0) {
-          // Si hay una búsqueda de texto, usamos el endpoint de búsqueda
-          url = `http://localhost:8080/api/clients/search/paged?q=${debouncedQuery}&${params}`;
-        } else {
-          // Si no, la lista paginada normal
-          url = `http://localhost:8080/api/clients/paged?${params}`;
-        }
+    if (selectedTag) {
+      params.tag = selectedTag;
+    } else if (debouncedQuery.trim().length > 0) {
+      params.q = debouncedQuery;
+    }
 
-        const res = await fetch(url, { signal });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
+    // --> 3. Llama a la función centralizada
+    getClients(params)
+      .then((data) => {
         setClients(data.content ?? []);
         setTotalPages(data.totalPages ?? 0);
         setTotalElements(data.totalElements ?? 0);
-      } catch (err) {
-        if (err.name !== 'AbortError')
-          console.error('Error fetching clients', err);
-      } finally {
-        if (!signal.aborted) setIsLoading(false);
-      }
-    })();
-
-    return () => controller.abort();
+      })
+      .catch((err) => {
+        console.error('Error fetching clients', err);
+        // Aquí podrías añadir un estado de error para mostrarlo en la UI
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [debouncedQuery, selectedTag, page, size, sortBy, sortDir]);
 
   const handleSelectTag = (tag) => {
