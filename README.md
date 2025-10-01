@@ -1,192 +1,171 @@
 # Galerium FullStack
 
-Aplicación CRUD para fotógrafos, desarrollada como proyecto final del Módulo 3 en IronHack. Permite gestionar clientes, galerías y sesiones, con frontend en React y backend en Spring Boot.
+A full-stack CRUD application designed for photographers to manage clients, galleries, and sessions. This project was developed as the final project for Module 3 of the IronHack Web Development Bootcamp.
+
+## ✨ Key Features
+
+This application was built with a strong focus on a clean user experience and a robust, scalable architecture.
+
+* **Full Client Management:** Complete CRUD functionality (Create, Read, Update, Delete) for client records.
+* **Dynamic Data Handling:**
+    * Server-side pagination and sorting for efficient data management.
+    * Debounced text search across multiple client fields (name, email, phone).
+    * Intuitive, multi-select tag filtering to easily segment clients.
+* **Advanced User Experience (UX):**
+    * **User-Centric Feedback:** The UI provides constant feedback with flicker-free loading states, clear error messages on API failures, and "no results" notifications.
+    * **Advanced Tag System:** The client form features a tag input with autocomplete, suggesting existing tags to ensure data consistency while still allowing the creation of new ones on the fly.
+    * **Interactive Modals:** Confirmation modals for destructive actions (like deleting) are user-friendly, featuring smooth animations and the ability to close by clicking outside.
+    * **Image Previews:** The client form provides an instant preview for image URLs, with elegant error handling for broken links.
+* **Consistent Design System:** A unified styling guide with CSS variables ensures a consistent and professional look and feel across all components.
+
+## 📸 Screenshots
+
+*(Here you can add GIFs or screenshots of the main views: list with filters, detail page, and form with autocomplete).*
+
+`[Your App Screenshot/GIF Here]`
 
 ---
 
-## 🧪 Stack tecnológico
+## 🛠️ Tech Stack
 
-- **Frontend**: React + Vite + React Router
-- **Backend**: Java Spring Boot + JPA  / MySQL (prod)
-- **Base de datos**: H2 local (desarrollo), PostgreSQL (producción)
-- **Gestión de tareas**: Jira + Confluence
-- **Control de versiones**: Git + GitHub
+| Area       | Technologies                                              |
+| :--------- | :-------------------------------------------------------- |
+| **Frontend** | React, Vite, React Router                                 |
+| **Backend** | Java, Spring Boot, Spring Data JPA, Spring Security   |
+| **Database** | MySQL (Production), H2 (Development)                      |
+| **Testing** | JUnit 5, Mockito (Backend), Vitest, RTL (Frontend)        |
+| **Tooling** | Maven, Node.js, ESLint, Prettier                          |
 
 ---
 
-## 🚀 Puesta en marcha local
+## 🚀 Getting Started Locally
 
-### 🔧 Requisitos previos
+### Prerequisites
 
-- Java 17+
-- Node.js 18+
-- Maven
-- Git
+* Java 17+
+* Node.js 18+
+* Maven 3+
+* Git
 
-### 📦 Backend
+### 1. Backend Setup
 
 ```bash
-cd backend
-# Instalar dependencias y compilar
+# Clone the repository
+git clone [Link to your repo]
+cd [repo-name]/backend
+
+# Install dependencies and build the project
 mvn clean install
-# Ejecutar en local
+
+# Run the Spring Boot application
 mvn spring-boot:run
-Accede a: http://localhost:8080/api/health
+
+# The backend will be available at http://localhost:8080
+# You can check the health status at: http://localhost:8080/api/health
 ```
 
-### 💻 Frontend
+### 2. Backend Setup
+```bash
+# In a new terminal, navigate to the frontend directory
+cd ../frontend
+
+# Install dependencies
+npm install
+
+# Run the development server
+npm run dev
+
+# The application will be available at http://localhost:5173
+```
+
+## Configuration
+The project uses configuration files for both the backend and frontend.
+
+### Backend (backend/src/main/resources/application.properties)
+For development, the application uses an in-memory H2 database. For production, you should configure the connection to a MySQL database.
 
 ```bash
-cd frontend
-npm install
-npm run dev
-Accede a: http://localhost:5173
-```
-
----
-
-## 🔐 Variables de entorno
-
-### Backend (`backend/src/main/resources/application.properties`)
-
-```properties
-spring.datasource.url=jdbc:h2:mem:testdb
+# Development (H2)
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.datasource.url=jdbc:h2:mem:galeriumdb
 spring.datasource.driverClassName=org.h2.Driver
 spring.datasource.username=sa
 spring.datasource.password=
+
+# Production (MySQL Example - uncomment and configure as needed)
+# spring.jpa.hibernate.ddl-auto=update
+# spring.datasource.url=jdbc:mysql://localhost:3306/galerium
+# spring.datasource.username=root
+# spring.datasource.password=yourpassword
 ```
 
-### Frontend (`frontend/.env`)
+### Frontend (frontend/.env)
+The frontend needs to know the base URL of the backend API.
 
-```properties
+```bash
 VITE_API_URL=http://localhost:8080/api
 ```
 
----
+## 📚 API Endpoints
 
-## 📚 Rutas principales
+The core API for the `Client` resource follows RESTful conventions.
 
-### Backend
-
-| Método | Ruta                                 | Descripción                       |
-| ------ | ------------------------------------ | --------------------------------- |
-| GET    | `/api/health`                        | Estado de conexión                |
-| GET    | `/api/items?search=&page=&pageSize=` | Listado con búsqueda y paginación |
-| POST   | `/api/items`                         | Crear nuevo item                  |
-| GET    | `/api/items/:id`                     | Ver detalle                       |
-| PUT    | `/api/items/:id`                     | Actualizar item                   |
-| DELETE | `/api/items/:id`                     | Eliminar item                     |
-
----
-
-## 🧪 Pruebas
-
-### Backend
-
-- Test de integración CRUD (`src/test`)
-- Alternativa: colección Postman con scripts
-
-### Frontend
-
-- Test de lista y estado “sin resultados” (opcional)
+| Method   | Endpoint                      | Description                                |
+| :------- | :---------------------------- | :----------------------------------------- |
+| `GET`    | `/api/health`                 | Checks the database connection status.     |
+| `GET`    | `/api/tags`                   | Retrieves a list of all unique tags.       |
+| `GET`    | `/api/clients/paged`          | Lists clients with pagination and sorting. |
+| `GET`    | `/api/clients/search/paged`   | Searches clients by text query.            |
+| `GET`    | `/api/clients/by-tag`         | Filters clients by one or more tags.       |
+| `POST`   | `/api/clients`                | Creates a new client.                      |
+| `GET`    | `/api/clients/{id}`           | Retrieves a single client by ID.           |
+| `PUT`    | `/api/clients/{id}`           | Updates an existing client.                |
+| `DELETE` | `/api/clients/{id}`           | Deletes a client.                          |
 
 ---
 
-## 📸 Capturas
+## 🧪 Testing
 
-Se añadirán capturas o GIFs de las vistas principales (listado, formulario, búsqueda).
+The project includes tests for both the backend and frontend to ensure code quality and reliability.
 
----
+### Backend Tests
 
-## 📦 Scripts útiles
+The backend includes both **Unit tests** for the controller layer (`@WebMvcTest`) and a full **Integration test** (`@SpringBootTest`) that validates the complete CRUD lifecycle against a test database.
 
 ```bash
-# Backend
-mvn spring-boot:run
+# From the /backend directory
 mvn test
+```
 
-# Frontend
-npm run dev
-npm run test
+### Frontend Tests
+The frontend uses Vitest and React Testing Library to test critical components. The tests cover rendering the client list from a mocked API and verifying the "no results" state.
+
+```bash
+# From the /frontend directory
+npm test
 ```
 
 ---
-### Funcionalidades del módulo Client
+## 🛠️ Development Tooling & Quality Assurance
 
-- CRUD completo: creación, edición, visualización y eliminación de clientes
-- Formulario con validación visual y feedback de éxito
-- Paginación dinámica con `GET /clients?page=&size=`
-- Búsqueda con debounce por nombre, email y teléfono
-- Listado real consumiendo API REST
-- Vista de detalle con imagen, datos y acciones
-- Eliminación con confirmación visual (modal personalizado)
+This project is configured with modern tools to ensure code quality, consistency, and a productive development experience. All dependencies are included in the respective `package.json` and `pom.xml` files.
 
-### Experiencia de usuario
+* **ESLint:** Used for static code analysis to find and fix problems in the JavaScript/React code. The configuration is based on the modern "flat config" (`eslint.config.js`).
+* **Prettier:** Integrated for automated code formatting, ensuring a consistent style across the entire codebase.
+* **Vitest & React Testing Library:** A modern testing framework is set up for the frontend, allowing for fast and reliable component testing in a simulated DOM environment (`jsdom`).
 
-- Mensajes de error personalizados en formularios
-- Mensaje de éxito tras guardar cliente
-- Modal de confirmación reutilizable para eliminar
-- Placeholder visual si el cliente no tiene imagen
-- Navegación fluida entre listado, detalle y edición
+---
 
-### Componentes reutilizables
+## 🏗️ Architectural Decisions
 
-- `ClientForm`: formulario adaptable para creación y edición
-- `DeleteModal`: modal de confirmación visual para acciones destructivas
+### Frontend Architecture
 
-### Endpoints utilizados
+* **Scalable CSS with CSS Modules:** To prevent style conflicts and ensure components are self-contained, the project uses CSS Modules. Each component imports its own styles, guaranteeing true encapsulation.
+* **Reusable Global Styles:** A base design system is established in `index.css`, including a centralized color palette with CSS variables and global utility classes for common elements like buttons (`.btn`, `.btn--primary`), promoting a DRY (Don't Repeat Yourself) codebase.
+* **Centralized API Logic:** All `fetch` calls to the backend are managed in a dedicated service file (`src/api/clientService.js`), separating API communication logic from the UI components for better maintainability.
 
-- `GET /api/clients?page=&size=&query=` → listado paginado y filtrado
-- `GET /api/clients/:id` → detalle de cliente
-- `POST /api/clients` → creación
-- `PUT /api/clients/:id` → edición
-- `DELETE /api/clients/:id` → eliminación
+### Backend Architecture
 
-
-✨ Key Features (Características Principales)
-En esta sección, puedes destacar las mejoras de la experiencia de usuario. Esto le dice a quien lo lee que no solo te preocupas de que funcione, sino de que funcione bien.
-
-Ejemplo:
-
-Interfaz Reactiva y Centrada en el Usuario: La aplicación proporciona feedback constante al usuario, mostrando estados de carga para evitar saltos visuales (flicker-free), mensajes de error claros cuando falla la comunicación con el servidor y notificaciones cuando no se encuentran resultados.
-
-Sistema de Diseño Coherente: Se ha implementado una guía de estilos unificada con variables CSS, asegurando consistencia visual en todos los componentes (botones, modales, formularios, etc.).
-
-Modales Interactivos: Los modales de confirmación (ej. para eliminar un cliente) incluyen mejoras de usabilidad como cierre al hacer clic fuera y animaciones suaves para una experiencia más fluida.
-
-Previsualización de Imágenes en Formularios: Para mejorar la usabilidad, el formulario de cliente incluye una vista previa instantánea de la imagen al introducir una URL. El sistema es robusto, mostrando un aviso en caso de que el enlace esté roto o la imagen no esté disponible, evitando así iconos de imagen rota y mejorando la experiencia.
-
-Frontend Architecture (Arquitectura Frontend)
-Aquí puedes describir las decisiones técnicas que hemos tomado. Esto demuestra que piensas en la escalabilidad y el mantenimiento del código.
-
-Ejemplo:
-
-CSS Escalable con CSS Modules: Para evitar conflictos de estilos y asegurar que los componentes sean autocontenidos, el proyecto utiliza CSS Modules. Cada componente importa sus propios estilos, garantizando un encapsulamiento real.
-
-Estilos Globales Reutilizables: Se ha establecido un sistema de diseño base en index.css que incluye:
-
-Una paleta de colores centralizada mediante variables CSS (:root).
-
-Clases de utilidad globales para elementos comunes como botones (.btn, .btn--primary, .btn--danger), promoviendo la reutilización de código (principio DRY).
-
-🚀 Arquitectura Avanzada del Backend
-En esta sección puedes destacar que no te quedaste con la solución simple, sino que pensaste en la escalabilidad.
-
-Ejemplo:
-
-Gestión de Entidades Relacionadas (@ManyToMany): Para la funcionalidad de tags, se ha implementado un modelo de datos robusto utilizando una relación @ManyToMany entre las entidades Client y Tag. Esta arquitectura, superior a soluciones más simples, asegura la integridad de los datos, evita la duplicidad de etiquetas y establece una base escalable para futuras funcionalidades como filtros avanzados o una gestión centralizada de tags.
-
-Capa de Servicio Inteligente: La lógica para la gestión de tags se ha centralizado en la capa de servicio (ClientService). Al crear o actualizar un cliente, el servicio se encarga de buscar los tags existentes o persistir los nuevos de forma transparente, asegurando la consistencia de los datos sin sobrecargar el controlador.
-
-API Eficiente para Sugerencias: Se ha creado un endpoint específico (GET /api/tags) que expone todas las etiquetas únicas y ordenadas, permitiendo que el frontend implemente una funcionalidad de autocompletado de alto rendimiento.
-
-✨ Mejoras en la Experiencia de Usuario (UX)
-Aquí puedes describir cómo la funcionalidad de tags mejora la interacción del usuario con la aplicación.
-
-Ejemplo:
-
-Sistema de Tags con Autocompletado: El formulario de creación/edición de clientes incluye un sistema de tags avanzado. Permite la creación de nuevas etiquetas sobre la marcha (pulsando Enter), pero también sugiere etiquetas existentes a medida que el usuario escribe. Esto fomenta la consistencia y facilita la categorización.
-
-Feedback Visual en Sugerencias: Para mejorar la claridad, la lista de sugerencias resalta en negrita la parte del texto que coincide con la búsqueda del usuario, proporcionando un feedback visual inmediato.
-
-Filtrado por Tags Intuitivo: La página de listado de clientes muestra todas las etiquetas disponibles como filtros clicables. Al seleccionar un tag, la lista se actualiza al instante para mostrar solo los clientes relevantes, permitiendo una segmentación y búsqueda de datos potente y visual.
+* **Robust Entity Relationships (`@ManyToMany`):** For the `tags` feature, a `@ManyToMany` relationship between the `Client` and `Tag` entities was implemented. This architecture ensures data integrity, prevents tag duplication, and provides a scalable foundation for advanced filtering.
+* **Service Layer Intelligence:** The logic for managing `tags` (finding existing ones or creating new ones) is centralized in the service layer (`ClientService`), keeping the controllers slim and focused on handling HTTP requests.
+* **Data Seeding on Startup:** A `DataLoader` component uses `CommandLineRunner` to populate the database with realistic sample data on application startup, facilitating easy testing and development.
