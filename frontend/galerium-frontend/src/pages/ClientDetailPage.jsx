@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import styles from '../styles/ClientDetail.module.css';
-import DeleteModal from './DeleteModal';
+import DeleteModal from '../components/DeleteModal';
 
 export default function ClientDetail() {
   const { id } = useParams();
@@ -41,7 +41,6 @@ export default function ClientDetail() {
 
   return (
     <div className={styles.wrapper}>
-      {/* ---- Cabecera con título y acciones principales ---- */}
       <header className={styles.header}>
         <div className={styles.headerTitle}>
           <button
@@ -69,7 +68,6 @@ export default function ClientDetail() {
       </header>
 
       <main>
-        {/* ---- Sección del Perfil (Foto y Nombre) ---- */}
         <section className={styles.profileHeader}>
           <div className={styles.profilePicture}>
             {client.profilePictureUrl ? (
@@ -93,7 +91,6 @@ export default function ClientDetail() {
           </div>
         </section>
 
-        {/* ---- Grid con los detalles del cliente ---- */}
         <section className={styles.detailsGrid}>
           <div className={styles.detailItem}>
             <span className={styles.label}>Phone</span>
@@ -109,7 +106,6 @@ export default function ClientDetail() {
           </div>
         </section>
 
-        {/* ---- Secciones Futuras ---- */}
         <section className={styles.futureSections}>
           <div className={styles.futureCard}>
             <h3>Galleries</h3>
