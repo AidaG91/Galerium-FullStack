@@ -9,9 +9,9 @@ import galerium.model.Tag;
 import galerium.repository.ClientRepository;
 import galerium.repository.TagRepository;
 import galerium.service.interfaces.ClientService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -50,7 +50,6 @@ public class ClientServiceImpl implements ClientService {
         client.setUserRole(UserRole.CLIENT);
         client.setProfilePictureUrl(clientRequest.getProfilePictureUrl());
 
-        // --> 3. Llama al nuevo método para gestionar los tags
         if (clientRequest.getTags() != null) {
             client.setTags(manageTags(clientRequest.getTags()));
         }
@@ -64,7 +63,7 @@ public class ClientServiceImpl implements ClientService {
     @Transactional(readOnly = true)
     public ClientResponseDTO getClientById(Long id) {
         Client client = clientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Client not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Client not found with id: " + id));
         return toResponseDTO(client);
     }
 
@@ -81,7 +80,7 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public ClientResponseDTO updateClient(Long id, @Valid ClientUpdateDTO clientUpdate) {
         Client client = clientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Client not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Client not found with id: " + id));
 
         if (clientUpdate.getFullName() != null) {
             client.setFullName(clientUpdate.getFullName());
@@ -119,7 +118,7 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public void deleteClient(Long id) {
         if (!clientRepository.existsById(id)) {
-            throw new RuntimeException("Client not found with id: " + id);
+            throw new EntityNotFoundException("Client not found with id: " + id);
         }
         clientRepository.deleteById(id);
     }
@@ -186,12 +185,11 @@ public class ClientServiceImpl implements ClientService {
 
     private Set<Tag> manageTags(List<String> tagNames) {
         if (tagNames == null || tagNames.isEmpty()) {
-            return null; // O un Set vacío, dependiendo de tu lógica de negocio
+            return null;
         }
         return tagNames.stream()
-                .map(String::trim) // Limpia espacios en blanco
+                .map(String::trim)
                 .map(tagName -> tagRepository.findByName(tagName)
-                        // Si el tag existe, lo devuelve. Si no, crea uno nuevo y lo guarda.
                         .orElseGet(() -> tagRepository.save(new Tag(tagName))))
                 .collect(Collectors.toSet());
     }

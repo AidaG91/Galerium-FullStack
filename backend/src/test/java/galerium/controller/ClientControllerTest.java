@@ -17,6 +17,7 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
@@ -29,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Import({TestSecurityConfig.class, GlobalExceptionHandler.class})
 @WebMvcTest(controllers = ClientController.class)
+@ActiveProfiles("test")
 class ClientControllerTest {
 
     private static final String BASE = "/api/clients";
