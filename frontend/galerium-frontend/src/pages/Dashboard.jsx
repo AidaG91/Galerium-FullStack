@@ -30,7 +30,7 @@ export default function Dashboard() {
         <h1>Dashboard</h1>
       </header>
 
-      {/* ... aquí irán las estadísticas ... */}
+      {/* ... stats will go here ... */}
 
       <section className={styles.connectionTest}>
         <h3>System Status</h3>
@@ -42,7 +42,7 @@ export default function Dashboard() {
           {isTesting ? 'Testing...' : 'Test Connection'}
         </button>
 
-        {/* Mensaje de estado dinámico */}
+        {/* Status message */}
         {connectionStatus === 'success' && (
           <p className={`${styles.statusMessage} ${styles.success}`}>
             <FaCheckCircle /> Connection to the database is successful.

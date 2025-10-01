@@ -178,8 +178,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<ClientResponseDTO> getClientsByTag(String tag, Pageable pageable) {
-        return clientRepository.findByTags_NameIgnoreCase(tag, pageable)
+    public Page<ClientResponseDTO> getClientsByTag(List<String> tags, Pageable pageable) {
+        return clientRepository.findByAllTags(tags, (long) tags.size(), pageable)
                 .map(this::toResponseDTO);
     }
 

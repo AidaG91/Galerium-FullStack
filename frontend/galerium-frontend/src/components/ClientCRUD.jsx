@@ -11,12 +11,11 @@ import { useNavigate } from 'react-router-dom';
 import DeleteModal from './DeleteModal';
 import { deleteClient } from '../api/clientService';
 
-
 export default function ClientCRUD({
   isLoading,
   clients,
   allTags,
-  selectedTag,
+  selectedTags,
   onSelectTag,
   onClearTagFilter,
   setClients,
@@ -33,7 +32,7 @@ export default function ClientCRUD({
   const handleDelete = async (id) => {
     try {
       await deleteClient(id);
-      setClients(prev => prev.filter(c => c.id !== id));
+      setClients((prev) => prev.filter((c) => c.id !== id));
     } catch (err) {
       console.error('Failed to delete client', err);
     } finally {
@@ -44,7 +43,6 @@ export default function ClientCRUD({
   return (
     <section className={styles.wrapper}>
       <header className={styles.header}>
-        {/* Nuevo contenedor para la fila superior */}
         <div className={styles.headerTop}>
           <h2>Clients</h2>
           <button
@@ -55,7 +53,6 @@ export default function ClientCRUD({
           </button>
         </div>
 
-        {/* La barra de búsqueda ahora es un hijo directo de la cabecera */}
         <div className={styles.searchInputWrapper}>
           <FaSearch className={styles.searchIcon} />
           <input
@@ -81,15 +78,13 @@ export default function ClientCRUD({
           {allTags.map((tag) => (
             <button
               key={tag}
-              className={`${styles.tagFilterButton} ${
-                selectedTag === tag ? styles.active : ''
-              }`}
+              className={`${styles.tagFilterButton} ${selectedTags.includes(tag) ? styles.active : ''}`}
               onClick={() => onSelectTag(tag)}
             >
               {tag}
             </button>
           ))}
-          {selectedTag && (
+          {selectedTags.length > 0 && (
             <button
               className={styles.clearFilterButton}
               onClick={onClearTagFilter}

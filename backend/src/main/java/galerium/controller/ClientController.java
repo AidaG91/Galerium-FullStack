@@ -122,7 +122,7 @@ public class ClientController {
     @GetMapping("/by-tag")
     @Operation(summary = "Get paged clients by tag", description = "Retrieve clients filtered by a specific tag, with pagination.")
     public ResponseEntity<Page<ClientResponseDTO>> getClientsByTag(
-            @RequestParam String tag,
+            @RequestParam List<String> tag,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id,asc") String[] sort) {

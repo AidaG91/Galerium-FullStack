@@ -34,6 +34,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
         """)
     Page<Client> searchClientsPaged(@Param("query") String query, Pageable pageable);
 
-    Page<Client> findByTags_NameIgnoreCase(String tagName, Pageable pageable);
+    @Query("SELECT c FROM Client c JOIN c.tags t WHERE t.name IN :tags GROUP BY c HAVING COUNT(t.id) = :tagCount")
+    Page<Client> findByAllTags(@Param("tags") List<String> tags, @Param("tagCount") Long tagCount, Pageable pageable);
 
 }

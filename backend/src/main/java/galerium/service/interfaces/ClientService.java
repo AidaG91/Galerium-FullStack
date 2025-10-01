@@ -34,7 +34,5 @@ public interface ClientService {
 
     Page<ClientResponseDTO> searchClientsPaged(String query, Pageable pageable);
 
-    Page<ClientResponseDTO> getClientsByTag(String tag, Pageable pageable);
-
-
+    Page<ClientResponseDTO> getClientsByTag(List<String> tags, Pageable pageable);
 }

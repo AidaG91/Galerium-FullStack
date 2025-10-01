@@ -6,11 +6,10 @@ import ClientsPage from './ClientsPage';
 vi.spyOn(window, 'fetch');
 
 function createFetchResponse(data) {
-  return { ok: true, json: () => new Promise(resolve => resolve(data)) };
+  return { ok: true, json: () => new Promise((resolve) => resolve(data)) };
 }
 
 describe('ClientsPage', () => {
-
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -57,7 +56,7 @@ describe('ClientsPage', () => {
     await waitFor(() => {
       expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
     });
-    
+
     expect(screen.getByText(/no clients found/i)).toBeInTheDocument();
   });
 });

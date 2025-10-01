@@ -9,15 +9,12 @@ export default function ClientsPage() {
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
 
-  // Estados para la búsqueda y filtrado
   const [query, setQuery] = useState('');
   const [debouncedQuery] = useDebounce(query, 500);
-  const [selectedTag, setSelectedTag] = useState(null);
+  const [selectedTags, setSelectedTags] = useState([]);
 
-  // Estado para la lista de todos los tags disponibles
   const [allTags, setAllTags] = useState([]);
 
-  // Paginación
   const [page, setPage] = useState(0);
   const [size, _setSize] = useState(10);
   const [sortBy, _setSortBy] = useState('fullName');
@@ -32,20 +29,18 @@ export default function ClientsPage() {
   useEffect(() => {
     setIsLoading(true);
 
-    // --> 2. Prepara los parámetros para la API
     const params = {
       page,
       size,
       sort: `${sortBy},${sortDir}`,
     };
 
-    if (selectedTag) {
-      params.tag = selectedTag;
+    if (selectedTags.length > 0) {
+      params.tag = selectedTags;
     } else if (debouncedQuery.trim().length > 0) {
       params.q = debouncedQuery;
     }
 
-    // --> 3. Llama a la función centralizada
     getClients(params)
       .then((data) => {
         setClients(data.content ?? []);
@@ -54,17 +49,20 @@ export default function ClientsPage() {
       })
       .catch((err) => {
         console.error('Error fetching clients', err);
-        // Aquí podrías añadir un estado de error para mostrarlo en la UI
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, [debouncedQuery, selectedTag, page, size, sortBy, sortDir]);
+  }, [debouncedQuery, selectedTags, page, size, sortBy, sortDir]);
 
   const handleSelectTag = (tag) => {
     setPage(0);
     setQuery('');
-    setSelectedTag(tag);
+    setSelectedTags((prevTags) =>
+      prevTags.includes(tag)
+        ? prevTags.filter((t) => t !== tag)
+        : [...prevTags, tag]
+    );
   };
 
   return (
@@ -79,9 +77,9 @@ export default function ClientsPage() {
       totalPages={totalPages}
       totalElements={totalElements}
       allTags={allTags}
-      selectedTag={selectedTag}
+      selectedTags={selectedTags}
       onSelectTag={handleSelectTag}
-      onClearTagFilter={() => setSelectedTag(null)}
+      onClearTagFilter={() => setSelectedTags([])}
     />
   );
 }

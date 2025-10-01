@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ClientForm from '../components/ClientForm';
 import styles from '../styles/ClientFormPage.module.css';
-import { getClientById, getAllTags } from '../api/clientService'; 
+import { getClientById, getAllTags } from '../api/clientService';
 
 export default function ClientFormPage() {
   const { id } = useParams();

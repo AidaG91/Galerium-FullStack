@@ -3,7 +3,6 @@ import { FaTimes } from 'react-icons/fa';
 import styles from '../styles/ClientForm.module.css';
 import { createClient, updateClient } from '../api/clientService';
 
-
 export default function ClientForm({
   initialData,
   onSave,
@@ -12,7 +11,6 @@ export default function ClientForm({
 }) {
   const isEdit = Boolean(initialData?.id);
 
-  // --- Form state ---
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -47,13 +45,11 @@ export default function ClientForm({
     }
   }, [initialData]);
 
-  // --- Handlers Form ---
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
   };
 
-  // --- Tag Handling Logic ---
   const handleTagInputChange = (e) => {
     const value = e.target.value;
     setCurrentTag(value);
@@ -63,7 +59,6 @@ export default function ClientForm({
       return;
     }
 
-    // Filtra las sugerencias
     const suggestions = allTags
       .filter((tag) => tag.toLowerCase().includes(value.toLowerCase()))
       .filter((tag) => !form.tags.includes(tag));
@@ -71,7 +66,6 @@ export default function ClientForm({
     setTagSuggestions(suggestions);
   };
 
-  // Función para cuando se selecciona una sugerencia
   const handleSelectTag = (tag) => {
     if (!form.tags.includes(tag)) {
       setForm((f) => ({ ...f, tags: [...f.tags, tag] }));
@@ -99,7 +93,6 @@ export default function ClientForm({
     }));
   };
 
-  // --- CREATE / UPDATE ---
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -139,20 +132,19 @@ export default function ClientForm({
     setSubmitError(null);
 
     try {
-      const saveAction = isEdit 
-        ? updateClient(initialData.id, payload) 
+      const saveAction = isEdit
+        ? updateClient(initialData.id, payload)
         : createClient(payload);
-        
+
       const savedClient = await saveAction;
 
       setSuccess(true);
       setTimeout(() => {
         onSave(savedClient);
       }, 1000);
-
     } catch (err) {
-      console.error("Failed to save:", err.message);
-      setSubmitError("Failed to save client. Please try again later.");
+      console.error('Failed to save:', err.message);
+      setSubmitError('Failed to save client. Please try again later.');
     } finally {
       if (!success) {
         setIsSubmitting(false);
@@ -253,6 +245,7 @@ export default function ClientForm({
           </div>
         )}
 
+        {/* Internal Notes */}
         <textarea
           name="internalNotes"
           value={form.internalNotes}
@@ -265,16 +258,16 @@ export default function ClientForm({
 
         <div className={styles.tagInputWrapper}>
           <label htmlFor="tags">Tags</label>
-         <div className={styles.tagsContainer}>
-          {form.tags.map((tag) => (
-            <div key={tag} className={styles.tag}>
-              {tag}
-              <button type="button" onClick={() => handleRemoveTag(tag)}>
-                <FaTimes />
-              </button>
-            </div>
-          ))}
-        </div>
+          <div className={styles.tagsContainer}>
+            {form.tags.map((tag) => (
+              <div key={tag} className={styles.tag}>
+                {tag}
+                <button type="button" onClick={() => handleRemoveTag(tag)}>
+                  <FaTimes />
+                </button>
+              </div>
+            ))}
+          </div>
 
           <div className={styles.autocompleteWrapper}>
             <input
@@ -315,21 +308,20 @@ export default function ClientForm({
           </div>
         </div>
 
-        {/* Muestra el error de envío si existe */}
         {submitError && <p className={styles.submitErrorText}>{submitError}</p>}
 
         {/* Create/Save and Cancel buttons */}
         <div className={styles.formActions}>
           <button
             type="submit"
-            className="btn btn--primary" // <-- Clase global
+            className="btn btn--primary"
             disabled={isSubmitting}
           >
             {isSubmitting ? 'Saving...' : isEdit ? 'Save' : 'Create'}
           </button>
           <button
             type="button"
-            className="btn btn--secondary" // <-- Clase global
+            className="btn btn--secondary"
             onClick={onClose}
             disabled={isSubmitting}
           >
