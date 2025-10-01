@@ -69,6 +69,19 @@
   color: white;
 }
 
+.closeButton {
+  display: none; 
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: var(--color-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+
 /* --- Bottom section --- */
 .sidebarBottom {
   display: flex;
@@ -108,4 +121,26 @@
 .settingsLink:hover {
   background-color: var(--color-bg);
   color: var(--color-text);
+}
+
+
+/* ---- Media Query for mobiles ---- */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-100%); 
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000; 
+  }
+
+  .sidebar.open {
+    transform: translateX(0); 
+  }
+  
+  .closeButton {
+    display: block; 
+  }
 }

@@ -1,0 +1,49 @@
+.layout {
+  display: flex;
+}
+
+.mainContent {
+  flex-grow: 1;
+  width: 100%;
+}
+
+.content {
+  padding: 2rem;
+}
+
+/* --- Estilos solo para móvil --- */
+.hamburgerButton {
+  display: none; /* Oculto por defecto */
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--color-text);
+  cursor: pointer;
+  padding: 1rem;
+}
+
+.overlay {
+  display: none; /* Oculto por defecto */
+}
+
+/* ---- Media Query para pantallas pequeñas (móviles) ---- */
+@media (max-width: 768px) {
+  .hamburgerButton {
+    display: block; /* Lo hacemos visible */
+  }
+  
+  .content {
+    padding: 1rem; /* Reducimos el padding en móvil */
+  }
+
+  .overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999; /* Por debajo del sidebar, pero encima del contenido */
+  }
+}
