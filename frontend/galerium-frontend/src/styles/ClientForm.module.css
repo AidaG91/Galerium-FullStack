@@ -1,9 +1,7 @@
-/* En ClientForm.module.css (el antiguo Clients.module.css) */
-
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem; /* Aumentamos un poco el espacio */
+  gap: 1.5rem;
 }
 
 .form input {
@@ -12,14 +10,11 @@
   border-radius: 6px;
   font-size: 1rem;
   font-family: inherit;
-  background-color: var(
-    --color-bg
-  ); /* Un fondo ligeramente distinto al de la página */
+  background-color: var(--color-bg);
   color: var(--color-text);
   transition: all 0.2s ease;
 }
 
-/* 🔥 Efecto de foco para mejor UX */
 .form input:focus {
   outline: none;
   border-color: var(--color-accent);
@@ -31,7 +26,7 @@
   justify-content: flex-end;
   gap: 1rem;
   margin-top: 1rem;
-  padding-top: 1.5rem; 
+  padding-top: 1.5rem;
   border-top: 1px solid var(--color-border);
 }
 
@@ -43,7 +38,7 @@
 .errorText {
   color: var(--color-danger);
   font-size: 0.85rem;
-  margin-top: -1rem; 
+  margin-top: -1rem;
 }
 
 .successText {
@@ -78,8 +73,6 @@
   margin-top: 1rem;
 }
 
-/* --- Estilos para la Vista Previa de Imagen --- */
-
 .imagePreviewWrapper {
   margin-top: 1rem;
   display: flex;
@@ -89,7 +82,7 @@
 .previewImage {
   width: 120px;
   height: 120px;
-  border-radius: 50%; 
+  border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--color-border);
   background-color: var(--color-bg);
@@ -112,7 +105,6 @@
 }
 
 /* --- Styles for Tags Input --- */
-
 .tagInputWrapper {
   display: flex;
   flex-direction: column;
@@ -158,15 +150,13 @@
   opacity: 1;
 }
 
-/* --- Estilos para el Autocompletado de Tags --- */
-
 .autocompleteWrapper {
-  position: relative; /* Clave para posicionar la lista de sugerencias */
+  position: relative;
 }
 
 .suggestionsList {
   position: absolute;
-  top: 100%; /* Justo debajo del input */
+  top: 100%; 
   left: 0;
   right: 0;
   background-color: var(--color-surface);
@@ -179,7 +169,7 @@
   z-index: 10;
   max-height: 150px;
   overflow-y: auto;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .suggestionsList li {

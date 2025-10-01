@@ -208,7 +208,7 @@ public class ClientServiceImpl implements ClientService {
         dto.setUserRole(client.getUserRole());
         dto.setProfilePictureUrl(client.getProfilePictureUrl());
         dto.setRegistrationDate(client.getRegistrationDate());
-        
+
         if (client.getInternalNotes() != null) {
             dto.setInternalNotes(client.getInternalNotes());
         }

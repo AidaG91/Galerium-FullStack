@@ -1,10 +1,9 @@
-
 .wrapper {
   padding: 2.5rem;
   max-width: 700px;
-  margin: 2rem auto; /* Añadido margen superior para que no se pegue al borde */
+  margin: 2rem auto;
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border); /* Borde sutil para definir el contenedor */
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
@@ -14,7 +13,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-  padding-bottom: 1rem; /* Añadido para separar visualmente el título */
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--color-border);
 }
 

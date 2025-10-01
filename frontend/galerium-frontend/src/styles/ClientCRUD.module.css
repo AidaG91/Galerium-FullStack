@@ -1,4 +1,4 @@
-/* --- Contenedor de la página de la lista --- */
+/* --- Main container --- */
 .wrapper {
   padding: 2.5rem;
   max-width: 1000px;
@@ -11,13 +11,12 @@
 
 .header {
   display: flex;
-  flex-direction: column; /* Apila los elementos verticalmente */
-  align-items: stretch; /* Estira los hijos para que ocupen todo el ancho */
-  gap: 1.5rem; /* Espacio entre la fila superior y la barra de búsqueda */
+  flex-direction: column; 
+  align-items: stretch;
+  gap: 2rem;
   margin-bottom: 1.5rem;
 }
 
-/* Creamos el estilo para la nueva fila superior */
 .headerTop {
   display: flex;
   justify-content: space-between;
@@ -28,9 +27,9 @@
   margin: 0;
 }
 
-/* --- Acciones (Buscador y botón) --- */
+/* --- Search and button --- */
 .searchInputWrapper {
-  position: relative; /* <-- ESTA ES LA LÍNEA CLAVE QUE FALTABA */
+  position: relative; 
   display: flex;
   align-items: center;
   width: 100%;
@@ -38,7 +37,7 @@
 
 .searchInput {
   width: 100%;
-  padding: 0.6rem 2.5rem; /* Espacio para los iconos a izq y dcha */
+  padding: 0.6rem 2.5rem; 
   border: 1px solid var(--color-border);
   border-radius: 6px;
   background-color: var(--color-bg);
@@ -51,7 +50,7 @@
   position: absolute;
   left: 1rem;
   color: var(--color-muted);
-  pointer-events: none; /* Evita que el icono bloquee el clic en el input */
+  pointer-events: none; 
 }
 
 .clearSearchBtn {
@@ -77,7 +76,7 @@
 }
 
 
-/* --- Tabla --- */
+/* --- Table --- */
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -114,7 +113,7 @@
   white-space: nowrap;
 }
 
-/* --- Acciones en la tabla (iconos) --- */
+/* --- Action icons --- */
 .actionsCell {
   width: 1%; 
   white-space: nowrap;
@@ -144,7 +143,7 @@
   background-color: color-mix(in srgb, var(--color-danger) 15%, transparent);
 }
 
-/* --- Paginación --- */
+/* --- Pagination --- */
 .pagination {
   display: flex;
   justify-content: space-between;
@@ -161,7 +160,7 @@
   gap: 0.5rem;
 }
 
-/* --- Estilos para la Carga Suave --- */
+/* --- Loading style --- */
 .tableWrapper {
   position: relative; 
 }
@@ -182,7 +181,7 @@
   transition: opacity 0.3s ease;
 }
 
-/* Un spinner simple hecho con CSS */
+/* --- Spinner --- */
 .spinner {
   width: 40px;
   height: 40px;
@@ -204,7 +203,7 @@
   color: var(--color-muted);
 }
 
-/* --- Estilos para los Filtros de Tags --- */
+/* --- Tags --- */
 .tagFilters {
   display: flex;
   align-items: center;

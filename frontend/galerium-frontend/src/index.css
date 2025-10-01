@@ -3,7 +3,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root {
-  /* Paleta de colores definida */
   --color-bg: #f8f9fa;
   --color-surface: #ffffff;
   --color-border: #e9ecef;
@@ -14,7 +13,6 @@
   --color-danger: #d9534f;
   --color-danger-hover: #c9302c;
 
-  /* Propiedades de fuente globales */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -44,7 +42,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   line-height: 1.2;
-  color: var(--color-text); /* CORREGIDO: Usando tu variable de texto */
+  color: var(--color-text); 
 }
 
 h1 { font-size: 2.5em; }
@@ -52,20 +50,16 @@ h2 { font-size: 2em; }
 
 a {
   font-weight: 500;
-  color: var(--color-accent); /* CORREGIDO: Usando tu color de acento */
+  color: var(--color-accent); 
   text-decoration: none;
   transition: color 0.2s ease;
 }
 a:hover {
-  color: var(--color-accent-hover); /* CORREGIDO: Usando tu color de acento */
+  color: var(--color-accent-hover); 
 }
 
 
-/* =============================================== */
-/* --- BOTONES GLOBALES --- */
-/* =============================================== */
-
-/* Clase base para todos los botones de la aplicación */
+/* --- Global buttons --- */
 .btn {
   border: none;
   padding: 0.6rem 1.2rem;
@@ -77,12 +71,11 @@ a:hover {
   text-decoration: none;
   display: inline-block;
   text-align: center;
-   display: inline-flex; /* Para alinear el icono y el texto */
+   display: inline-flex; 
   align-items: center;
-  gap: 0.5rem; /* Espacio entre el icono y el texto */
+  gap: 0.5rem; 
 }
 
-/* Modificador para el botón principal (con color de acento) */
 .btn--primary {
   background-color: var(--color-accent);
   color: white;
@@ -93,7 +86,6 @@ a:hover {
   transform: translateY(-2px);
 }
 
-/* Modificador para un botón secundario (ej. Cancelar) */
 .btn--secondary {
   background-color: transparent;
   color: var(--color-text);
@@ -105,7 +97,6 @@ a:hover {
   border-color: var(--color-muted);
 }
 
-/* Estilo para cuando los botones están desactivados */
 .btn:disabled {
   background-color: var(--color-border);
   color: var(--color-muted);
@@ -113,7 +104,6 @@ a:hover {
   transform: none;
 }
 
-/* Modificador para botones de peligro (ej. Borrar) */
 .btn--danger {
   background-color: var(--color-danger);
   color: white;

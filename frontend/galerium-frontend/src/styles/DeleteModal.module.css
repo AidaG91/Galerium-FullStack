@@ -10,7 +10,6 @@
   align-items: center;
   z-index: 1000;
   backdrop-filter: blur(5px);
-  /* --> Añadimos la animación también al fondo */
   animation: overlayFadeIn 0.3s ease-out;
 }
 
@@ -21,7 +20,6 @@
   max-width: 400px;
   text-align: center;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  /* Renombramos la animación para que sea más clara (opcional) */
   animation: modalPopIn 0.3s ease-out;
 }
 
@@ -45,7 +43,6 @@
   margin-top: 2rem;
 }
 
-/* Animación de entrada */
 @keyframes overlayFadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
