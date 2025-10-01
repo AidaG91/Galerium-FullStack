@@ -1,8 +1,14 @@
-import { useState } from "react";
-import { FaEye, FaEdit, FaTrash, FaSearch, FaTimesCircle } from "react-icons/fa";
-import styles from "../styles/ClientCRUD.module.css";
-import { useNavigate } from "react-router-dom";
-import DeleteModal from "./DeleteModal";
+import { useState } from 'react';
+import {
+  FaEye,
+  FaEdit,
+  FaTrash,
+  FaSearch,
+  FaTimesCircle,
+} from 'react-icons/fa';
+import styles from '../styles/ClientCRUD.module.css';
+import { useNavigate } from 'react-router-dom';
+import DeleteModal from './DeleteModal';
 
 export default function ClientCRUD({
   isLoading,
@@ -25,12 +31,12 @@ export default function ClientCRUD({
   const handleDelete = async (id) => {
     try {
       const res = await fetch(`http://localhost:8080/api/clients/${id}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setClients((prev) => prev.filter((c) => c.id !== id));
     } catch (err) {
-      console.error("Failed to delete client", err);
+      console.error('Failed to delete client', err);
     } finally {
       setConfirmId(null);
     }
@@ -38,34 +44,37 @@ export default function ClientCRUD({
 
   return (
     <section className={styles.wrapper}>
-       <header className={styles.header}>
-    {/* Nuevo contenedor para la fila superior */}
-    <div className={styles.headerTop}>
-      <h2>Clients</h2>
-      <button
-        className="btn btn--primary"
-        onClick={() => navigate("/clients/new")}
-      >
-        Add Client
-      </button>
-    </div>
+      <header className={styles.header}>
+        {/* Nuevo contenedor para la fila superior */}
+        <div className={styles.headerTop}>
+          <h2>Clients</h2>
+          <button
+            className="btn btn--primary"
+            onClick={() => navigate('/clients/new')}
+          >
+            Add Client
+          </button>
+        </div>
 
-    {/* La barra de búsqueda ahora es un hijo directo de la cabecera */}
-    <div className={styles.searchInputWrapper}>
-      <FaSearch className={styles.searchIcon} />
-      <input
-        className={styles.searchInput}
-        placeholder="Search client…"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      {query && (
-        <button className={styles.clearSearchBtn} onClick={() => setQuery('')}>
-          <FaTimesCircle />
-        </button>
-      )}
-    </div>
-  </header>
+        {/* La barra de búsqueda ahora es un hijo directo de la cabecera */}
+        <div className={styles.searchInputWrapper}>
+          <FaSearch className={styles.searchIcon} />
+          <input
+            className={styles.searchInput}
+            placeholder="Search client…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          {query && (
+            <button
+              className={styles.clearSearchBtn}
+              onClick={() => setQuery('')}
+            >
+              <FaTimesCircle />
+            </button>
+          )}
+        </div>
+      </header>
 
       {allTags && allTags.length > 0 && (
         <div className={styles.tagFilters}>
@@ -74,7 +83,7 @@ export default function ClientCRUD({
             <button
               key={tag}
               className={`${styles.tagFilterButton} ${
-                selectedTag === tag ? styles.active : ""
+                selectedTag === tag ? styles.active : ''
               }`}
               onClick={() => onSelectTag(tag)}
             >
@@ -154,7 +163,7 @@ export default function ClientCRUD({
 
       <div className={styles.pagination}>
         <p>
-          Showing page <strong>{page + 1}</strong> of{" "}
+          Showing page <strong>{page + 1}</strong> of{' '}
           <strong>{totalPages}</strong> ({totalElements} clients)
         </p>
         <div className={styles.pageButtons}>

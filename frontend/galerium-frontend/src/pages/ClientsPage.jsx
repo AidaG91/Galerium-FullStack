@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { useDebounce } from "use-debounce";
-import ClientCRUD from "../components/ClientCRUD";
+import { useState, useEffect } from 'react';
+import { useDebounce } from 'use-debounce';
+import ClientCRUD from '../components/ClientCRUD';
 
 export default function ClientsPage() {
   const [clients, setClients] = useState([]);
@@ -9,7 +9,7 @@ export default function ClientsPage() {
   const [totalElements, setTotalElements] = useState(0);
 
   // Estados para la búsqueda y filtrado
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [debouncedQuery] = useDebounce(query, 500);
   const [selectedTag, setSelectedTag] = useState(null);
 
@@ -18,9 +18,9 @@ export default function ClientsPage() {
 
   // Paginación
   const [page, setPage] = useState(0);
-  const [size, setSize] = useState(10);
-  const [sortBy, setSortBy] = useState("fullName");
-  const [sortDir, setSortDir] = useState("asc");
+  const [size, _setSize] = useState(10);
+  const [sortBy, _setSortBy] = useState('fullName');
+  const [sortDir, _setSortDir] = useState('asc');
 
   useEffect(() => {
     (async () => {
@@ -29,7 +29,7 @@ export default function ClientsPage() {
         const data = await res.json();
         setAllTags(data);
       } catch (err) {
-        console.error("Failed to fetch tags", err);
+        console.error('Failed to fetch tags', err);
       }
     })();
   }, []);
@@ -62,7 +62,8 @@ export default function ClientsPage() {
         setTotalPages(data.totalPages ?? 0);
         setTotalElements(data.totalElements ?? 0);
       } catch (err) {
-        if (err.name !== "AbortError") console.error("Error fetching clients", err);
+        if (err.name !== 'AbortError')
+          console.error('Error fetching clients', err);
       } finally {
         if (!signal.aborted) setIsLoading(false);
       }
@@ -73,10 +74,10 @@ export default function ClientsPage() {
 
   const handleSelectTag = (tag) => {
     setPage(0);
-    setQuery("");
+    setQuery('');
     setSelectedTag(tag);
   };
-  
+
   return (
     <ClientCRUD
       isLoading={isLoading}

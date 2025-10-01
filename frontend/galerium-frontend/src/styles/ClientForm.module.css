@@ -113,7 +113,7 @@
   background-color: var(--color-bg);
   color: var(--color-text);
   transition: all 0.2s ease;
-  resize: vertical; 
+  resize: vertical;
 }
 
 .textarea:focus {
@@ -174,7 +174,7 @@
 
 .suggestionsList {
   position: absolute;
-  top: 100%; 
+  top: 100%;
   left: 0;
   right: 0;
   background-color: var(--color-surface);

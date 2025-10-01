@@ -26,7 +26,7 @@
 }
 
 .headerTitle h1 {
-  font-size: 1.8rem; 
+  font-size: 1.8rem;
   margin: 0;
 }
 
@@ -48,7 +48,7 @@
   height: 120px;
   border-radius: 50%;
   overflow: hidden;
-  flex-shrink: 0; 
+  flex-shrink: 0;
   border: 4px solid var(--color-surface);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -56,7 +56,7 @@
 .profilePicture img {
   width: 100%;
   height: 100%;
-  object-fit: cover; 
+  object-fit: cover;
 }
 
 .placeholderIcon {
@@ -98,7 +98,7 @@
   font-weight: 600;
   color: var(--color-muted);
   margin-bottom: 0.5rem;
-  text-transform: uppercase; 
+  text-transform: uppercase;
 }
 
 .value {
@@ -123,7 +123,7 @@
 
 .futureCard {
   background-color: var(--color-bg);
-  border: 1px dashed var(--color-border); 
+  border: 1px dashed var(--color-border);
   border-radius: 8px;
   padding: 2rem;
   text-align: center;
@@ -135,20 +135,19 @@
   color: var(--color-text);
 }
 
-
 /* ---- Tags ---- */
 .tagsContainer {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-top: 1.5rem; 
+  margin-top: 1.5rem;
 }
 
 .tag {
   background-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
   color: var(--color-accent-hover);
   padding: 0.3rem 0.8rem;
-  border-radius: 20px; 
+  border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 600;
 }

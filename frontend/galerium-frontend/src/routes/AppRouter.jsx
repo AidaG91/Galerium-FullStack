@@ -1,10 +1,10 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import Dashboard from "../pages/Dashboard";
-import LandingPage from "../pages/LandingPage";
-import Clients from "../pages/ClientsPage";
-import SidebarLayout from "../layouts/SidebarLayout";
-import ClientDetail from "../components/ClientDetail";
-import ClientFormPage from "../pages/ClientFormPage";
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Dashboard from '../pages/Dashboard';
+import LandingPage from '../pages/LandingPage';
+import Clients from '../pages/ClientsPage';
+import SidebarLayout from '../layouts/SidebarLayout';
+import ClientDetail from '../components/ClientDetail';
+import ClientFormPage from '../pages/ClientFormPage';
 
 export default function AppRouter() {
   return (

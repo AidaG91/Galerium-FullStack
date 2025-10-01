@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { FaTimes } from "react-icons/fa";
-import styles from "../styles/ClientForm.module.css";
+import { useState, useEffect } from 'react';
+import { FaTimes } from 'react-icons/fa';
+import styles from '../styles/ClientForm.module.css';
 
 export default function ClientForm({
   initialData,
@@ -12,14 +12,14 @@ export default function ClientForm({
 
   // --- Form state ---
   const [form, setForm] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    phoneNumber: "",
-    address: "",
-    profilePictureUrl: "",
+    fullName: '',
+    email: '',
+    password: '',
+    phoneNumber: '',
+    address: '',
+    profilePictureUrl: '',
     tags: [],
-    internalNotes: "",
+    internalNotes: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -27,20 +27,20 @@ export default function ClientForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [imageError, setImageError] = useState(false);
-  const [currentTag, setCurrentTag] = useState("");
+  const [currentTag, setCurrentTag] = useState('');
   const [tagSuggestions, setTagSuggestions] = useState([]);
 
   useEffect(() => {
     if (initialData) {
       setForm({
-        fullName: initialData.fullName ?? "",
-        email: initialData.email ?? "",
-        password: "",
-        phoneNumber: initialData.phoneNumber ?? "",
-        address: initialData.address ?? "",
-        profilePictureUrl: initialData.profilePictureUrl ?? "",
+        fullName: initialData.fullName ?? '',
+        email: initialData.email ?? '',
+        password: '',
+        phoneNumber: initialData.phoneNumber ?? '',
+        address: initialData.address ?? '',
+        profilePictureUrl: initialData.profilePictureUrl ?? '',
         tags: initialData.tags ?? [],
-        internalNotes: initialData.internalNotes ?? "",
+        internalNotes: initialData.internalNotes ?? '',
       });
     }
   }, [initialData]);
@@ -56,7 +56,7 @@ export default function ClientForm({
     const value = e.target.value;
     setCurrentTag(value);
 
-    if (value.trim() === "") {
+    if (value.trim() === '') {
       setTagSuggestions([]);
       return;
     }
@@ -74,18 +74,18 @@ export default function ClientForm({
     if (!form.tags.includes(tag)) {
       setForm((f) => ({ ...f, tags: [...f.tags, tag] }));
     }
-    setCurrentTag("");
+    setCurrentTag('');
     setTagSuggestions([]);
   };
 
   const handleAddTag = (e) => {
-    if (e.key === "Enter" && currentTag.trim() !== "") {
+    if (e.key === 'Enter' && currentTag.trim() !== '') {
       e.preventDefault();
       const newTag = currentTag.trim();
       if (!form.tags.includes(newTag)) {
         setForm((f) => ({ ...f, tags: [...f.tags, newTag] }));
       }
-      setCurrentTag("");
+      setCurrentTag('');
       setTagSuggestions([]);
     }
   };
@@ -113,7 +113,7 @@ export default function ClientForm({
       phoneNumber: form.phoneNumber.trim(),
       address: form.address.trim(),
       profilePictureUrl: form.profilePictureUrl.trim(),
-      userRole: "CLIENT",
+      userRole: 'CLIENT',
       tags: form.tags,
       internalNotes: form.internalNotes.trim(),
       ...(form.password &&
@@ -121,11 +121,11 @@ export default function ClientForm({
     };
 
     const newErrors = {};
-    if (!form.fullName.trim()) newErrors.fullName = "Name is required";
-    if (!form.email.trim()) newErrors.email = "Email is required";
+    if (!form.fullName.trim()) newErrors.fullName = 'Name is required';
+    if (!form.email.trim()) newErrors.email = 'Email is required';
     if (!isEdit && form.password.trim().length < 8)
-      newErrors.password = "Password must be at least 8 characters";
-    if (!form.phoneNumber.trim()) newErrors.phoneNumber = "Phone is required";
+      newErrors.password = 'Password must be at least 8 characters';
+    if (!form.phoneNumber.trim()) newErrors.phoneNumber = 'Phone is required';
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -140,10 +140,10 @@ export default function ClientForm({
       const res = await fetch(
         isEdit
           ? `http://localhost:8080/api/clients/${initialData.id}` // PUT
-          : "http://localhost:8080/api/clients", // POST
+          : 'http://localhost:8080/api/clients', // POST
         {
-          method: isEdit ? "PUT" : "POST",
-          headers: { "Content-Type": "application/json" },
+          method: isEdit ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         }
       );
@@ -159,8 +159,8 @@ export default function ClientForm({
         onSave({ ...payload, id: newId });
       }, 1000);
     } catch (err) {
-      console.error("Failed to save:", err.message);
-      setSubmitError("Failed to save client. Please try again later.");
+      console.error('Failed to save:', err.message);
+      setSubmitError('Failed to save client. Please try again later.');
     } finally {
       if (!success) {
         setIsSubmitting(false);
@@ -170,7 +170,7 @@ export default function ClientForm({
 
   return (
     <div className={styles.formWrapper}>
-      <h3>{isEdit ? "Edit client" : "Create client"}</h3>
+      <h3>{isEdit ? 'Edit client' : 'Create client'}</h3>
 
       <form onSubmit={handleSubmit} className={styles.form} noValidate>
         {success && (
@@ -182,7 +182,7 @@ export default function ClientForm({
           value={form.fullName}
           onChange={handleChange}
           placeholder="Full Name"
-          className={errors.fullName ? styles.inputError : ""}
+          className={errors.fullName ? styles.inputError : ''}
         />
         {errors.fullName && (
           <p className={styles.errorText}>{errors.fullName}</p>
@@ -206,7 +206,7 @@ export default function ClientForm({
               value={form.password}
               onChange={handleChange}
               placeholder="Password"
-              className={errors.password ? styles.inputError : ""}
+              className={errors.password ? styles.inputError : ''}
             />
             {errors.password && (
               <p className={styles.errorText}>{errors.password}</p>
@@ -220,7 +220,7 @@ export default function ClientForm({
           value={form.phoneNumber}
           onChange={handleChange}
           placeholder="Phone Number"
-          className={errors.phoneNumber ? styles.inputError : ""}
+          className={errors.phoneNumber ? styles.inputError : ''}
         />
         {errors.phoneNumber && (
           <p className={styles.errorText}>{errors.phoneNumber}</p>
@@ -333,7 +333,7 @@ export default function ClientForm({
             className="btn btn--primary" // <-- Clase global
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Saving..." : isEdit ? "Save" : "Create"}
+            {isSubmitting ? 'Saving...' : isEdit ? 'Save' : 'Create'}
           </button>
           <button
             type="button"

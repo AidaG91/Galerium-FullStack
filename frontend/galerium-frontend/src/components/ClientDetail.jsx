@@ -1,9 +1,9 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { FaUserCircle } from "react-icons/fa";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import styles from "../styles/ClientDetail.module.css";
-import DeleteModal from "./DeleteModal";
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { FaUserCircle } from 'react-icons/fa';
+import { FaEdit, FaTrash } from 'react-icons/fa';
+import styles from '../styles/ClientDetail.module.css';
+import DeleteModal from './DeleteModal';
 
 export default function ClientDetail() {
   const { id } = useParams();
@@ -14,11 +14,11 @@ export default function ClientDetail() {
   const handleDelete = async (id) => {
     try {
       await fetch(`http://localhost:8080/api/clients/${id}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
-      navigate("/clients");
+      navigate('/clients');
     } catch (err) {
-      console.error("Error deleting client", err);
+      console.error('Error deleting client', err);
     } finally {
       setShowConfirm(false);
     }
@@ -32,7 +32,7 @@ export default function ClientDetail() {
         const data = await res.json();
         setClient(data);
       } catch (err) {
-        console.error("Error fetching client", err);
+        console.error('Error fetching client', err);
       }
     })();
   }, [id]);
@@ -46,7 +46,7 @@ export default function ClientDetail() {
         <div className={styles.headerTitle}>
           <button
             className="btn btn--secondary"
-            onClick={() => navigate("/clients")}
+            onClick={() => navigate('/clients')}
           >
             ← Back to Clients
           </button>
@@ -81,9 +81,9 @@ export default function ClientDetail() {
           <div className={styles.profileInfo}>
             <h2>{client.fullName}</h2>
             <p>{client.email}</p>
-             {client.tags && client.tags.length > 0 && (
+            {client.tags && client.tags.length > 0 && (
               <div className={styles.tagsContainer}>
-                {client.tags.map(tag => (
+                {client.tags.map((tag) => (
                   <span key={tag} className={styles.tag}>
                     {tag}
                   </span>
@@ -97,15 +97,15 @@ export default function ClientDetail() {
         <section className={styles.detailsGrid}>
           <div className={styles.detailItem}>
             <span className={styles.label}>Phone</span>
-            <span className={styles.value}>{client.phoneNumber || "—"}</span>
+            <span className={styles.value}>{client.phoneNumber || '—'}</span>
           </div>
           <div className={styles.detailItem}>
             <span className={styles.label}>Address</span>
-            <span className={styles.value}>{client.address || "—"}</span>
+            <span className={styles.value}>{client.address || '—'}</span>
           </div>
           <div className={`${styles.detailItem} ${styles.fullWidth}`}>
             <span className={styles.label}>Notes</span>
-            <span className={styles.value}>{client.internalNotes || "—"}</span>
+            <span className={styles.value}>{client.internalNotes || '—'}</span>
           </div>
         </section>
 

@@ -1,5 +1,5 @@
-import styles from "../styles/DeleteModal.module.css";
-import { FaExclamationTriangle } from "react-icons/fa";
+import styles from '../styles/DeleteModal.module.css';
+import { FaExclamationTriangle } from 'react-icons/fa';
 
 export default function DeleteModal({ message, onConfirm, onCancel }) {
   const handleOverlayClick = (e) => {

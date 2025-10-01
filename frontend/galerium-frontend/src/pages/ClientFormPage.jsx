@@ -1,7 +1,7 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import ClientForm from "../components/ClientForm";
-import styles from "../styles/ClientFormPage.module.css";
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import ClientForm from '../components/ClientForm';
+import styles from '../styles/ClientFormPage.module.css';
 
 export default function ClientFormPage() {
   const { id } = useParams();
@@ -13,7 +13,7 @@ export default function ClientFormPage() {
     (async () => {
       try {
         const res = await fetch(`http://localhost:8080/api/tags`);
-        if (!res.ok) throw new Error("Could not fetch tags");
+        if (!res.ok) throw new Error('Could not fetch tags');
         const data = await res.json();
         setAllTags(data);
       } catch (err) {
@@ -31,7 +31,7 @@ export default function ClientFormPage() {
         const data = await res.json();
         setInitialData(data);
       } catch (err) {
-        console.error("Error loading client", err);
+        console.error('Error loading client', err);
       }
     })();
   }, [id]);
@@ -39,10 +39,10 @@ export default function ClientFormPage() {
   return (
     <section className={styles.wrapper}>
       <header className={styles.header}>
-        <h2>{id ? "Edit Client" : "Create Client"}</h2>
+        <h2>{id ? 'Edit Client' : 'Create Client'}</h2>
         <button
           className="btn btn--secondary"
-          onClick={() => navigate("/clients")}
+          onClick={() => navigate('/clients')}
         >
           ← Back to list
         </button>
@@ -50,10 +50,10 @@ export default function ClientFormPage() {
 
       <ClientForm
         initialData={initialData}
-        allTags={allTags} 
-        onClose={() => navigate(id ? `/clients/${id}` : "/clients")}
+        allTags={allTags}
+        onClose={() => navigate(id ? `/clients/${id}` : '/clients')}
         onSave={(client) => {
-          const target = client?.id ? `/clients/${client.id}` : "/clients";
+          const target = client?.id ? `/clients/${client.id}` : '/clients';
           navigate(target);
         }}
       />

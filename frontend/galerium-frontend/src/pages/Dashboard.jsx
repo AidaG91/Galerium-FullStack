@@ -1,24 +1,24 @@
-import { useState } from "react";
-import { FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
-import styles from "../styles/Dashboard.module.css";
+import { useState } from 'react';
+import { FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
+import styles from '../styles/Dashboard.module.css';
 
 export default function Dashboard() {
-  const [connectionStatus, setConnectionStatus] = useState(null); 
+  const [connectionStatus, setConnectionStatus] = useState(null);
   const [isTesting, setIsTesting] = useState(false);
 
   const probarConexion = async () => {
     setIsTesting(true);
     setConnectionStatus(null);
     try {
-      const res = await fetch("http://localhost:8080/api/health");
+      const res = await fetch('http://localhost:8080/api/health');
       if (res.ok) {
-        setConnectionStatus("success");
+        setConnectionStatus('success');
       } else {
-        setConnectionStatus("error");
+        setConnectionStatus('error');
       }
     } catch (err) {
       console.error(err);
-      setConnectionStatus("error");
+      setConnectionStatus('error');
     } finally {
       setIsTesting(false);
     }
@@ -39,16 +39,16 @@ export default function Dashboard() {
           className="btn btn--secondary"
           disabled={isTesting}
         >
-          {isTesting ? "Testing..." : "Test Connection"}
+          {isTesting ? 'Testing...' : 'Test Connection'}
         </button>
 
         {/* Mensaje de estado dinámico */}
-        {connectionStatus === "success" && (
+        {connectionStatus === 'success' && (
           <p className={`${styles.statusMessage} ${styles.success}`}>
             <FaCheckCircle /> Connection to the database is successful.
           </p>
         )}
-        {connectionStatus === "error" && (
+        {connectionStatus === 'error' && (
           <p className={`${styles.statusMessage} ${styles.error}`}>
             <FaExclamationCircle /> Could not connect to the database.
           </p>
