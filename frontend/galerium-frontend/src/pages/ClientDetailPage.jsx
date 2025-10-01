@@ -104,6 +104,16 @@ export default function ClientDetail() {
             <span className={styles.label}>Notes</span>
             <span className={styles.value}>{client.internalNotes || '—'}</span>
           </div>
+          <div className={styles.detailItem}>
+            <span className={styles.label}>Client Since</span>
+            <span className={styles.value}>
+              {new Date(client.registrationDate).toLocaleDateString('en-En', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </span>
+          </div>
         </section>
 
         <section className={styles.futureSections}>
