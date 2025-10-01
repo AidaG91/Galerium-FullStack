@@ -19,6 +19,7 @@ export default function ClientForm({
     address: "",
     profilePictureUrl: "",
     tags: [],
+    internalNotes: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -39,6 +40,7 @@ export default function ClientForm({
         address: initialData.address ?? "",
         profilePictureUrl: initialData.profilePictureUrl ?? "",
         tags: initialData.tags ?? [],
+        internalNotes: initialData.internalNotes ?? "",
       });
     }
   }, [initialData]);
@@ -113,6 +115,7 @@ export default function ClientForm({
       profilePictureUrl: form.profilePictureUrl.trim(),
       userRole: "CLIENT",
       tags: form.tags,
+      internalNotes: form.internalNotes.trim(),
       ...(form.password &&
         form.password.trim().length >= 8 && { password: form.password.trim() }),
     };
@@ -257,6 +260,16 @@ export default function ClientForm({
             )}
           </div>
         )}
+
+        <textarea
+          name="internalNotes"
+          value={form.internalNotes}
+          onChange={handleChange}
+          placeholder="Internal notes about the client..."
+          className={styles.textarea}
+          rows="4"
+          disabled={isSubmitting}
+        />
 
         <div className={styles.tagInputWrapper}>
           <label htmlFor="tags">Tags</label>
