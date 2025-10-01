@@ -20,18 +20,18 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
               SELECT c FROM Client c
               WHERE LOWER(c.fullName) LIKE LOWER(CONCAT('%', :query, '%'))
                  OR LOWER(c.email) LIKE LOWER(CONCAT('%', :query, '%'))
-                 OR LOWER(c.phoneNumber) LIKE LOWER(CONCAT('%', :query, '%'))
+                 OR REPLACE(c.phoneNumber, ' ', '') LIKE REPLACE(LOWER(CONCAT('%', :query, '%')), ' ', '')
                  OR LOWER(c.address) LIKE LOWER(CONCAT('%', :query, '%'))
             """)
     List<Client> searchClients(@Param("query") String query);
 
     @Query("""
-              SELECT c FROM Client c
-              WHERE LOWER(c.fullName) LIKE LOWER(CONCAT('%', :query, '%'))
-                 OR LOWER(c.email) LIKE LOWER(CONCAT('%', :query, '%'))
-                 OR LOWER(c.phoneNumber) LIKE LOWER(CONCAT('%', :query, '%'))
-                 OR LOWER(c.address) LIKE LOWER(CONCAT('%', :query, '%'))
-            """)
+          SELECT c FROM Client c
+          WHERE LOWER(c.fullName) LIKE LOWER(CONCAT('%', :query, '%'))
+             OR LOWER(c.email) LIKE LOWER(CONCAT('%', :query, '%'))
+             OR REPLACE(c.phoneNumber, ' ', '') LIKE REPLACE(LOWER(CONCAT('%', :query, '%')), ' ', '')
+             OR LOWER(c.address) LIKE LOWER(CONCAT('%', :query, '%'))
+        """)
     Page<Client> searchClientsPaged(@Param("query") String query, Pageable pageable);
 
     Page<Client> findByTags_NameIgnoreCase(String tagName, Pageable pageable);
