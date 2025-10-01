@@ -1,53 +1,60 @@
 import { NavLink } from 'react-router-dom';
 import styles from '../styles/Sidebar.module.css';
+import {
+  FaTachometerAlt,
+  FaUsers,
+  FaImages,
+  FaCalendarAlt,
+  FaCog,
+  FaUserCircle,
+} from 'react-icons/fa';
 
 export default function Sidebar() {
   return (
-    <aside className={styles.container}>
-      <NavLink
-        to="/dashboard"
-        className={({ isActive }) =>
-          isActive ? `${styles.link} ${styles.active}` : styles.link
-        }
-      >
-        Dashboard
-      </NavLink>
+    <nav className={styles.sidebar}>
+      {/* --- Upper Section --- */}
+      <div className={styles.sidebarTop}>
+        <div className={styles.logo}>
+          <img src="/galerium-logo-text.png" alt="Galerium Logo" />
+        </div>
+        <ul className={styles.navList}>
+          <li>
+            <NavLink to="/dashboard" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+              <FaTachometerAlt />
+              <span>Dashboard</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/clients" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+              <FaUsers />
+              <span>Clients</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/galleries" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+              <FaImages />
+              <span>Galleries</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/calendar" className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
+              <FaCalendarAlt />
+              <span>Calendar</span>
+            </NavLink>
+          </li>
+        </ul>
+      </div>
 
-      <NavLink
-        to="/clients"
-        className={({ isActive }) =>
-          isActive ? `${styles.link} ${styles.active}` : styles.link
-        }
-      >
-        Clients
-      </NavLink>
-
-      <NavLink
-        to="/galleries"
-        className={({ isActive }) =>
-          isActive ? `${styles.link} ${styles.active}` : styles.link
-        }
-      >
-        Galleries
-      </NavLink>
-
-      <NavLink
-        to="/calendar"
-        className={({ isActive }) =>
-          isActive ? `${styles.link} ${styles.active}` : styles.link
-        }
-      >
-        Calendar
-      </NavLink>
-
-      <NavLink
-        to="/settings"
-        className={({ isActive }) =>
-          isActive ? `${styles.link} ${styles.active}` : styles.link
-        }
-      >
-        Settings
-      </NavLink>
-    </aside>
+      {/* --- Lower Section --- */}
+      <div className={styles.sidebarBottom}>
+        <div className={styles.userProfile}>
+          <FaUserCircle className={styles.avatar} />
+          <div className={styles.userName}>Photographer</div>
+        </div>
+        <NavLink to="/settings" className={styles.settingsLink}>
+          <FaCog />
+        </NavLink>
+      </div>
+    </nav>
   );
 }
