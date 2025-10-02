@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 import {
   FaEye,
   FaEdit,
@@ -32,9 +33,10 @@ export default function ClientCRUD({
   const handleDelete = async (id) => {
     try {
       await deleteClient(id);
-      setClients((prev) => prev.filter((c) => c.id !== id));
+      setClients((prevClients) => prevClients.filter((c) => c.id !== id));
     } catch (err) {
       console.error('Failed to delete client', err);
+      toast.error('Failed to delete the client.');
     } finally {
       setConfirmId(null);
     }

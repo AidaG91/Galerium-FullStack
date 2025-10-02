@@ -1,43 +1,59 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { FaUserCircle, FaEdit, FaTrash } from "react-icons/fa";
-import styles from "../styles/ClientDetail.module.css";
-import DeleteModal from "../components/DeleteModal";
-import { getClientById } from "../api/clientService";
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { FaUserCircle, FaEdit, FaTrash } from 'react-icons/fa';
+import { toast } from 'react-hot-toast';
+import styles from '../styles/ClientDetail.module.css';
+import DeleteModal from '../components/DeleteModal';
+import { getClientById, deleteClient } from '../api/clientService';
 
 export default function ClientDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [client, setClient] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const handleDelete = async (id) => {
-    try {
-      await fetch(`http://localhost:8080/api/clients/${id}`, {
-        method: 'DELETE',
-      });
-      navigate('/clients');
-    } catch (err) {
-      console.error('Error deleting client', err);
-    } finally {
-      setShowConfirm(false);
-    }
-  };
+ const handleDelete = async () => {
+  try {
+    await deleteClient(client.id);
+    navigate('/clients');
+  } catch (err) {
+    console.error('Error deleting client', err);
+    toast.error('Failed to delete the client.');
+  } finally {
+    setShowConfirm(false);
+  }
+};
 
   useEffect(() => {
+    setLoading(true);
+    setError(null);
     getClientById(id)
       .then(setClient)
-      .catch(err => {
-        console.error("Error fetching client", err);
-        // Opcional: Redirigir si el cliente no se encuentra
-        // navigate('/404'); 
-      });
-  }, [id]);
+      .catch((err) => {
+        console.error('Error fetching client', err);
+        setError(err.message);
+        navigate('/not-found', { replace: true });
+      })
+      .finally(() => setLoading(false));
+  }, [id, navigate]);
 
-  if (!client) {
-    return <div className={styles.wrapper}><p>Loading client...</p></div>;
+  if (loading) {
+    return (
+      <div className={styles.wrapper}>
+        <p>Loading client...</p>
+      </div>
+    );
   }
 
+  if (!client) {
+    return (
+      <div className={styles.wrapper}>
+        <p>Client not found.</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -131,7 +147,7 @@ export default function ClientDetailPage() {
       {showConfirm && (
         <DeleteModal
           message="Are you sure you want to delete this client?"
-          onConfirm={() => handleDelete(client.id)}
+          onConfirm={handleDelete}
           onCancel={() => setShowConfirm(false)}
         />
       )}

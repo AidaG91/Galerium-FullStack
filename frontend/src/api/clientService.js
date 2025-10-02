@@ -1,4 +1,5 @@
 import { supabase } from './supabaseClient';
+import { toast } from 'react-hot-toast';
 
 // --- CLIENTS API ---
 const toDatabaseFormat = (clientData) => {
@@ -72,7 +73,7 @@ export const getClientById = async (id) => {
     .single();
 
   if (error) throw error;
-  if (!data) return null;
+  if (!data) throw new Error('Client not found');
 
   return {
     id: data.id,
@@ -110,7 +111,6 @@ export const createClient = async (clientData) => {
 
     if (tagsError) throw tagsError;
 
-    // 4. Creamos las relaciones en la tabla de unión
     const relations = tagObjects.map((tagObj) => ({
       client_id: newClient.id,
       tag_id: tagObj.id,
@@ -121,13 +121,14 @@ export const createClient = async (clientData) => {
     if (relationError) throw relationError;
   }
 
+  toast.success('Client created successfully!');
+
   return newClient;
 };
 
 export const updateClient = async (id, clientData) => {
   const { tags, ...clientInfo } = clientData;
 
-  // 1. Actualizamos los datos básicos del cliente
   const { data: updatedClient, error: clientError } = await supabase
     .from('clients')
     .update(toDatabaseFormat(clientInfo))
@@ -137,14 +138,12 @@ export const updateClient = async (id, clientData) => {
 
   if (clientError) throw clientError;
 
-  // 2. Borramos todas las relaciones de tags antiguas para este cliente
   const { error: deleteError } = await supabase
     .from('client_tags')
     .delete()
     .eq('client_id', id);
   if (deleteError) throw deleteError;
 
-  // 3. Volvemos a crear las relaciones con la nueva lista de tags (si la hay)
   if (tags && tags.length > 0) {
     const { data: tagObjects, error: tagsError } = await supabase
       .from('tags')
@@ -163,8 +162,8 @@ export const updateClient = async (id, clientData) => {
     const { error: relationError } = await supabase
       .from('client_tags')
       .insert(relations);
-    if (relationError) throw relationError;
   }
+  toast.success('Client updated successfully!');
 
   return updatedClient;
 };
@@ -172,6 +171,7 @@ export const updateClient = async (id, clientData) => {
 export const deleteClient = async (id) => {
   const { error } = await supabase.from('clients').delete().eq('id', id);
   if (error) throw error;
+  toast.success('Client deleted successfully!');
 };
 
 // --- TAGS API ---

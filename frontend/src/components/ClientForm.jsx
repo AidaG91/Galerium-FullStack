@@ -28,7 +28,6 @@ export default function ClientForm({
   });
 
   const [errors, setErrors] = useState({});
-  const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [imageError, setImageError] = useState(false);
@@ -187,10 +186,7 @@ export default function ClientForm({
 
       const savedClient = await saveAction;
 
-      setSuccess(true);
-      setTimeout(() => {
-        onSave(savedClient);
-      }, 1000);
+      onSave(savedClient);
     } catch (err) {
       console.error('Failed to save:', err.message);
       setSubmitError('Failed to save client. Please try again later.');
@@ -206,9 +202,6 @@ export default function ClientForm({
       <h3>{isEdit ? 'Edit client' : 'Create client'}</h3>
 
       <form onSubmit={handleSubmit} className={styles.form} noValidate>
-        {success && (
-          <p className={styles.successText}>✅ Client saved successfully!</p>
-        )}
         {/* Full name */}
         <input
           name="fullName"

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
 import styles from '../styles/Dashboard.module.css';
+import { supabase } from '../api/supabaseClient';
 
 export default function Dashboard() {
   const [connectionStatus, setConnectionStatus] = useState(null);
@@ -9,15 +10,20 @@ export default function Dashboard() {
   const probarConexion = async () => {
     setIsTesting(true);
     setConnectionStatus(null);
+
     try {
-      const res = await fetch('http://localhost:8080/api/health');
-      if (res.ok) {
-        setConnectionStatus('success');
-      } else {
-        setConnectionStatus('error');
+      const { error, count } = await supabase
+        .from('tags')
+        .select('*', { count: 'exact', head: true });
+
+      if (error) {
+        throw error;
       }
+
+      console.log(`Connection successful. Found ${count} tags.`);
+      setConnectionStatus('success');
     } catch (err) {
-      console.error(err);
+      console.error('Connection test failed:', err);
       setConnectionStatus('error');
     } finally {
       setIsTesting(false);
