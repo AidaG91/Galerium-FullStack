@@ -31,7 +31,7 @@
   .hamburgerButton {
     display: block; /* Lo hacemos visible */
   }
-  
+
   .content {
     padding: 1rem; /* Reducimos el padding en móvil */
   }

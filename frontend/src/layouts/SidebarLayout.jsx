@@ -24,7 +24,9 @@ export default function SidebarLayout() {
         </main>
       </div>
 
-      {isSidebarOpen && <div className={styles.overlay} onClick={toggleSidebar}></div>}
+      {isSidebarOpen && (
+        <div className={styles.overlay} onClick={toggleSidebar}></div>
+      )}
     </div>
   );
 }

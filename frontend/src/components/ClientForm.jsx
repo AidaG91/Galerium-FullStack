@@ -3,6 +3,11 @@ import { FaTimes } from 'react-icons/fa';
 import styles from '../styles/ClientForm.module.css';
 import { createClient, updateClient } from '../api/clientService';
 
+const isEmailValid = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
 export default function ClientForm({
   initialData,
   onSave,
@@ -29,6 +34,7 @@ export default function ClientForm({
   const [imageError, setImageError] = useState(false);
   const [currentTag, setCurrentTag] = useState('');
   const [tagSuggestions, setTagSuggestions] = useState([]);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
   useEffect(() => {
     if (initialData) {
@@ -48,6 +54,9 @@ export default function ClientForm({
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: null }));
+    }
   };
 
   const handleTagInputChange = (e) => {
@@ -75,14 +84,35 @@ export default function ClientForm({
   };
 
   const handleAddTag = (e) => {
-    if (e.key === 'Enter' && currentTag.trim() !== '') {
+    if (e.key === 'Enter') {
       e.preventDefault();
-      const newTag = currentTag.trim();
-      if (!form.tags.includes(newTag)) {
-        setForm((f) => ({ ...f, tags: [...f.tags, newTag] }));
+
+      if (highlightedIndex >= 0 && tagSuggestions[highlightedIndex]) {
+        handleSelectTag(tagSuggestions[highlightedIndex]);
+      } else if (currentTag.trim() !== '') {
+        const newTag = currentTag.trim();
+        if (!form.tags.includes(newTag)) {
+          setForm((f) => ({ ...f, tags: [...f.tags, newTag] }));
+        }
+        setCurrentTag('');
+        setTagSuggestions([]);
       }
-      setCurrentTag('');
-      setTagSuggestions([]);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setHighlightedIndex((prev) =>
+        prev < tagSuggestions.length - 1 ? prev + 1 : 0
+      );
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setHighlightedIndex((prev) =>
+        prev > 0 ? prev - 1 : tagSuggestions.length - 1
+      );
+    } else {
+      handleAddTag(e);
     }
   };
 
@@ -93,14 +123,29 @@ export default function ClientForm({
     }));
   };
 
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    if (name === 'email' && value.trim() !== '' && !isEmailValid(value)) {
+      setErrors((prev) => ({
+        ...prev,
+        email: 'Please enter a valid email format.',
+      }));
+    }
+    if (
+      !isEdit &&
+      name === 'password' &&
+      value.trim() !== '' &&
+      value.trim().length < 8
+    ) {
+      setErrors((prev) => ({
+        ...prev,
+        password: 'Password must be at least 8 characters',
+      }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formEl = e.currentTarget;
-    if (!formEl.checkValidity()) {
-      formEl.reportValidity();
-      return;
-    }
 
     const payload = {
       fullName: form.fullName.trim(),
@@ -117,8 +162,12 @@ export default function ClientForm({
 
     const newErrors = {};
     if (!form.fullName.trim()) newErrors.fullName = 'Name is required';
-    if (!form.email.trim()) newErrors.email = 'Email is required';
-    if (!isEdit && form.password.trim().length < 8)
+    if (!form.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!isEmailValid(form.email)) {
+      newErrors.email = 'Please enter a valid email format.';
+    }
+    if (!isEdit && (!form.password || form.password.trim().length < 8))
       newErrors.password = 'Password must be at least 8 characters';
     if (!form.phoneNumber.trim()) newErrors.phoneNumber = 'Phone is required';
 
@@ -177,7 +226,9 @@ export default function ClientForm({
           name="email"
           value={form.email}
           onChange={handleChange}
+          onBlur={handleBlur}
           placeholder="Email"
+          className={errors.email ? styles.inputError : ''}
         />
         {errors.email && <p className={styles.errorText}>{errors.email}</p>}
 
@@ -189,6 +240,7 @@ export default function ClientForm({
               type="password"
               value={form.password}
               onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="Password"
               className={errors.password ? styles.inputError : ''}
             />
@@ -275,7 +327,7 @@ export default function ClientForm({
               type="text"
               value={currentTag}
               onChange={handleTagInputChange}
-              onKeyDown={handleAddTag}
+              onKeyDown={handleKeyDown}
               placeholder="Type to add or search tags..."
               autoComplete="off"
               disabled={isSubmitting}
@@ -283,7 +335,7 @@ export default function ClientForm({
 
             {tagSuggestions.length > 0 && (
               <ul className={styles.suggestionsList}>
-                {tagSuggestions.map((suggestion) => {
+                {tagSuggestions.map((suggestion, index) => {
                   const matchStart = suggestion
                     .toLowerCase()
                     .indexOf(currentTag.toLowerCase());
@@ -296,6 +348,9 @@ export default function ClientForm({
                     <li
                       key={suggestion}
                       onClick={() => handleSelectTag(suggestion)}
+                      className={
+                        index === highlightedIndex ? styles.highlighted : ''
+                      }
                     >
                       {beforeMatch}
                       <strong>{matchText}</strong>

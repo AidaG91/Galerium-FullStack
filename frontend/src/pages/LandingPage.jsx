@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FaSignInAlt } from 'react-icons/fa';
-import styles from '../styles/LandingPage.module.css'; 
+import styles from '../styles/LandingPage.module.css';
 
 export default function LandingPage() {
   return (

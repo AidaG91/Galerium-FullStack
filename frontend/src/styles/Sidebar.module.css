@@ -70,7 +70,7 @@
 }
 
 .closeButton {
-  display: none; 
+  display: none;
   position: absolute;
   top: 1.5rem;
   right: 1.5rem;
@@ -80,7 +80,6 @@
   font-size: 1.5rem;
   cursor: pointer;
 }
-
 
 /* --- Bottom section --- */
 .sidebarBottom {
@@ -123,7 +122,6 @@
   color: var(--color-text);
 }
 
-
 /* ---- Media Query for mobiles ---- */
 @media (max-width: 768px) {
   .sidebar {
@@ -131,16 +129,16 @@
     left: 0;
     top: 0;
     bottom: 0;
-    transform: translateX(-100%); 
+    transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
-    z-index: 1000; 
+    z-index: 1000;
   }
 
   .sidebar.open {
-    transform: translateX(0); 
+    transform: translateX(0);
   }
-  
+
   .closeButton {
-    display: block; 
+    display: block;
   }
 }

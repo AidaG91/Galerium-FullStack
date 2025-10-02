@@ -199,3 +199,7 @@
 .suggestionsList li:hover {
   background-color: var(--color-bg);
 }
+
+.suggestionsList li.highlighted {
+  background-color: var(--color-bg);
+}

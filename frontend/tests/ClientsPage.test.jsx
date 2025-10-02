@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
-import ClientsPage from './ClientsPage';
+import ClientsPage from '../src/pages/ClientsPage';
 
 vi.spyOn(window, 'fetch');
 
