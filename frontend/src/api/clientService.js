@@ -1,3 +1,5 @@
+import { supabase } from './supabaseClient';
+
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
 
@@ -65,6 +67,13 @@ export const deleteClient = (id) => {
   }).then(handleResponse);
 };
 
-export const getAllTags = () => {
-  return fetch(`${API_BASE_URL}/tags`).then(handleResponse);
+export const getAllTags = async () => {
+  const { data, error } = await supabase.from('tags').select('name');
+
+  if (error) {
+    console.error('Error fetching tags:', error);
+    throw error;
+  }
+
+  return data.map((tag) => tag.name);
 };
