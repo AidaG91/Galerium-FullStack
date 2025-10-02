@@ -17,7 +17,7 @@ export default function ClientsPage() {
 
   const [page, setPage] = useState(0);
   const [size, _setSize] = useState(10);
-  const [sortBy, _setSortBy] = useState('fullName');
+  const [sortBy, _setSortBy] = useState('full_name');
   const [sortDir, _setSortDir] = useState('asc');
 
   useEffect(() => {

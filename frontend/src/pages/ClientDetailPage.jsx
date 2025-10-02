@@ -1,11 +1,11 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { FaUserCircle } from 'react-icons/fa';
-import { FaEdit, FaTrash } from 'react-icons/fa';
-import styles from '../styles/ClientDetail.module.css';
-import DeleteModal from '../components/DeleteModal';
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { FaUserCircle, FaEdit, FaTrash } from "react-icons/fa";
+import styles from "../styles/ClientDetail.module.css";
+import DeleteModal from "../components/DeleteModal";
+import { getClientById } from "../api/clientService";
 
-export default function ClientDetail() {
+export default function ClientDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [client, setClient] = useState(null);
@@ -25,19 +25,19 @@ export default function ClientDetail() {
   };
 
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch(`http://localhost:8080/api/clients/${id}`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        setClient(data);
-      } catch (err) {
-        console.error('Error fetching client', err);
-      }
-    })();
+    getClientById(id)
+      .then(setClient)
+      .catch(err => {
+        console.error("Error fetching client", err);
+        // Opcional: Redirigir si el cliente no se encuentra
+        // navigate('/404'); 
+      });
   }, [id]);
 
-  if (!client) return <p>Loading client...</p>;
+  if (!client) {
+    return <div className={styles.wrapper}><p>Loading client...</p></div>;
+  }
+
 
   return (
     <div className={styles.wrapper}>

@@ -1,79 +1,183 @@
 import { supabase } from './supabaseClient';
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+// --- CLIENTS API ---
+const toDatabaseFormat = (clientData) => {
+  return {
+    full_name: clientData.fullName,
+    phone_number: clientData.phoneNumber,
+    profile_picture_url: clientData.profilePictureUrl,
+    internal_notes: clientData.internalNotes,
+    email: clientData.email,
+    address: clientData.address,
+  };
+};
 
-const handleResponse = async (response) => {
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(
-      `HTTP ${response.status}: ${errorText || 'An error occurred'}`
+export const getClients = async (params) => {
+  let query = supabase
+    .from('clients')
+    .select('*, tags(name)', { count: 'exact' });
+
+  // 1. Filtrado por Tags
+  if (params.tag && params.tag.length > 0) {
+    const { data: clientIds, error: rpcError } = await supabase.rpc(
+      'find_clients_with_all_tags',
+      {
+        tag_names: params.tag,
+      }
     );
-  }
-  if (response.status === 204) {
-    return;
-  }
-  return response.json();
-};
 
-export const getClients = (params) => {
-  let path;
-  const tags = params.tag || [];
-
-  if (tags.length > 0) {
-    path = '/clients/by-tag';
-  } else if (params.q) {
-    path = '/clients/search/paged';
-  } else {
-    path = '/clients/paged';
+    if (rpcError) throw rpcError;
+    const ids = clientIds.map((c) => c.client_id);
+    query = query.in('id', ids);
+  }
+  // 2. Búsqueda por Texto
+  else if (params.q) {
+    query = query.or(`full_name.ilike.%${params.q}%,email.ilike.%${params.q}%`);
   }
 
-  const url = new URL(`${API_BASE_URL}${path}`);
+  // 3. Paginación y Ordenación
+  const [sortField, sortDir] = (params.sort || 'fullName,asc').split(',');
+  const from = params.page * params.size;
+  const to = from + params.size - 1;
+  query = query
+    .order(sortField, { ascending: sortDir === 'asc' })
+    .range(from, to);
 
-  Object.keys(params).forEach((key) => {
-    if (key === 'tag' && Array.isArray(params[key])) {
-      params[key].forEach((tagValue) => url.searchParams.append(key, tagValue));
-    } else {
-      url.searchParams.append(key, params[key]);
-    }
-  });
+  const { data, error, count } = await query;
+  if (error) throw error;
 
-  return fetch(url).then(handleResponse);
+  return {
+    content: data.map((client) => ({
+      id: client.id,
+      email: client.email,
+      address: client.address,
+      isEnabled: client.isEnabled,
+      registrationDate: client.created_at,
+      fullName: client.full_name,
+      phoneNumber: client.phone_number,
+      profilePictureUrl: client.profile_picture_url,
+      internalNotes: client.internal_notes,
+      tags: client.tags ? client.tags.map((t) => t.name) : [],
+    })),
+    totalElements: count,
+    totalPages: Math.ceil((count || 0) / params.size),
+  };
 };
 
-export const getClientById = (id) => {
-  return fetch(`${API_BASE_URL}/clients/${id}`).then(handleResponse);
+export const getClientById = async (id) => {
+  const { data, error } = await supabase
+    .from('clients')
+    .select('*, tags(name)')
+    .eq('id', id)
+    .single();
+
+  if (error) throw error;
+  if (!data) return null;
+
+  return {
+    id: data.id,
+    email: data.email,
+    address: data.address,
+    isEnabled: data.isEnabled,
+    registrationDate: data.created_at,
+    fullName: data.full_name,
+    phoneNumber: data.phone_number,
+    profilePictureUrl: data.profile_picture_url,
+    internalNotes: data.internal_notes,
+    tags: data.tags ? data.tags.map((t) => t.name) : [],
+  };
 };
 
-export const createClient = (clientData) => {
-  return fetch(`${API_BASE_URL}/clients`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(clientData),
-  }).then(handleResponse);
+export const createClient = async (clientData) => {
+  const { tags, ...clientInfo } = clientData;
+
+  const { data: newClient, error: clientError } = await supabase
+    .from('clients')
+    .insert(toDatabaseFormat(clientInfo))
+    .select()
+    .single();
+
+  if (clientError) throw clientError;
+
+  if (tags && tags.length > 0) {
+    const { data: tagObjects, error: tagsError } = await supabase
+      .from('tags')
+      .upsert(
+        tags.map((name) => ({ name })),
+        { onConflict: 'name' }
+      )
+      .select();
+
+    if (tagsError) throw tagsError;
+
+    // 4. Creamos las relaciones en la tabla de unión
+    const relations = tagObjects.map((tagObj) => ({
+      client_id: newClient.id,
+      tag_id: tagObj.id,
+    }));
+    const { error: relationError } = await supabase
+      .from('client_tags')
+      .insert(relations);
+    if (relationError) throw relationError;
+  }
+
+  return newClient;
 };
 
-export const updateClient = (id, clientData) => {
-  return fetch(`${API_BASE_URL}/clients/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(clientData),
-  }).then(handleResponse);
+export const updateClient = async (id, clientData) => {
+  const { tags, ...clientInfo } = clientData;
+
+  // 1. Actualizamos los datos básicos del cliente
+  const { data: updatedClient, error: clientError } = await supabase
+    .from('clients')
+    .update(toDatabaseFormat(clientInfo))
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (clientError) throw clientError;
+
+  // 2. Borramos todas las relaciones de tags antiguas para este cliente
+  const { error: deleteError } = await supabase
+    .from('client_tags')
+    .delete()
+    .eq('client_id', id);
+  if (deleteError) throw deleteError;
+
+  // 3. Volvemos a crear las relaciones con la nueva lista de tags (si la hay)
+  if (tags && tags.length > 0) {
+    const { data: tagObjects, error: tagsError } = await supabase
+      .from('tags')
+      .upsert(
+        tags.map((name) => ({ name })),
+        { onConflict: 'name' }
+      )
+      .select();
+
+    if (tagsError) throw tagsError;
+
+    const relations = tagObjects.map((tagObj) => ({
+      client_id: updatedClient.id,
+      tag_id: tagObj.id,
+    }));
+    const { error: relationError } = await supabase
+      .from('client_tags')
+      .insert(relations);
+    if (relationError) throw relationError;
+  }
+
+  return updatedClient;
 };
 
-export const deleteClient = (id) => {
-  return fetch(`${API_BASE_URL}/clients/${id}`, {
-    method: 'DELETE',
-  }).then(handleResponse);
+export const deleteClient = async (id) => {
+  const { error } = await supabase.from('clients').delete().eq('id', id);
+  if (error) throw error;
 };
+
+// --- TAGS API ---
 
 export const getAllTags = async () => {
   const { data, error } = await supabase.from('tags').select('name');
-
-  if (error) {
-    console.error('Error fetching tags:', error);
-    throw error;
-  }
-
+  if (error) throw error;
   return data.map((tag) => tag.name);
 };
