@@ -23,13 +23,13 @@ This application was built with a strong focus on a clean user experience and a 
 <p align="center">
   <em>Client list with search, multi-tag filtering, and pagination.</em>
   <br>
-  <img src="./docs/images/filter-demo.gif" alt="Client Filter Demo" width="800">
+  <img src="./docs/images/filter-demo.gif" alt="Client Filter Demo" width="600">
 </p>
 
 <p align="center">
   <em>Smart form with real-time validation and tag autocomplete with keyboard navigation.</em>
   <br>
-  <img src="./docs/images/form-demo.gif" alt="Client Form Demo" width="800">
+  <img src="./docs/images/form-demo.gif" alt="Client Form Demo" width="600">
 </p>`
 
 ---
