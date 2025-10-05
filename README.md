@@ -230,6 +230,9 @@ This project is configured with modern tools to ensure code quality, consistency
 * **Service Layer Intelligence:** The logic for managing `tags` (finding existing ones or creating new ones) is centralized in the service layer (`ClientService`), keeping the controllers slim and focused on handling HTTP requests.
 * **Data Seeding on Startup:** A `DataLoader` component uses `CommandLineRunner` to populate the database with realistic sample data on application startup, facilitating easy testing and development.
 
+<div align="right">
+<a href="#-table-of-contents">⬆️ Back to Top</a>
+</div>
 ---
 
 ## 🏆 Challenges & Learnings
@@ -399,6 +402,9 @@ Project planning and progress were tracked using the Atlassian suite.
 * **Confluence Documentation (WIP):** [https://aidagarcia.atlassian.net/wiki/spaces/GALERIUM/overview](https://aidagarcia.atlassian.net/wiki/spaces/GALERIUM/overview)
 * **Final Presentation:** [View on Canva](https://www.canva.com/design/DAG08qM5OZo/Vtqlf_txpu14m3Sr0hVkvA/view)
 
+<div align="right">
+<a href="#-table-of-contents">⬆️ Back to Top</a>
+</div>
 ---
 
 ## 👤 Author
