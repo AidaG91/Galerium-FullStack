@@ -20,6 +20,8 @@ A full-stack CRUD application designed for photographers to manage clients, gall
 - [⚙️ Configuration](#️-configuration)
 - [📚 API Endpoints](#-api-endpoints)
 - [🧪 Testing](#-testing)
+- [🔧 Development Tooling & Quality Assurance](#️-development-tooling--quality-assurance)
+- [🏗️ Architectural Decisions](#️-architectural-decisions)
 - [🏆 Challenges & Learnings](#-challenges--learnings)
 - [🗂️ Project Structure](#️-project-structure)
 - [📈 Project Management & Presentation](#-project-management--presentation)
@@ -43,6 +45,12 @@ This application was built with a strong focus on a clean user experience and a 
     * **Image Previews:** The client form provides an instant preview for image URLs, with elegant error handling for broken links.
 * **Consistent Design System:** A unified styling guide with CSS variables ensures a consistent and professional look and feel across all components.
 
+<div align="right">
+    <a href="#-table-of-contents">⬆️ Back to Top</a>
+</div>
+
+---
+
 ## 📸 Screenshots
 
 <p align="center">
@@ -50,12 +58,6 @@ This application was built with a strong focus on a clean user experience and a 
   <br>
   <img src="./docs/images/filter-demo.gif" alt="Client Filter Demo" width="600">
 </p>
-
-<p align="center">
-  <em>Smart form with real-time validation and tag autocomplete with keyboard navigation.</em>
-  <br>
-  <img src="./docs/images/form-demo.gif" alt="Client Form Demo" width="600">
-</p>`
 
 ---
 
@@ -69,6 +71,9 @@ This application was built with a strong focus on a clean user experience and a 
 | **Testing** | JUnit 5, Mockito (Backend), Vitest, RTL (Frontend)        |
 | **Tooling** | Maven, Node.js, ESLint, Prettier                          |
 
+<div align="right">
+    <a href="#-table-of-contents">⬆️ Back to Top</a>
+</div>
 ---
 
 ## 🚀 Getting Started Locally
@@ -114,6 +119,12 @@ npm run dev
 # The application will be available at http://localhost:5173
 ```
 
+<div align="right">
+    <a href="#-table-of-contents">⬆️ Back to Top</a>
+</div>
+
+---
+
 ## Configuration
 The project uses configuration files for both the backend and frontend.
 
@@ -142,6 +153,12 @@ The frontend needs to know the base URL of the backend API. Copy this file to .e
 VITE_API_URL=http://localhost:8080/api
 ```
 
+<div align="right">
+<a href="#-table-of-contents">⬆️ Back to Top</a>
+</div>
+
+---
+
 ## 📚 API Endpoints
 
 The core API for the `Client` resource follows RESTful conventions.
@@ -158,6 +175,9 @@ The core API for the `Client` resource follows RESTful conventions.
 | `PUT`    | `/api/clients/{id}`           | Updates an existing client.                |
 | `DELETE` | `/api/clients/{id}`           | Deletes a client.                          |
 
+<div align="right">
+<a href="#-table-of-contents">⬆️ Back to Top</a>
+</div>
 ---
 
 ## 🧪 Testing
@@ -181,7 +201,34 @@ The frontend uses Vitest and React Testing Library to test critical components. 
 npm test
 ```
 
+<div align="right">
+<a href="#-table-of-contents">⬆️ Back to Top</a>
+</div>
 ---
+
+## 🛠️ Development Tooling & Quality Assurance
+
+This project is configured with modern tools to ensure code quality, consistency, and a productive development experience. All dependencies are included in the respective `package.json` and `pom.xml` files.
+
+* **ESLint:** Used for static code analysis to find and fix problems in the JavaScript/React code. The configuration is based on the modern "flat config" (`eslint.config.js`).
+* **Prettier:** Integrated for automated code formatting, ensuring a consistent style across the entire codebase.
+* **Vitest & React Testing Library:** A modern testing framework is set up for the frontend, allowing for fast and reliable component testing in a simulated DOM environment (`jsdom`).
+
+---
+
+## 🏗️ Architectural Decisions
+
+### Frontend Architecture
+
+* **Scalable CSS with CSS Modules:** Prevents style conflicts and ensures components are self-contained.
+* **Reusable Global Styles:** A base design system is established in `index.css`, including a centralized color palette with CSS variables and global utility classes for common elements like buttons (`.btn`, `.btn--primary`), promoting a DRY (Don't Repeat Yourself) codebase.
+* **Centralized API Logic:** All `fetch` calls to the backend are managed in a dedicated service file (`src/api/clientService.js`), separating API communication logic from the UI components for better maintainability.
+
+### Backend Architecture
+
+* **Robust Entity Relationships (`@ManyToMany`):** For the `tags` feature, a `@ManyToMany` relationship between the `Client` and `Tag` entities was implemented. This architecture ensures data integrity, prevents tag duplication, and provides a scalable foundation for advanced filtering.
+* **Service Layer Intelligence:** The logic for managing `tags` (finding existing ones or creating new ones) is centralized in the service layer (`ClientService`), keeping the controllers slim and focused on handling HTTP requests.
+* **Data Seeding on Startup:** A `DataLoader` component uses `CommandLineRunner` to populate the database with realistic sample data on application startup, facilitating easy testing and development.
 
 ---
 
@@ -197,9 +244,15 @@ This project was a deep dive into full-stack development and presented several r
     * **Challenge:** The most difficult challenge was a persistent 500 Internal Server Error during client creation that produced **no error log** in the backend console. This led to a long "blind" debugging session where I explored issues in the database, security, and entity relationships.
     * **Solution:** The root cause was twofold: a simple validation rule (`@Size(min=5)` on an optional field) and a `GlobalExceptionHandler` that was catching the exception but failing to log it. The key takeaway was immense: **an unlogged error is a developer's worst enemy**. I learned the critical importance of robust logging in every exception handler, which was the final key to diagnosing and fixing the bug.
 
+<div align="right">
+<a href="#-table-of-contents">⬆️ Back to Top</a>
+</div>
 ---
 
 ## 🗂️ Project Structure
+
+<details>
+<summary>Click to view the full project structure</summary>
 
 ```bash
 .
@@ -330,29 +383,11 @@ This project was a deep dive into full-stack development and presented several r
             ClientsPage.test.jsx
 ```
 
-## 🛠️ Development Tooling & Quality Assurance
+</details>
 
-This project is configured with modern tools to ensure code quality, consistency, and a productive development experience. All dependencies are included in the respective `package.json` and `pom.xml` files.
-
-* **ESLint:** Used for static code analysis to find and fix problems in the JavaScript/React code. The configuration is based on the modern "flat config" (`eslint.config.js`).
-* **Prettier:** Integrated for automated code formatting, ensuring a consistent style across the entire codebase.
-* **Vitest & React Testing Library:** A modern testing framework is set up for the frontend, allowing for fast and reliable component testing in a simulated DOM environment (`jsdom`).
-
----
-
-## 🏗️ Architectural Decisions
-
-### Frontend Architecture
-
-* **Scalable CSS with CSS Modules:** Prevents style conflicts and ensures components are self-contained.
-* **Reusable Global Styles:** A base design system is established in `index.css`, including a centralized color palette with CSS variables and global utility classes for common elements like buttons (`.btn`, `.btn--primary`), promoting a DRY (Don't Repeat Yourself) codebase.
-* **Centralized API Logic:** All `fetch` calls to the backend are managed in a dedicated service file (`src/api/clientService.js`), separating API communication logic from the UI components for better maintainability.
-
-### Backend Architecture
-
-* **Robust Entity Relationships (`@ManyToMany`):** For the `tags` feature, a `@ManyToMany` relationship between the `Client` and `Tag` entities was implemented. This architecture ensures data integrity, prevents tag duplication, and provides a scalable foundation for advanced filtering.
-* **Service Layer Intelligence:** The logic for managing `tags` (finding existing ones or creating new ones) is centralized in the service layer (`ClientService`), keeping the controllers slim and focused on handling HTTP requests.
-* **Data Seeding on Startup:** A `DataLoader` component uses `CommandLineRunner` to populate the database with realistic sample data on application startup, facilitating easy testing and development.
+<div align="right">
+<a href="#-table-of-contents">⬆️ Back to Top</a>
+</div>
 
 ---
 
@@ -368,10 +403,5 @@ Project planning and progress were tracked using the Atlassian suite.
 
 ## 👤 Author
 
-Hola, soy Kenny, un Desarrollador Web Full-Stack recién graduado del bootcamp de IronHack. Me apasiona construir aplicaciones robustas y eficientes, utilizando tecnologías modernas como Java con Spring Boot para el backend y React para el frontend.
-
-Disfruto sumergiéndome en desafíos técnicos complejos para encontrar las soluciones más efectivas y elegantes. Si te ha gustado el proyecto o quieres hablar sobre tecnología, ¡conectemos!
-
-* **LinkedIn:** `[Link to your LinkedIn Profile]`
-* **GitHub:** `[Link to your GitHub Profile]`
+**Aïda García**: Junior Web Developer, among other things. Check my gitHub profile 😊
 
