@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { toast } from 'react-hot-toast';
 import { FaTimes } from 'react-icons/fa';
 import styles from '../styles/ClientForm.module.css';
 import { createClient, updateClient } from '../api/clientService';
@@ -28,9 +29,7 @@ export default function ClientForm({
   });
 
   const [errors, setErrors] = useState({});
-  const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState(null);
   const [imageError, setImageError] = useState(false);
   const [currentTag, setCurrentTag] = useState('');
   const [tagSuggestions, setTagSuggestions] = useState([]);
@@ -145,70 +144,64 @@ export default function ClientForm({
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const payload = {
-      fullName: form.fullName.trim(),
-      email: form.email.trim(),
-      phoneNumber: form.phoneNumber.trim(),
-      address: form.address.trim(),
-      profilePictureUrl: form.profilePictureUrl.trim(),
-      userRole: 'CLIENT',
-      tags: form.tags,
-      internalNotes: form.internalNotes.trim(),
-      ...(form.password &&
-        form.password.trim().length >= 8 && { password: form.password.trim() }),
-    };
+  const newErrors = {};
+  if (!form.fullName.trim()) newErrors.fullName = 'Name is required';
+  if (!form.email.trim()) {
+    newErrors.email = 'Email is required';
+  } else if (!isEmailValid(form.email)) {
+    newErrors.email = 'Please enter a valid email format.';
+  }
+  if (!isEdit && (!form.password || form.password.trim().length < 8))
+    newErrors.password = 'Password must be at least 8 characters';
+  if (!form.phoneNumber.trim()) newErrors.phoneNumber = 'Phone is required';
 
-    const newErrors = {};
-    if (!form.fullName.trim()) newErrors.fullName = 'Name is required';
-    if (!form.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!isEmailValid(form.email)) {
-      newErrors.email = 'Please enter a valid email format.';
-    }
-    if (!isEdit && (!form.password || form.password.trim().length < 8))
-      newErrors.password = 'Password must be at least 8 characters';
-    if (!form.phoneNumber.trim()) newErrors.phoneNumber = 'Phone is required';
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    return;
+  }
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
+  setErrors({});
+  setIsSubmitting(true);
 
-    setErrors({});
-    setIsSubmitting(true);
-    setSubmitError(null);
-
-    try {
-      const saveAction = isEdit
-        ? updateClient(initialData.id, payload)
-        : createClient(payload);
-
-      const savedClient = await saveAction;
-
-      setSuccess(true);
-      setTimeout(() => {
-        onSave(savedClient);
-      }, 1000);
-    } catch (err) {
-      console.error('Failed to save:', err.message);
-      setSubmitError('Failed to save client. Please try again later.');
-    } finally {
-      if (!success) {
-        setIsSubmitting(false);
-      }
-    }
+  const payload = {
+    fullName: form.fullName.trim(),
+    email: form.email.trim(),
+    phoneNumber: form.phoneNumber.trim(),
+    address: form.address.trim(),
+    profilePictureUrl: form.profilePictureUrl.trim(),
+    tags: form.tags,
+    internalNotes: form.internalNotes.trim(),
+    ...(form.password &&
+      form.password.trim().length >= 8 && { password: form.password.trim() }),
   };
+
+  try {
+    const savedClient = isEdit
+      ? await updateClient(initialData.id, payload) 
+      : await createClient(payload); 
+
+    toast.success(isEdit ? 'Client updated successfully!' : 'Client created successfully!');
+    onSave(savedClient);
+
+  } catch (err) {
+    console.error('Failed to save:', err.message);
+
+    const errorMessage = err.message?.includes('A client with this email already exists')
+      ? 'A client with this email already exists.'
+      : 'Failed to save client. Please try again.';
+      
+    toast.error(errorMessage);
+    setIsSubmitting(false); 
+  }
+};
 
   return (
     <div className={styles.formWrapper}>
       <h3>{isEdit ? 'Edit client' : 'Create client'}</h3>
 
       <form onSubmit={handleSubmit} className={styles.form} noValidate>
-        {success && (
-          <p className={styles.successText}>✅ Client saved successfully!</p>
-        )}
         {/* Full name */}
         <input
           name="fullName"
@@ -363,9 +356,7 @@ export default function ClientForm({
           </div>
         </div>
 
-        {submitError && <p className={styles.submitErrorText}>{submitError}</p>}
-
-        {/* Create/Save and Cancel buttons */}
+              {/* Create/Save and Cancel buttons */}
         <div className={styles.formActions}>
           <button
             type="submit"

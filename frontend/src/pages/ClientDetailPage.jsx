@@ -4,6 +4,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import styles from '../styles/ClientDetail.module.css';
 import DeleteModal from '../components/DeleteModal';
+import { toast } from 'react-hot-toast';
 
 export default function ClientDetail() {
   const { id } = useParams();
@@ -17,8 +18,10 @@ export default function ClientDetail() {
         method: 'DELETE',
       });
       navigate('/clients');
+       toast.success('Client deleted successfully!');
     } catch (err) {
       console.error('Error deleting client', err);
+      toast.error('Failed to delete the client.'); 
     } finally {
       setShowConfirm(false);
     }
