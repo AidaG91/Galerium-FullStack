@@ -177,6 +177,8 @@ export default function ClientForm({
       form.password.trim().length >= 8 && { password: form.password.trim() }),
   };
 
+  console.log('Enviando este payload al backend:', payload);
+  
   try {
     const savedClient = isEdit
       ? await updateClient(initialData.id, payload) 

@@ -5,6 +5,7 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import styles from '../styles/ClientDetail.module.css';
 import DeleteModal from '../components/DeleteModal';
 import { toast } from 'react-hot-toast';
+import { getClientById, deleteClient } from '../api/clientService';
 
 export default function ClientDetail() {
   const { id } = useParams();
@@ -13,32 +14,28 @@ export default function ClientDetail() {
   const [showConfirm, setShowConfirm] = useState(false);
 
   const handleDelete = async (id) => {
-    try {
-      await fetch(`http://localhost:8080/api/clients/${id}`, {
-        method: 'DELETE',
-      });
-      navigate('/clients');
-       toast.success('Client deleted successfully!');
-    } catch (err) {
-      console.error('Error deleting client', err);
-      toast.error('Failed to delete the client.'); 
-    } finally {
-      setShowConfirm(false);
-    }
-  };
+  try {
+    await deleteClient(id); // <-- Usar la función del servicio
+    toast.success('Client deleted successfully!');
+    navigate('/clients');
+  } catch (err) {
+    console.error('Error deleting client', err);
+    toast.error('Failed to delete the client.');
+  } finally {
+    setShowConfirm(false);
+  }
+};
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch(`http://localhost:8080/api/clients/${id}`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        setClient(data);
-      } catch (err) {
-        console.error('Error fetching client', err);
-      }
-    })();
-  }, [id]);
+useEffect(() => {
+  getClientById(id)
+    .then(setClient)
+    .catch((err) => {
+      console.error('Error fetching client', err);
+      toast.error('Could not load client details.');
+      // Opcional: Redirigir si el cliente no se encuentra
+      // navigate('/clients'); 
+    });
+}, [id]);
 
   if (!client) return <p>Loading client...</p>;
 
