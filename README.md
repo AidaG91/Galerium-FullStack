@@ -51,7 +51,7 @@ This application was built with a strong focus on a clean user experience and a 
 
 ```bash
 # Clone the repository
-git clone [[repo](https://github.com/AidaG91/Galerium-FullStack.git)]
+git clone https://github.com/AidaG91/Galerium-FullStack.git
 cd galerium-fullstack/backend
 
 # Install dependencies and build the project
