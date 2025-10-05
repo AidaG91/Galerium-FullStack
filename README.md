@@ -30,7 +30,7 @@ This application was built with a strong focus on a clean user experience and a 
 
 | Area       | Technologies                                              |
 | :--------- | :-------------------------------------------------------- |
-| **Frontend** | React, Vite, React Router                                 |
+| **Frontend** | React, Vite, React Router,  `react-hot-toast`           |
 | **Backend** | Java, Spring Boot, Spring Data JPA, Spring Security   |
 | **Database** | MySQL (Production), H2 (Development)                      |
 | **Testing** | JUnit 5, Mockito (Backend), Vitest, RTL (Frontend)        |
@@ -51,8 +51,8 @@ This application was built with a strong focus on a clean user experience and a 
 
 ```bash
 # Clone the repository
-git clone [Link to your repo]
-cd [repo-name]/backend
+git clone [[repo](https://github.com/AidaG91/Galerium-FullStack.git)]
+cd galerium-fullstack/backend
 
 # Install dependencies and build the project
 mvn clean install
@@ -64,13 +64,16 @@ mvn spring-boot:run
 # You can check the health status at: http://localhost:8080/api/health
 ```
 
-### 2. Backend Setup
+### 2. Frontend Setup
 ```bash
 # In a new terminal, navigate to the frontend directory
 cd ../frontend
 
 # Install dependencies
 npm install
+
+# Create the local environment file
+cp .env.example .env
 
 # Run the development server
 npm run dev
@@ -82,9 +85,9 @@ npm run dev
 The project uses configuration files for both the backend and frontend.
 
 ### Backend (backend/src/main/resources/application.properties)
-For development, the application uses an in-memory H2 database. For production, you should configure the connection to a MySQL database.
+For development, the application uses an in-memory H2 database. For production, you should configure the connection to a MySQL database and set the ddl-auto property to update.
 
-```bash
+```properties
 # Development (H2)
 spring.jpa.hibernate.ddl-auto=create-drop
 spring.datasource.url=jdbc:h2:mem:galeriumdb
@@ -92,7 +95,7 @@ spring.datasource.driverClassName=org.h2.Driver
 spring.datasource.username=sa
 spring.datasource.password=
 
-# Production (MySQL Example - uncomment and configure as needed)
+# Production (MySQL Example)
 # spring.jpa.hibernate.ddl-auto=update
 # spring.datasource.url=jdbc:mysql://localhost:3306/galerium
 # spring.datasource.username=root
@@ -100,9 +103,9 @@ spring.datasource.password=
 ```
 
 ### Frontend (frontend/.env)
-The frontend needs to know the base URL of the backend API.
+The frontend needs to know the base URL of the backend API. Copy this file to .env for local development.
 
-```bash
+```dotenv 
 VITE_API_URL=http://localhost:8080/api
 ```
 
@@ -160,7 +163,7 @@ This project is configured with modern tools to ensure code quality, consistency
 
 ### Frontend Architecture
 
-* **Scalable CSS with CSS Modules:** To prevent style conflicts and ensure components are self-contained, the project uses CSS Modules. Each component imports its own styles, guaranteeing true encapsulation.
+* **Scalable CSS with CSS Modules:** Prevents style conflicts and ensures components are self-contained.
 * **Reusable Global Styles:** A base design system is established in `index.css`, including a centralized color palette with CSS variables and global utility classes for common elements like buttons (`.btn`, `.btn--primary`), promoting a DRY (Don't Repeat Yourself) codebase.
 * **Centralized API Logic:** All `fetch` calls to the backend are managed in a dedicated service file (`src/api/clientService.js`), separating API communication logic from the UI components for better maintainability.
 
@@ -169,3 +172,7 @@ This project is configured with modern tools to ensure code quality, consistency
 * **Robust Entity Relationships (`@ManyToMany`):** For the `tags` feature, a `@ManyToMany` relationship between the `Client` and `Tag` entities was implemented. This architecture ensures data integrity, prevents tag duplication, and provides a scalable foundation for advanced filtering.
 * **Service Layer Intelligence:** The logic for managing `tags` (finding existing ones or creating new ones) is centralized in the service layer (`ClientService`), keeping the controllers slim and focused on handling HTTP requests.
 * **Data Seeding on Startup:** A `DataLoader` component uses `CommandLineRunner` to populate the database with realistic sample data on application startup, facilitating easy testing and development.
+
+---
+## 👤 Author & Project Owner
+**Aïda García** - junior web dev
