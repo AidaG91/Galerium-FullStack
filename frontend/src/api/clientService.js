@@ -65,6 +65,12 @@ export const deleteClient = (id) => {
   }).then(handleResponse);
 };
 
+export const deleteTag = (tagName) => {
+  return fetch(`${API_BASE_URL}/tags/${encodeURIComponent(tagName)}`, {
+    method: 'DELETE',
+  }).then(handleResponse);
+};
+
 export const getAllTags = () => {
   return fetch(`${API_BASE_URL}/tags`).then(handleResponse);
 };

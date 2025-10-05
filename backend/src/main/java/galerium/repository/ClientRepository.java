@@ -51,5 +51,5 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             countQuery = "SELECT COUNT(DISTINCT c.id) FROM Client c JOIN c.tags t WHERE t.name IN :tags GROUP BY c.id HAVING COUNT(t.id) = :tagCount")
     Page<Client> findByAllTags(@Param("tags") List<String> tags, @Param("tagCount") Long tagCount, Pageable pageable);
 
-
+    boolean existsByTagsName(String tagName);
 }
