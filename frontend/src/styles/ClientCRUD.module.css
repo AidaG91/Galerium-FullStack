@@ -83,8 +83,8 @@
   border: 1px solid var(--color-border);
   border-radius: 8px;
   overflow: hidden;
-   min-width: 700px; 
-  white-space: nowrap; 
+  min-width: 700px;
+  white-space: nowrap;
 }
 
 .table th,

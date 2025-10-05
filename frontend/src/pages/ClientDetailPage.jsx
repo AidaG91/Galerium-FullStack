@@ -14,19 +14,19 @@ export default function ClientDetail() {
   const [showConfirm, setShowConfirm] = useState(false);
 
   const handleDelete = async (id) => {
-  try {
-    await deleteClient(id); // <-- Usar la función del servicio
-    toast.success('Client deleted successfully!');
-    navigate('/clients');
-  } catch (err) {
-    console.error('Error deleting client', err);
-    toast.error('Failed to delete the client.');
-  } finally {
-    setShowConfirm(false);
-  }
-};
+    try {
+      await deleteClient(id); // <-- Usar la función del servicio
+      toast.success('Client deleted successfully!');
+      navigate('/clients');
+    } catch (err) {
+      console.error('Error deleting client', err);
+      toast.error('Failed to delete the client.');
+    } finally {
+      setShowConfirm(false);
+    }
+  };
 
-useEffect(() => {
+  useEffect(() => {
     (async () => {
       try {
         const res = await fetch(`http://localhost:8080/api/clients/${id}`);

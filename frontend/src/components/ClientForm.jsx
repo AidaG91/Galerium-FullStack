@@ -144,58 +144,61 @@ export default function ClientForm({
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
     const payload = {
-    fullName: form.fullName.trim(),
-    email: form.email.trim(),
-    phoneNumber: form.phoneNumber.trim(),
-    address: form.address.trim(),
-    profilePictureUrl: form.profilePictureUrl.trim(),
-    tags: form.tags,
-    internalNotes: form.internalNotes.trim(),
-    ...(form.password &&
-      form.password.trim().length >= 8 && { password: form.password.trim() }),
+      fullName: form.fullName.trim(),
+      email: form.email.trim(),
+      phoneNumber: form.phoneNumber.trim(),
+      address: form.address.trim(),
+      profilePictureUrl: form.profilePictureUrl.trim(),
+      tags: form.tags,
+      internalNotes: form.internalNotes.trim(),
+      ...(form.password &&
+        form.password.trim().length >= 8 && { password: form.password.trim() }),
+    };
+
+    const newErrors = {};
+    if (!form.fullName.trim()) newErrors.fullName = 'Name is required';
+    if (!form.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!isEmailValid(form.email)) {
+      newErrors.email = 'Please enter a valid email format.';
+    }
+    if (!isEdit && (!form.password || form.password.trim().length < 8))
+      newErrors.password = 'Password must be at least 8 characters';
+    if (!form.phoneNumber.trim()) newErrors.phoneNumber = 'Phone is required';
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
+    setIsSubmitting(true);
+
+    try {
+      const savedClient = isEdit
+        ? await updateClient(initialData.id, payload)
+        : await createClient(payload);
+
+      toast.success(
+        isEdit ? 'Client updated successfully!' : 'Client created successfully!'
+      );
+      onSave(savedClient);
+    } catch (err) {
+      console.error('Failed to save:', err.message);
+
+      const errorMessage = err.message?.includes(
+        'A client with this email already exists'
+      )
+        ? 'A client with this email already exists.'
+        : 'Failed to save client. Please try again.';
+
+      toast.error(errorMessage);
+      setIsSubmitting(false);
+    }
   };
-
-  const newErrors = {};
-  if (!form.fullName.trim()) newErrors.fullName = 'Name is required';
-  if (!form.email.trim()) {
-    newErrors.email = 'Email is required';
-  } else if (!isEmailValid(form.email)) {
-    newErrors.email = 'Please enter a valid email format.';
-  }
-  if (!isEdit && (!form.password || form.password.trim().length < 8))
-    newErrors.password = 'Password must be at least 8 characters';
-  if (!form.phoneNumber.trim()) newErrors.phoneNumber = 'Phone is required';
-
-  if (Object.keys(newErrors).length > 0) {
-    setErrors(newErrors);
-    return;
-  }
-
-  setErrors({});
-  setIsSubmitting(true);
-
-  try {
-    const savedClient = isEdit
-      ? await updateClient(initialData.id, payload) 
-      : await createClient(payload); 
-
-    toast.success(isEdit ? 'Client updated successfully!' : 'Client created successfully!');
-    onSave(savedClient);
-
-  } catch (err) {
-    console.error('Failed to save:', err.message);
-
-    const errorMessage = err.message?.includes('A client with this email already exists')
-      ? 'A client with this email already exists.'
-      : 'Failed to save client. Please try again.';
-      
-    toast.error(errorMessage);
-    setIsSubmitting(false); 
-  }
-};
 
   return (
     <div className={styles.formWrapper}>
@@ -356,7 +359,7 @@ export default function ClientForm({
           </div>
         </div>
 
-              {/* Create/Save and Cancel buttons */}
+        {/* Create/Save and Cancel buttons */}
         <div className={styles.formActions}>
           <button
             type="submit"
