@@ -6,8 +6,10 @@ import galerium.dto.client.ClientUpdateDTO;
 import galerium.enums.UserRole;
 import galerium.model.Client;
 import galerium.model.Tag;
+import galerium.model.User;
 import galerium.repository.ClientRepository;
 import galerium.repository.TagRepository;
+import galerium.repository.UserRepository;
 import galerium.service.interfaces.ClientService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -28,6 +31,7 @@ public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
     private final TagRepository tagRepository;
+    private final UserRepository userRepository;
 
     public Page<ClientResponseDTO> getClientsPaged(Pageable pageable) {
         return clientRepository.findAll(pageable)
@@ -37,20 +41,24 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional
     public ClientResponseDTO createClient(@Valid ClientRequestDTO clientRequest) {
-        if (clientRepository.findByEmail(clientRequest.getEmail()).isPresent()) {
-            throw new RuntimeException("A client with this email already exists.");
+        if (userRepository.findByEmail(clientRequest.getEmail()).isPresent()) {
+            throw new RuntimeException("A user with this email already exists.");
         }
 
         Client client = new Client();
+
+        // Seteamos los campos heredados de User
         client.setFullName(clientRequest.getFullName());
         client.setEmail(clientRequest.getEmail());
         client.setPassword(clientRequest.getPassword());
-        client.setPhoneNumber(clientRequest.getPhoneNumber());
-        client.setAddress(clientRequest.getAddress());
         client.setUserRole(UserRole.CLIENT);
         client.setProfilePictureUrl(clientRequest.getProfilePictureUrl());
+        client.setInternalNotes(""); // Inicializamos para evitar nulos
 
-        if (clientRequest.getTags() != null) {
+        client.setPhoneNumber(clientRequest.getPhoneNumber());
+        client.setAddress(clientRequest.getAddress());
+
+        if (clientRequest.getTags() != null && !clientRequest.getTags().isEmpty()) {
             client.setTags(manageTags(clientRequest.getTags()));
         }
 
@@ -185,18 +193,23 @@ public class ClientServiceImpl implements ClientService {
 
     private Set<Tag> manageTags(List<String> tagNames) {
         if (tagNames == null || tagNames.isEmpty()) {
-            return null;
+            return new HashSet<>();
         }
-        return tagNames.stream()
-                .map(String::trim)
-                .map(tagName -> tagRepository.findByName(tagName)
-                        .orElseGet(() -> tagRepository.save(new Tag(tagName))))
-                .collect(Collectors.toSet());
+        Set<Tag> tags = new HashSet<>();
+        for (String tagName : tagNames) {
+            Tag tag = tagRepository.findByName(tagName.trim())
+                    .orElse(new Tag(tagName.trim()));
+            tags.add(tag);
+        }
+        return tags;
     }
 
+
     // Helper method to map Client entity to ClientResponseDTO
+
     private ClientResponseDTO toResponseDTO(Client client) {
         ClientResponseDTO dto = new ClientResponseDTO();
+
         dto.setId(client.getId());
         dto.setFullName(client.getFullName());
         dto.setEmail(client.getEmail());
@@ -206,10 +219,7 @@ public class ClientServiceImpl implements ClientService {
         dto.setUserRole(client.getUserRole());
         dto.setProfilePictureUrl(client.getProfilePictureUrl());
         dto.setRegistrationDate(client.getRegistrationDate());
-
-        if (client.getInternalNotes() != null) {
-            dto.setInternalNotes(client.getInternalNotes());
-        }
+        dto.setInternalNotes(client.getInternalNotes());
 
         if (client.getTags() != null) {
             dto.setTags(client.getTags().stream()

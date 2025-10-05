@@ -27,15 +27,17 @@ export default function ClientDetail() {
 };
 
 useEffect(() => {
-  getClientById(id)
-    .then(setClient)
-    .catch((err) => {
-      console.error('Error fetching client', err);
-      toast.error('Could not load client details.');
-      // Opcional: Redirigir si el cliente no se encuentra
-      // navigate('/clients'); 
-    });
-}, [id]);
+    (async () => {
+      try {
+        const res = await fetch(`http://localhost:8080/api/clients/${id}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        setClient(data);
+      } catch (err) {
+        console.error('Error fetching client', err);
+      }
+    })();
+  }, [id]);
 
   if (!client) return <p>Loading client...</p>;
 

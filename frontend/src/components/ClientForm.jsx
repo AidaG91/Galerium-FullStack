@@ -146,6 +146,18 @@ export default function ClientForm({
   const handleSubmit = async (e) => {
   e.preventDefault();
 
+    const payload = {
+    fullName: form.fullName.trim(),
+    email: form.email.trim(),
+    phoneNumber: form.phoneNumber.trim(),
+    address: form.address.trim(),
+    profilePictureUrl: form.profilePictureUrl.trim(),
+    tags: form.tags,
+    internalNotes: form.internalNotes.trim(),
+    ...(form.password &&
+      form.password.trim().length >= 8 && { password: form.password.trim() }),
+  };
+
   const newErrors = {};
   if (!form.fullName.trim()) newErrors.fullName = 'Name is required';
   if (!form.email.trim()) {
@@ -165,20 +177,6 @@ export default function ClientForm({
   setErrors({});
   setIsSubmitting(true);
 
-  const payload = {
-    fullName: form.fullName.trim(),
-    email: form.email.trim(),
-    phoneNumber: form.phoneNumber.trim(),
-    address: form.address.trim(),
-    profilePictureUrl: form.profilePictureUrl.trim(),
-    tags: form.tags,
-    internalNotes: form.internalNotes.trim(),
-    ...(form.password &&
-      form.password.trim().length >= 8 && { password: form.password.trim() }),
-  };
-
-  console.log('Enviando este payload al backend:', payload);
-  
   try {
     const savedClient = isEdit
       ? await updateClient(initialData.id, payload) 
