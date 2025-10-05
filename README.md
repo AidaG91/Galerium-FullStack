@@ -9,6 +9,12 @@
 <img src="https://img.shields.io/badge/Code_Style-Prettier-ff69b4?logo=prettier&logoColor=white" alt="Code Style: Prettier">
 </p>
 
+<p align="center">
+  <strong><a href="https://galerium.netlify.app/" target="_blank">🚀 View Live Demo</a></strong>
+  &nbsp;|&nbsp;
+  <strong><a href="https://github.com/AidaG91/Galerium-Supabase.git" target="_blank">📄 View GitHub Supabase Repo</a></strong>
+</p>
+
 A full-stack CRUD application designed for photographers to manage clients, galleries, and sessions. This project was developed as the final project for Module 3 of the IronHack Web Development Bootcamp.
 
 ## 📋 Table of Contents
