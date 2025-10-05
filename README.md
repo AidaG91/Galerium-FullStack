@@ -1,6 +1,31 @@
 # Galerium FullStack
 
+<p align="center">
+<img src="https://img.shields.io/badge/Java-17-blue?logo=java&logoColor=white" alt="Java 17">
+<img src="https://img.shields.io/badge/Spring_Boot-3.x-green?logo=spring&logoColor=white" alt="Spring Boot 3.x">
+<img src="https://img.shields.io/badge/React-18-blue?logo=react&logoColor=white" alt="React 18">
+<img src="https://img.shields.io/badge/Vite-blue?logo=vite&logoColor=white" alt="Vite">
+<img src="https://img.shields.io/badge/MySQL-8-orange?logo=mysql&logoColor=white" alt="MySQL 8">
+<img src="https://img.shields.io/badge/Code_Style-Prettier-ff69b4?logo=prettier&logoColor=white" alt="Code Style: Prettier">
+</p>
+
 A full-stack CRUD application designed for photographers to manage clients, galleries, and sessions. This project was developed as the final project for Module 3 of the IronHack Web Development Bootcamp.
+
+## 📋 Table of Contents
+
+- [✨ Key Features](#-key-features)
+- [📸 Screenshots](#-screenshots)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [🚀 Getting Started Locally](#-getting-started-locally)
+- [⚙️ Configuration](#️-configuration)
+- [📚 API Endpoints](#-api-endpoints)
+- [🧪 Testing](#-testing)
+- [🏆 Challenges & Learnings](#-challenges--learnings)
+- [🗂️ Project Structure](#️-project-structure)
+- [📈 Project Management & Presentation](#-project-management--presentation)
+- [👤 Author](#-author)
+
+---
 
 ## ✨ Key Features
 
@@ -157,6 +182,154 @@ npm test
 ```
 
 ---
+
+---
+
+## 🏆 Challenges & Learnings
+
+This project was a deep dive into full-stack development and presented several real-world challenges that were crucial for my learning.
+
+* **Performance Optimization (N+1 Query Problem):**
+    * **Challenge:** The initial implementation of the client list was extremely inefficient. It performed one query to fetch the clients and then N additional queries to fetch the tags for each client.
+    * **Solution:** I refactored the Spring Data JPA repository to use a custom `@Query` with `LEFT JOIN FETCH`. This allowed Hibernate to retrieve clients and their associated tags in a single, efficient database call, dramatically improving performance.
+
+* **Debugging the "Silent" 500 Error:**
+    * **Challenge:** The most difficult challenge was a persistent 500 Internal Server Error during client creation that produced **no error log** in the backend console. This led to a long "blind" debugging session where I explored issues in the database, security, and entity relationships.
+    * **Solution:** The root cause was twofold: a simple validation rule (`@Size(min=5)` on an optional field) and a `GlobalExceptionHandler` that was catching the exception but failing to log it. The key takeaway was immense: **an unlogged error is a developer's worst enemy**. I learned the critical importance of robust logging in every exception handler, which was the final key to diagnosing and fixing the bug.
+
+---
+
+## 🗂️ Project Structure
+
+```bash
+.
+|   PreguntaEntrevista.md
+|   README.md
+|
++---backend
+|   |   .env.example
+|   |   mvnw
+|   |   mvnw.cmd
+|   |   pom.xml
+|   |
+|   +---assets
+|   |       class_diagram_Galerium.png
+|   |
+|   \---src
+|       +---main
+|       |   +---java
+|       |   |   \---galerium
+|       |   |       |   GaleriumApplication.java
+|       |   |       |
+|       |   |       +---config
+|       |   |       |       GlobalExceptionHandler.java
+|       |   |       |       SecurityConfig.java
+|       |   |       |       WebConfig.java
+|       |   |       |
+|       |   |       +---controller
+|       |   |       |       ClientController.java
+|       |   |       |       HealthController.java
+|       |   |       |       TagController.java
+|       |   |       |       (and other controllers...)
+|       |   |       |
+|       |   |       +---dto
+|       |   |       |   +---client
+|       |   |       |   |       ClientRequestDTO.java
+|       |   |       |   |       ClientResponseDTO.java
+|       |   |       |   |       ClientUpdateDTO.java
+|       |   |       |   |
+|       |   |       |   \---(other DTOs...)
+|       |   |       |
+|       |   |       +---enums
+|       |   |       |       UserRole.java
+|       |   |       |
+|       |   |       +---model
+|       |   |       |       Client.java
+|       |   |       |       Tag.java
+|       |   |       |       User.java
+|       |   |       |       (and other models...)
+|       |   |       |
+|       |   |       +---repository
+|       |   |       |       ClientRepository.java
+|       |   |       |       TagRepository.java
+|       |   |       |       UserRepository.java
+|       |   |       |       (and other repositories...)
+|       |   |       |
+|       |   |       +---service
+|       |   |       |   +---impl
+|       |   |       |   |       ClientServiceImpl.java
+|       |   |       |   |       TagServiceImpl.java
+|       |   |       |   |       (and other services...)
+|       |   |       |   |
+|       |   |       |   \---interfaces
+|       |   |       |           ClientService.java
+|       |   |       |           TagService.java
+|       |   |       |           (and other interfaces...)
+|       |   |       |
+|       |   |       \---util
+|       |   |               DataLoader.java
+|       |   |               OpenApiConfig.java
+|       |   |
+|       |   \---resources
+|       |           application.properties
+|       |
+|       \---test
+|           \---java
+|               \---galerium
+|                       (test files...)
+|
++---docs
+|   \---images
+|           filter-demo.gif
+|
+\---frontend
+    |   .env
+    |   .env.example
+    |   eslint.config.js
+    |   index.html
+    |   package.json
+    |   vite.config.js
+    |
+    +---public
+    |       galerium-favicon.png
+    |       galerium-logo-text.png
+    |
+    +---src
+    |   |   App.jsx
+    |   |   index.css
+    |   |   main.jsx
+    |   |   setupTests.js
+    |   |
+    |   +---api
+    |   |       clientService.js
+    |   |
+    |   +---components
+    |   |       ClientCRUD.jsx
+    |   |       ClientForm.jsx
+    |   |       DeleteModal.jsx
+    |   |       Sidebar.jsx
+    |   |
+    |   +---layouts
+    |   |       SidebarLayout.jsx
+    |   |
+    |   +---pages
+    |   |       ClientDetailPage.jsx
+    |   |       ClientFormPage.jsx
+    |   |       ClientsPage.jsx
+    |   |       Dashboard.jsx
+    |   |       LandingPage.jsx
+    |   |
+    |   +---routes
+    |   |       AppRouter.jsx
+    |   |
+    |   \---styles
+    |           ClientCRUD.module.css
+    |           (and other style files...)
+    |
+    \---tests
+            ClientsPage.test.jsx
+```
+
 ## 🛠️ Development Tooling & Quality Assurance
 
 This project is configured with modern tools to ensure code quality, consistency, and a productive development experience. All dependencies are included in the respective `package.json` and `pom.xml` files.
@@ -182,5 +355,23 @@ This project is configured with modern tools to ensure code quality, consistency
 * **Data Seeding on Startup:** A `DataLoader` component uses `CommandLineRunner` to populate the database with realistic sample data on application startup, facilitating easy testing and development.
 
 ---
-## 👤 Author & Project Owner
-**Aïda García** - junior web dev
+
+## 📈 Project Management & Presentation
+
+Project planning and progress were tracked using the Atlassian suite.
+
+* **Jira Board:** [https://aidagarcia.atlassian.net/jira/software/projects/GAL/summary](https://aidagarcia.atlassian.net/jira/software/projects/GAL/summary)
+* **Confluence Documentation (WIP):** [https://aidagarcia.atlassian.net/wiki/spaces/GALERIUM/overview](https://aidagarcia.atlassian.net/wiki/spaces/GALERIUM/overview)
+* **Final Presentation:** [View on Canva](https://www.canva.com/design/DAG08qM5OZo/Vtqlf_txpu14m3Sr0hVkvA/view)
+
+---
+
+## 👤 Author
+
+Hola, soy Kenny, un Desarrollador Web Full-Stack recién graduado del bootcamp de IronHack. Me apasiona construir aplicaciones robustas y eficientes, utilizando tecnologías modernas como Java con Spring Boot para el backend y React para el frontend.
+
+Disfruto sumergiéndome en desafíos técnicos complejos para encontrar las soluciones más efectivas y elegantes. Si te ha gustado el proyecto o quieres hablar sobre tecnología, ¡conectemos!
+
+* **LinkedIn:** `[Link to your LinkedIn Profile]`
+* **GitHub:** `[Link to your GitHub Profile]`
+
